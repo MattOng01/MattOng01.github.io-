@@ -327,6 +327,45 @@ tr:last-child td { border-bottom: none; }
   border-top: 1px solid var(--rule);
 }
 
+/* –– map embedd –– */
+
+.map-embed {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+}
+
+.map-embed iframe {
+    width: 100%;
+    height: 900px;
+    border: 2px solid #ddd;
+    display: block;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .map-embed {
+        width: 95%;
+    }
+
+    .map-embed iframe {
+        height: 700px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .map-embed {
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+
+    .map-embed iframe {
+        height: 70vh;
+        min-height: 500px;
+    }
+}
+
 /* ── Stats Grid ── */
 .stats-grid {
   display: grid;
