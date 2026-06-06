@@ -67,10 +67,27 @@
 </div>
 
 
-<iframe 
-    src="https://matthewong01.github.io/kc-food-access-map" 
-    width="100%" 
-    height="900px" 
-    style="border: 1px solid #ddd; border-radius: 8px;"
-    loading="lazy">
-</iframe>
+<main class="container">
+
+  <!-- repo strip stays inside container -->
+  <div class="repo-strip" style="margin-top: 2.4rem; display:flex; flex-direction:column; gap:8px;">
+    <!-- ...your links... -->
+  </div>
+
+</main>
+
+<!-- Map breaks out of container -->
+<div style="width:100%; padding: 0 0 2rem;">
+    <iframe 
+        src="https://matthewong01.github.io/kc-food-access-map" 
+        width="90%" 
+        height="900px" 
+        style="border: 1px solid #ddd; display:block;"
+        loading="lazy">
+    </iframe>
+</div>
+
+<!-- Rest of your content back inside container -->
+<main class="container">
+  <!-- body paragraphs, images, tables etc -->
+</main>
