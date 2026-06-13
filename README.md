@@ -6,3 +6,9 @@ Built with HTML and CSS. Projects cover spatial economics, labor economics, fina
 economics, and macroeconomic policy.
 
 Live site: https://MatthewOng01.github.io
+
+---
+
+**Matthew Ong · Real Estate & Economic Analysis**
+
+[LinkedIn](https://linkedin.com/in/matthewong01) · [GitHub](https://github.com/matthewong01)
