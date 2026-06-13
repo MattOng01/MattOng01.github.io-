@@ -24,7 +24,7 @@ html {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 300;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
@@ -42,7 +42,7 @@ body { background: var(--bg); }
    Use: <div class="container container--prose">
    Wide elements (tables, grids, maps) stay unconstrained inside it. */
 .container--prose {
-  max-width: 740px;
+  max-width: 900px;
 }
 
 /* ── Back Nav ── */
@@ -124,7 +124,7 @@ section:last-of-type { border-bottom: none; }
 /* ── Typography ── */
 h2 {
   font-family: var(--serif);
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   font-weight: 400;
   margin-bottom: 1.2rem;
   color: var(--ink);
