@@ -32,7 +32,11 @@ html {
 body { background: var(--bg); }
 
 /* ── Layout ── */
-.container { max-width: 780px; margin: 0 auto; padding: 0 2rem; }
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
 
 /* ── Back Nav ── */
 .back-nav {
