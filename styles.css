@@ -184,6 +184,7 @@ li:last-child {
   font-size: 1.1rem;
   color: var(--accent);
   overflow-x: auto;
+  text-align: center;
 }
 .formula sub { font-size: 0.72em; }
 
@@ -222,12 +223,16 @@ li:last-child {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .model-spec:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(26,58,92,0.08); }
+.model-spec {
+  text-align: center;
+}
 .model-spec .tag {
   font-family: monospace;
   font-size: 0.78rem;
   color: var(--accent);
   display: block;
   margin-bottom: 0.2rem;
+  text-align: left;
 }
 
 /* ── Table ── */
