@@ -113,6 +113,25 @@ section {
 }
 section:last-of-type { border-bottom: none; }
 
+/* ── Prose width constraint ── */
+/* Keeps body text readable without touching tables/grids/figures */
+section > p,
+section > h2,
+section > h3,
+section > ul,
+section > ol,
+section > .pullquote,
+section > .formula,
+.prose p,
+.prose h2,
+.prose h3,
+.prose ul,
+.prose ol,
+.prose .pullquote,
+.prose .formula {
+  max-width: 720px;
+}
+
 /* ── Typography ── */
 h2 {
   font-family: var(--serif);
@@ -136,10 +155,10 @@ a { color: var(--accent); text-decoration: none; font-weight: 500; }
 a:hover { text-decoration: underline; }
 code { font-family: monospace; font-size: 0.85rem; color: var(--accent); }
 
-/*bullet lists */
-ul {
-  margin: 1rem 0 1rem 2rem;
-  padding-left: 1.25rem;
+/* ── Bullet lists ── */
+ul, ol {
+  margin: 1rem 0;
+  padding-left: 1.75rem;   /* sole indent — browser renders bullets inside this */
 }
 
 li {
