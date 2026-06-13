@@ -144,31 +144,74 @@ Data sources
 </table>
 
   </section>
-  
-<section>
+
+  <section>
   <h2>Variable Selection</h2>
-    <h3>Reference Roads</h3>
-      <p> 
-        Troost Avenue is a major north/south road that connects downtown to the suburbs. Troost is also a historical barrier 
-        in the metro dating back to the 1920s to enforce Jim Crow-era segregation. Black and Jewish residents were unable to purchase
-        property west of Troost and investment east of Troost lagged the rest of the metro. 
-       </p>
-      <p> 
-        US-71 Highway runs through Kansas City parallel to Troost Avenue. This section of US-71 was built in the 1980s and 90s. Roughly
-        10,000 residents were displaced for its construction. 
-      </p>
-      <p>
-        Other refernce roads through Jackson County include the I-435 loop, 63rd Street, and Emanuel Cleaver II Boulevard.
-      </p>
-    <h3>SNAP Grocery Stores</h3>
-      <p>
-        Grocery stores that accept SNAP benefits are highlighted to show food access. This dataset is maintained by the
-        Department of Agriculture. As this analysis focuses on 2019, I filtered out any location that stopped accepting SNAP prior to 
-        January 1, 2020. Furthermore, I only included full-service supermarkets, small, medium, and large grocery stores, and farmer's markets.
-        This was necessary to exclude gas stations and convience stores that do not necessarily provide complete and healthy food options. 
-      </p>
-    <h3>Bus Routes</h3>
-      
+
+  <h3>Reference Roads</h3>
+
+  <p>
+    Troost Avenue is a major north-south road that connects downtown Kansas City to the suburbs. 
+    Troost is also a historic barrier in the metropolitan area dating back to the 1920s. It became associated 
+    with Jim Crow-era segregation, as Black and Jewish residents were often unable to purchase property west of Troost, 
+    and investment east of Troost lagged behind the rest of the metropolitan area.
+  </p>
+
+  <p>
+    US-71 Highway runs through Kansas City parallel to Troost Avenue. This section of US-71 was constructed 
+    during the 1980s and 1990s. Roughly 10,000 residents were displaced by its construction.
+  </p>
+
+  <p>
+    Other reference roads in Jackson County include the I-435 loop, 63rd Street, and Emanuel Cleaver II Boulevard.
+  </p>
+
+  <h3>SNAP Grocery Stores</h3>
+
+  <p>
+    Grocery stores that accept SNAP benefits are highlighted to illustrate food access. 
+    This dataset is maintained by the U.S. Department of Agriculture. Because this analysis focuses on 
+    2019, locations that stopped accepting SNAP benefits before January 1, 2020, were excluded. Furthermore, 
+    only full-service supermarkets, small, medium, and large grocery stores, and farmers markets were included. 
+    This was necessary to exclude gas stations and convenience stores that do not necessarily provide complete and healthy food options.
+  </p>
+
+  <h3>Bus Routes</h3>
+
+  <p>
+    Bus route and stop data were obtained from the Kansas City Area Transportation Authority. 
+    Although the other variables reflect conditions in 2019, historic route and stop location data were unavailable. 
+    Some changes to the transit system likely occurred between 2019 and 2026.
+  </p>
+
+  <h3>Demographic Variables</h3>
+
+  <p>
+    The variables selected illustrate the socioeconomic conditions of Jackson County in 2019. There are a few variables worth noting:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Below 60% AMI</strong> refers to census tracts where the median income is below 60 percent of the Area 
+      Median Income (AMI), as defined by the U.S. Department of Housing and Urban Development. In 2019, 
+      the Kansas City metropolitan area's AMI was $82,700, making 60 percent of AMI equal to $49,620. 
+      This threshold is meaningful because it is commonly used to determine eligibility for affordable housing under 
+      HUD's Low-Income Housing Tax Credit (LIHTC) program.
+    </li>
+
+```
+<li>
+  <strong>LILA Flag</strong> identifies census tracts that meet the USDA Economic Research Service (ERS) criteria 
+  for being both low income and low food access. Tracts that meet this designation are commonly referred to as food deserts.
+</li>
+```
+
+  </ul>
+
+  <p>
+    More information about variable selection and processing is available in the README file of the Project Code Repository.
+  </p>
+</section>
 
 </div>
 
