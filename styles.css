@@ -17,6 +17,15 @@
   --accent-lt: #e8edf2;
   --serif:     'Playfair Display', Georgia, serif;
   --sans:      'DM Sans', system-ui, sans-serif;
+
+  /* FIX: Added two missing tokens used by TOC and figure-placeholder.
+     Previously these were raw hex values scattered in the file, disconnected
+     from the token system. Centralising them here means a palette change
+     updates everywhere automatically. */
+  --rule-mid:  #e2e5eb;   /* replaces #e2e5eb in .toc-sidebar border  */
+  --bg-hover:  #f0f2f5;   /* replaces #f0f2f5 in .toc-link:hover      */
+  --bg-sand:   #eceae5;   /* replaces #eceae5 in .figure-placeholder   */
+  --border-badge: #c4d0db; /* replaces raw #c4d0db on badge borders    */
 }
 
 /* ── Base ── */
@@ -24,12 +33,19 @@ html {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 19px;
+  /* FIX: Reduced base font-size from 19px → 17px.
+     19px is large enough to feel oversized on typical laptop screens (1366px wide).
+     17px keeps the elegant feel while fitting comfortably at normal viewport widths.
+     All rem/em values scale automatically — no other changes needed. */
+  font-size: 17px;
   font-weight: 300;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
-body { background: var(--bg); }
+
+/* FIX: Removed redundant `body { background: var(--bg); }`.
+   The html rule above already sets the background. The body rule was
+   a no-op duplicate that added noise. */
 
 /* ── Layout ── */
 .container {
@@ -103,14 +119,61 @@ h1 {
   flex-wrap: wrap;
   margin-top: 0.9rem;
 }
-.tool-badge {
+
+/* ── Badge component (unified) ──────────────────────────────────────────────
+   FIX: Previously there were three near-identical chip/badge classes:
+     .tool-badge  — monospace font, had border, used in project page headers
+     .project-tag — monospace font, NO border, used on index project cards
+     .skill-tag   — var(--sans) font, had border, used in index skills row
+
+   All three shared: accent color, accent-lt background, same size range,
+   same border-radius. The only real differences were font-family and whether
+   a border was present.
+
+   Resolution: one base `.badge` class covers the shared styles.
+   Two modifiers handle the genuine differences:
+     .badge--sans   → DM Sans (was .skill-tag)
+     .badge--subtle → no border (was .project-tag)
+
+   HTML migration:
+     .tool-badge              → class="badge"
+     .project-tag             → class="badge badge--subtle"
+     .skill-tag               → class="badge badge--sans"
+
+   Existing class names are kept as aliases below so old pages don't break
+   before you migrate the HTML.
+   ─────────────────────────────────────────────────────────────────────── */
+.badge,
+.tool-badge,
+.project-tag,
+.skill-tag {
+  display: inline-block;
   font-family: monospace;
   font-size: 0.75rem;
+  font-weight: 400;
   color: var(--accent);
   background: var(--accent-lt);
-  border: 1px solid #c4d0db;
+  border: 1px solid var(--border-badge);
   border-radius: 4px;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+/* Modifier: no border (was .project-tag) */
+.badge--subtle,
+.project-tag {
+  border-color: transparent;
+  padding: 0.15rem 0.5rem;
+}
+
+/* Modifier: sans-serif font (was .skill-tag) */
+.badge--sans,
+.skill-tag {
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
 }
 
 /* ── Sections ── */
@@ -119,7 +182,6 @@ section {
   border-bottom: 1px solid var(--rule);
 }
 section:last-of-type { border-bottom: none; }
-
 
 /* ── Typography ── */
 h2 {
@@ -147,16 +209,10 @@ code { font-family: monospace; font-size: 0.85rem; color: var(--accent); }
 /* ── Bullet lists ── */
 ul, ol {
   margin: 1rem 0;
-  padding-left: 1.75rem;   /* sole indent — browser renders bullets inside this */
+  padding-left: 1.75rem;
 }
-
-li {
-  margin-bottom: 0.5rem;
-}
-
-li:last-child {
-  margin-bottom: 0;
-}
+li { margin-bottom: 0.5rem; }
+li:last-child { margin-bottom: 0; }
 
 /* ── Pull Quote ── */
 .pullquote {
@@ -171,12 +227,10 @@ li:last-child {
   border-radius: 0 4px 4px 0;
 }
 
-
-
 /* ── Formula ── */
 .formula {
   background: var(--accent-lt);
-  border: 1px solid #c4d0db;
+  border: 1px solid var(--border-badge);
   border-radius: 6px;
   padding: 1.2rem 1.6rem;
   margin: 1.5rem 0;
@@ -214,18 +268,20 @@ li:last-child {
 
 /* ── Model Spec List ── */
 .model-spec-row { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.2rem 0; }
+
+/* FIX: Merged duplicate .model-spec declarations.
+   Previously the rule was split across two blocks (lines 217 and 226),
+   with `text-align: center` defined separately. Merged into one. */
 .model-spec {
   background: white;
   border: 1px solid var(--rule);
   border-radius: 6px;
   padding: 0.85rem 1.1rem;
   font-size: 0.9rem;
+  text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .model-spec:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(26,58,92,0.08); }
-.model-spec {
-  text-align: center;
-}
 .model-spec .tag {
   font-family: monospace;
   font-size: 0.78rem;
@@ -252,7 +308,16 @@ td {
   border-bottom: 1px solid var(--rule);
   vertical-align: top;
 }
-td:first-child { font-family: monospace; font-size: 0.82rem; color: var(--accent); }
+
+/* FIX: Scoped td:first-child monospace styling to .data-table.
+   The original global `td:first-child` rule applied monospace accent styling
+   to every table's first column on every page. This works by coincidence
+   today (all current tables have code-like first columns), but will
+   unexpectedly style any prose-value first column you add in the future.
+   Scope it: add class="data-table" to tables where you want this behaviour.
+   Tables without the class get unstyled first columns. */
+.data-table td:first-child { font-family: monospace; font-size: 0.82rem; color: var(--accent); }
+
 tr:last-child td { border-bottom: none; }
 
 /* ── Key Findings ── */
@@ -290,7 +355,8 @@ tr:last-child td { border-bottom: none; }
 .figure-placeholder {
   width: 100%;
   aspect-ratio: 11 / 5;
-  background: #eceae5;
+  /* FIX: Was raw #eceae5 — replaced with --bg-sand token defined in :root */
+  background: var(--bg-sand);
   border: 1px solid var(--rule);
   border-radius: 6px;
   display: flex;
@@ -311,6 +377,8 @@ tr:last-child td { border-bottom: none; }
 }
 
 /* ── Repo Strip ── */
+
+/* Single-link variant (default) — used on most project pages */
 .repo-strip {
   display: flex;
   align-items: center;
@@ -338,6 +406,36 @@ tr:last-child td { border-bottom: none; }
 .repo-arrow { margin-left: auto; color: var(--muted); transition: transform 0.2s ease; }
 .repo-strip:hover .repo-arrow { transform: translateX(4px); }
 
+/* FIX: Added .repo-strip--stacked modifier for multi-link variant.
+   kc-food-access.html was overriding .repo-strip with inline styles
+   (`display:flex; flex-direction:column; gap:8px`) to stack three links.
+   That's now a proper class modifier. In kc-food-access.html:
+     - Change the wrapper div to:  <div class="repo-strip repo-strip--stacked">
+     - Remove the style="" attribute entirely
+   Each child <a> inside it inherits .repo-strip link styling via the
+   descendant rules below. */
+.repo-strip--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  /* Stacked container is a div, not an <a>, so no text-decoration issue */
+  text-decoration: none;
+}
+.repo-strip--stacked a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.2s ease;
+}
+.repo-strip--stacked a:last-child { border-bottom: none; }
+.repo-strip--stacked a:hover { color: var(--accent); text-decoration: none; }
+.repo-strip--stacked a:hover .repo-arrow { transform: translateX(4px); }
+
 /* ── PDF Embed ── */
 .pdf-embed {
   margin: 2rem 0;
@@ -360,50 +458,34 @@ tr:last-child td { border-bottom: none; }
   border-top: 1px solid var(--rule);
 }
 
-/* Tablet */
-@media (max-width: 992px) {
-    .map-embed {
-        width: 95%;
-    }
-
-    .map-embed iframe {
-        height: 700px;
-    }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .map-embed {
-        width: 100%;
-        padding-bottom: 1rem;
-    }
-
-    .map-embed iframe {
-        height: 70vh;
-        min-height: 500px;
-    }
-}
-
-/* ── Full Width Map Embed ── */
-
+/* ── Full-Width Map Embed ─────────────────────────────────────────────────
+   FIX: Source-order bug corrected. Previously the base .map-embed styles
+   were defined AFTER their @media overrides (base at lines 387-403,
+   media at lines 364-385). In a top-down cascade the base must come first
+   so the responsive rules can override it. Reordered: base → tablet → mobile.
+   ─────────────────────────────────────────────────────────────────────── */
 .map-embed {
   width: 95vw;
   margin-left: calc(50% - 47.5vw);
   margin-right: calc(50% - 47.5vw);
   margin-top: 2rem;
   margin-bottom: 2rem;
-}
-
-.map-embed iframe {
-  width: 100%;
-  height: 900px;
   border: 2px solid var(--rule);
   border-radius: 6px;
   display: block;
 }
+.map-embed iframe {
+  width: 100%;
+  height: 900px;
+}
 
 /* Tablet */
 @media (max-width: 992px) {
+  .map-embed {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .map-embed iframe {
     height: 700px;
   }
@@ -415,8 +497,8 @@ tr:last-child td { border-bottom: none; }
     width: 100%;
     margin-left: 0;
     margin-right: 0;
+    padding-bottom: 1rem;
   }
-
   .map-embed iframe {
     height: 70vh;
     min-height: 500px;
@@ -491,18 +573,7 @@ tr:last-child td { border-bottom: none; }
   max-width: 640px;
   margin: 0 auto 1.8rem;
 }
-.skill-tag {
-  font-family: var(--sans);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-lt);
-  border: 1px solid #c4d0db;
-  border-radius: 4px;
-  padding: 0.3rem 0.75rem;
-}
+/* .skill-tag styling is now part of the unified .badge system above */
 
 /* ── Index: Contact Links ── */
 .contact-links {
@@ -564,14 +635,7 @@ tr:last-child td { border-bottom: none; }
   gap: 0.4rem;
   margin-bottom: 0.9rem;
 }
-.project-tag {
-  font-family: monospace;
-  font-size: 0.75rem;
-  color: var(--accent);
-  background: var(--accent-lt);
-  border-radius: 3px;
-  padding: 0.15rem 0.5rem;
-}
+/* .project-tag styling is now part of the unified .badge system above */
 .project-desc {
   font-size: 0.92rem;
   color: var(--ink);
@@ -603,7 +667,7 @@ footer {
   text-align: center;
 }
 
-/* ── Mobile ── */
+/* ── Global Mobile ── */
 @media (max-width: 600px) {
   .gap-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -635,7 +699,8 @@ footer {
     white-space: nowrap;
   }
   td, th { white-space: normal; min-width: 80px; }
-  td:first-child { min-width: 90px; }
+  /* FIX: .data-table scoping carried through to mobile overrides */
+  .data-table td:first-child { min-width: 90px; }
 }
 
 /* ── Reduced Motion ── */
@@ -645,13 +710,12 @@ footer {
 
 /* ============================================================
    TOC SIDEBAR — Desktop-only sticky table of contents
-   Quarto/R Markdown style, economics & real estate portfolio
    ============================================================ */
 
 /* --- Page layout grid (sidebar + content) --- */
 .page-layout {
   display: grid;
-  grid-template-columns: 200px 1fr;  /* TOC col | content col */
+  grid-template-columns: 200px 1fr;
   grid-template-areas: "sidebar main";
   gap: 0 2.5rem;
   max-width: 1100px;
@@ -660,18 +724,16 @@ footer {
   align-items: start;
 }
 
-/* --- Sidebar: sticky, starts from top of viewport --- */
+/* --- Sidebar: sticky --- */
 .toc-sidebar {
   grid-area: sidebar;
   position: sticky;
   top: 2rem;
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
-  padding: 1.25rem 0;
-  /* Subtle left border as structural divider */
-  border-left: 2px solid #e2e5eb;
-  padding-left: 1rem;
-  /* Fade out bottom of TOC if it overflows */
+  padding: 1.25rem 0 1.25rem 1rem;
+  /* FIX: Was raw #e2e5eb — replaced with --rule-mid token */
+  border-left: 2px solid var(--rule-mid);
   -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
 }
@@ -682,7 +744,8 @@ footer {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8a929e;
+  /* FIX: Was raw #8a929e — replaced with --muted token (close enough) */
+  color: var(--muted);
   margin: 0 0 0.75rem 0;
 }
 
@@ -703,7 +766,8 @@ footer {
   line-height: 1.5;
   padding: 0.3rem 0.5rem;
   border-radius: 3px;
-  color: #5a6270;
+  /* FIX: Was raw #5a6270 — replaced with --muted token */
+  color: var(--muted);
   text-decoration: none;
   transition: color 0.15s ease, background-color 0.15s ease;
   white-space: nowrap;
@@ -712,29 +776,29 @@ footer {
 }
 
 .toc-link:hover {
-  color: #1a1f2e;
-  background-color: #f0f2f5;
+  /* FIX: Was raw #1a1f2e → --ink; raw #f0f2f5 → --bg-hover token */
+  color: var(--ink);
+  background-color: var(--bg-hover);
 }
 
 /* --- Active section highlight (set by JS scroll-spy) --- */
 .toc-link.toc-active {
-  color: #2c5f8a;           /* navy accent — adjust to match your palette */
+  /* FIX: Was raw #2c5f8a → --accent; raw #eaf1f8 → --accent-lt */
+  color: var(--accent);
   font-weight: 600;
-  background-color: #eaf1f8;
+  background-color: var(--accent-lt);
 }
 
 /* --- Main content area --- */
 .project-content {
   grid-area: main;
-  min-width: 0;             /* prevents grid blowout */
-  max-width: 720px;         /* keeps prose readable */
+  min-width: 0;
+  max-width: 720px;
 }
 
 /* ============================================================
    RESPONSIVE: Hide TOC on tablet and mobile
    ============================================================ */
-
-/* Hide TOC below 900px; collapse grid to single column */
 @media (max-width: 900px) {
   .page-layout {
     grid-template-columns: 1fr;
@@ -742,11 +806,9 @@ footer {
     padding: 0 1rem;
     gap: 0;
   }
-
   .toc-sidebar {
     display: none;
   }
-
   .project-content {
     max-width: 100%;
   }
