@@ -279,6 +279,56 @@
   
 </div>
 
+<script>
+  /**
+   * TOC Scroll-Spy
+   * Highlights the TOC link corresponding to the section currently
+   * in view. Uses IntersectionObserver for performance.
+   */
+  (function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (!tocLinks.length) return;
+
+    // Map each href target id → its TOC link element
+    const linkMap = {};
+    tocLinks.forEach(link => {
+      const id = link.getAttribute('href').replace('#', '');
+      linkMap[id] = link;
+    });
+
+    // Track which section is currently most visible
+    let currentActive = null;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Remove active class from previous link
+            if (currentActive) {
+              currentActive.classList.remove('toc-active');
+            }
+            // Set active on the newly visible section's link
+            currentActive = linkMap[entry.target.id];
+            if (currentActive) {
+              currentActive.classList.add('toc-active');
+            }
+          }
+        });
+      },
+      {
+        // Trigger when section top hits ~15% from top of viewport
+        rootMargin: '-15% 0px -75% 0px',
+        threshold: 0
+      }
+    );
+
+    // Observe each section that has a matching TOC link
+    Object.keys(linkMap).forEach(id => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  })();
+</script>
 </body>
 
 <footer>
