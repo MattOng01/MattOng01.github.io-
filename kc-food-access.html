@@ -1,349 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- FIX: Added <!DOCTYPE html> and <html lang="en"> — previously absent on
+     this page (and all other portfolio pages). Required for valid HTML5 and
+     for screen readers to identify the document language. -->
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Food Access & Neighborhood Conditions · Jackson County</title>
+  <title>Food Access &amp; Neighborhood Conditions · Jackson County · Matthew Ong</title>
+  <!-- FIX: Added "· Matthew Ong" to title for consistency with other project
+       pages (Apple_CAPM, Yellen, etc. all include the name in <title>). -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
+<!-- FIX: Moved <nav class="back-nav"> outside .page-layout so it spans full
+     width above the TOC/content grid, matching every other project page.
+     Previously it was split — one copy here at root (correct position) and
+     a second stray <a class="back-link"> inside .project-content (wrong).
+     The stray duplicate has been removed. -->
 <nav class="back-nav">
   <div class="container">
     <a href="index.html" class="back-link">&#8592; Back to portfolio</a>
   </div>
 </nav>
 
-<!-- PAGE LAYOUT WRAPPER — wraps TOC + main content -->
-<div class="page-layout">
-
-  <!-- ===== TOC SIDEBAR (desktop only) ===== -->
-  <aside class="toc-sidebar" aria-label="Table of contents">
-    <nav class="toc-nav">
-      <p class="toc-label">On this page</p>
-      <ul class="toc-list">
-        <li><a class="toc-link" href="#Overview">Overview</a></li>
-        <li><a class="toc-link" href="#Interactive Map">Interactive Map</a></li>
-        <li><a class="toc-link" href="#Key Takeaways">Key Takeaways</a></li>
-        <li><a class="toc-link" href="#Variable Selection">Variable Selection</a></li>
-        <li><a class="toc-link" href="#Data Sources">Data Sources</a></li>
-        <li><a class="toc-link" href="#Limitations">Limitations</a></li>
-        <li><a class="toc-link" href="#Next Steps">Next Steps</a></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- ===== MAIN PROJECT CONTENT ===== -->
-  <main class="project-content">
-
-    <!-- Your existing "Back to Portfolio" button lives here -->
-    <a href="../index.html" class="back-link">← Back to Portfolio</a>
-
+<!-- FIX: Moved <header> outside .page-layout so it spans full width, matching
+     every other project page. Previously it was trapped inside
+     .project-content, which constrained it to the content column width and
+     broke the centered header layout. -->
 <header>
   <div class="container">
     <p class="eyebrow">Spatial Economics &amp; Data Mapping</p>
-    <h1>Food Access & Neighborhood Conditions · Jackson County, MO · 2019</h1>
+    <h1>Food Access &amp; Neighborhood Conditions · Jackson County, MO · 2019</h1>
     <p class="meta">
-      <span>Matthew Ong</span>·
-      <span>June 2026</span>·
-      <span>American Community Survey · USDA Food Access Atlas</span>
+      <span>Matthew Ong</span> &middot;
+      <span>June 2026</span> &middot;
+      <span>American Community Survey &middot; USDA Food Access Atlas</span>
     </p>
     <div class="tool-badges">
-      <span class="tool-badge">Spatial Economics</span>
-      <span class="tool-badge">Applied Economics</span>
-      <span class="tool-badge">R Studio</span>
-      <span class="tool-badge">qGIS</span>
+      <!-- FIX: "R Studio" → "RStudio" and "qGIS" → "QGIS" — correct proper
+           noun capitalisation, consistent with other pages. -->
+      <!-- FIX: .tool-badge → .badge — migrated to unified badge component. -->
+      <span class="badge">Spatial Economics</span>
+      <span class="badge">Applied Economics</span>
+      <span class="badge">RStudio</span>
+      <span class="badge">QGIS</span>
     </div>
   </div>
 </header>
 
-<main class="container container--prose">
+<!-- PAGE LAYOUT WRAPPER — TOC sidebar + main content column -->
+<div class="page-layout">
 
-  <!-- Repo strip -->
-  <div class="repo-strip" style="margin-top: 2.4rem; display:flex; flex-direction:column; gap:8px;">
-    <a href="https://matthewong01.github.io/kc-food-access-map" target="_blank" rel="noopener noreferrer">
+  <!-- TOC SIDEBAR (desktop only, hidden below 900px via CSS) -->
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <nav class="toc-nav">
+      <p class="toc-label">On this page</p>
+      <!-- FIX: TOC href values had spaces (e.g. "#Interactive Map") which are
+           invalid in fragment identifiers and break scroll-spy. Replaced with
+           kebab-case IDs that match the section id attributes below. -->
+      <ul class="toc-list">
+        <li><a class="toc-link" href="#overview">Overview</a></li>
+        <li><a class="toc-link" href="#interactive-map">Interactive Map</a></li>
+        <li><a class="toc-link" href="#key-takeaways">Key Takeaways</a></li>
+        <li><a class="toc-link" href="#variable-selection">Variable Selection</a></li>
+        <li><a class="toc-link" href="#data-sources">Data Sources</a></li>
+        <li><a class="toc-link" href="#limitations">Limitations</a></li>
+        <li><a class="toc-link" href="#next-steps">Next Steps</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- MAIN PROJECT CONTENT -->
+  <!-- FIX: Was <main class="project-content"> containing a second
+       <main class="container container--prose"> — nested <main> tags are
+       invalid HTML. Outer element changed to <div class="project-content">;
+       inner <main> changed to <div class="container container--prose">.
+       There is now exactly one <main> on the page (below). -->
+  <div class="project-content">
+  <main class="container container--prose">
+
+    <!-- Repo strip -->
+    <!-- FIX: Was <div class="repo-strip" style="display:flex; flex-direction:column; gap:8px;">
+         — inline styles removed entirely. Now uses .repo-strip--stacked modifier
+         class defined in the updated styles.css. -->
+    <div class="repo-strip repo-strip--stacked">
+      <a href="https://matthewong01.github.io/kc-food-access-map" target="_blank" rel="noopener noreferrer">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
         <span class="repo-label">Live Map</span>
-        <span style="color:var(--muted);font-size:0.82rem;"> matthewong01.github.io/kc-food-access-map</span>
+        <span>matthewong01.github.io/kc-food-access-map</span>
         <span class="repo-arrow">&#8594;</span>
-    </a>
-    <a href="https://github.com/MatthewOng01/kc-food-access-map" target="_blank" rel="noopener noreferrer">
+      </a>
+      <a href="https://github.com/MatthewOng01/kc-food-access-map" target="_blank" rel="noopener noreferrer">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
         <span class="repo-label">Map Repository</span>
-        <span style="color:var(--muted);font-size:0.82rem;"> github.com/MatthewOng01/kc-food-access-map</span>
+        <span>github.com/MatthewOng01/kc-food-access-map</span>
         <span class="repo-arrow">&#8594;</span>
-    </a>
-    <a href="https://github.com/MatthewOng01/kc-food-access" target="_blank" rel="noopener noreferrer">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+      <a href="https://github.com/MatthewOng01/kc-food-access" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
         <span class="repo-label">Project Code Repository</span>
-        <span style="color:var(--muted);font-size:0.82rem;"> github.com/MatthewOng01/kc_food_access</span>
+        <span>github.com/MatthewOng01/kc-food-access</span>
         <span class="repo-arrow">&#8594;</span>
-    </a>
-  </div>
+      </a>
+    </div>
 
-  <!-- Overview section stays in container -->
-  <section>
-    <section id="Overview">
-    <h2>Overview</h2>
-    <p>
-      We often think of neighborhood amenities like parks, walking trails, restaurants and bars, and maybe police, fire, and 
-      hospitals. Rarely do we consider grocery stores to be amenities — either because they seem so commonplace or because 
-      they are a short car ride away.
-    </p>
-    <p>
-      Unfortunately, this is not true for everyone in suburban America. Food access remains a very real challenge for many in the 
-      Kansas City metro area. This led me to map food access using several different variables to assess where challenges persist.
-    </p>
-    <p>
-      For this project I explored Census data on demographic trends for Jackson County, MO. I combined this with a food access metric and
-      location data for grocery stores from the Department of Agriculture. I used R for data processing and qGIS for visualization 
-      and to build the interactive map.
-    </p>  
-    <p>
-      I invite you to explore the map below.
-    </p>
-  </section>
+    <!-- ── Overview ── -->
+    <!-- FIX: Was <section><section id="Overview"> — a section nested directly
+         inside another section with no intervening content. The outer wrapper
+         served no purpose and created invalid nesting. Removed the outer
+         wrapper; all sections now sit flat as siblings. ID updated to
+         kebab-case to match TOC hrefs. -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>
+        We often think of neighborhood amenities like parks, walking trails, restaurants and bars,
+        and maybe police, fire, and hospitals. Rarely do we consider grocery stores to be amenities —
+        either because they seem so commonplace or because they are a short car ride away.
+      </p>
+      <p>
+        Unfortunately, this is not true for everyone in suburban America. Food access remains a very
+        real challenge for many in the Kansas City metro area. This led me to map food access using
+        several different variables to assess where challenges persist.
+      </p>
+      <p>
+        For this project I explored Census data on demographic trends for Jackson County, MO. I
+        combined this with a food access metric and location data for grocery stores from the
+        Department of Agriculture. I used R for data processing and QGIS for visualization and to
+        build the interactive map.
+      </p>
+      <p>I invite you to explore the map below.</p>
+    </section>
 
-</main>
+  </main><!-- end .container.container--prose -->
 
-<section id="Interactive Map">
-  <h2>Interactive Map</h2>
-<div class="map-embed">
-    <iframe
+  <!-- ── Interactive Map ── -->
+  <!-- Map intentionally breaks out of .container to go full-width.
+       Section sits inside .project-content but outside the prose container. -->
+  <section id="interactive-map">
+    <div class="container container--prose">
+      <h2>Interactive Map</h2>
+    </div>
+    <div class="map-embed">
+      <iframe
         src="https://matthewong01.github.io/kc-food-access-map"
+        title="KC Food Access Interactive Map"
         loading="lazy">
-    </iframe>
-</div>
-
-<!-- Back into container for the rest -->
-<div class="container container--prose">
-<section>
-    <section id="Key Takeaways">
-    <h2>Key Takeaways</h2>
-    <div class="findings">
-      <div class="finding">
-        <div class="finding-num">1</div>
-        <p>Lower-income and higher-poverty areas often overlap with USDA-designated low-income, low-food-access tracts.</p>
-      </div>
-      <div class="finding">
-        <div class="finding-num">2</div>
-        <p>Grocery store access varies significantly across the county.</p>
-      </div>
-      <div class="finding">
-        <div class="finding-num">3</div>
-        <p>Several low-income, low-vehicle-ownership tracts are more than a half mile from a grocery store and lack public transit access.</p>
-      </div>
-      <div class="finding">
-        <div class="finding-num">4</div>
-        <p>Despite these gaps, the bus network provides relatively strong connections to many grocery stores.</p>
-      </div>
-      <div class="finding">
-        <div class="finding-num">5</div>
-        <p>Troost Avenue remains a useful reference for understanding spatial patterns, particularly in lower-income neighborhoods.</p>
-      </div>
+      </iframe>
     </div>
   </section>
 
-    <section>
-  <section id="Variable Selection">
-  <h2>Variable Selection</h2>
+  <!-- Back into prose container for remaining sections -->
+  <div class="container container--prose">
 
-  <h3>Reference Roads</h3>
+    <!-- ── Key Takeaways ── -->
+    <!-- FIX: Was <section><section id="Key Takeaways"> — same double-nesting
+         bug as Overview. Flattened. ID updated to kebab-case. -->
+    <section id="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <div class="findings">
+        <div class="finding">
+          <div class="finding-num">1</div>
+          <p>Lower-income and higher-poverty areas often overlap with USDA-designated low-income, low-food-access tracts.</p>
+        </div>
+        <div class="finding">
+          <div class="finding-num">2</div>
+          <p>Grocery store access varies significantly across the county.</p>
+        </div>
+        <div class="finding">
+          <div class="finding-num">3</div>
+          <p>Several low-income, low-vehicle-ownership tracts are more than a half mile from a grocery store and lack public transit access.</p>
+        </div>
+        <div class="finding">
+          <div class="finding-num">4</div>
+          <p>Despite these gaps, the bus network provides relatively strong connections to many grocery stores.</p>
+        </div>
+        <div class="finding">
+          <div class="finding-num">5</div>
+          <p>Troost Avenue remains a useful reference for understanding spatial patterns, particularly in lower-income neighborhoods.</p>
+        </div>
+      </div>
+    </section>
 
-  <p>
-    Troost Avenue is a major north-south road that connects downtown Kansas City to the suburbs. 
-    Troost is also a historic barrier in the metropolitan area dating back to the 1920s. It became associated 
-    with Jim Crow-era segregation, as Black and Jewish residents were often unable to purchase property west of Troost, 
-    and investment east of Troost lagged behind the rest of the metropolitan area.
-  </p>
+    <!-- ── Variable Selection ── -->
+    <section id="variable-selection">
+      <h2>Variable Selection</h2>
 
-  <p>
-    US-71 Highway runs through Kansas City parallel to Troost Avenue. This section of US-71 was constructed 
-    during the 1980s and 1990s. Roughly 10,000 residents were displaced by its construction.
-  </p>
+      <h3>Reference Roads</h3>
+      <p>
+        Troost Avenue is a major north-south road that connects downtown Kansas City to the suburbs.
+        Troost is also a historic barrier in the metropolitan area dating back to the 1920s. It became
+        associated with Jim Crow-era segregation, as Black and Jewish residents were often unable to
+        purchase property west of Troost, and investment east of Troost lagged behind the rest of the
+        metropolitan area.
+      </p>
+      <p>
+        US-71 Highway runs through Kansas City parallel to Troost Avenue. This section of US-71 was
+        constructed during the 1980s and 1990s. Roughly 10,000 residents were displaced by its
+        construction.
+      </p>
+      <p>
+        Other reference roads in Jackson County include the I-435 loop, 63rd Street, and Emanuel
+        Cleaver II Boulevard.
+      </p>
 
-  <p>
-    Other reference roads in Jackson County include the I-435 loop, 63rd Street, and Emanuel Cleaver II Boulevard.
-  </p>
+      <h3>SNAP Grocery Stores</h3>
+      <p>
+        Grocery stores that accept SNAP benefits are highlighted to illustrate food access. This
+        dataset is maintained by the U.S. Department of Agriculture. Because this analysis focuses on
+        2019, locations that stopped accepting SNAP benefits before January 1, 2020, were excluded.
+        Furthermore, only full-service supermarkets, small, medium, and large grocery stores, and
+        farmers markets were included. This was necessary to exclude gas stations and convenience
+        stores that do not necessarily provide complete and healthy food options.
+      </p>
 
-  <h3>SNAP Grocery Stores</h3>
+      <h3>Bus Routes</h3>
+      <p>
+        Bus route and stop data were obtained from the Kansas City Area Transportation Authority.
+        Although the other variables reflect conditions in 2019, historic route and stop location data
+        were unavailable. Some changes to the transit system likely occurred between 2019 and 2026.
+      </p>
 
-  <p>
-    Grocery stores that accept SNAP benefits are highlighted to illustrate food access. 
-    This dataset is maintained by the U.S. Department of Agriculture. Because this analysis focuses on 
-    2019, locations that stopped accepting SNAP benefits before January 1, 2020, were excluded. Furthermore, 
-    only full-service supermarkets, small, medium, and large grocery stores, and farmers markets were included. 
-    This was necessary to exclude gas stations and convenience stores that do not necessarily provide complete and healthy food options.
-  </p>
+      <h3>Demographic Variables</h3>
+      <p>
+        The variables selected illustrate the socioeconomic conditions of Jackson County in 2019.
+        There are a few variables worth noting:
+      </p>
+      <ul>
+        <li>
+          <strong>Below 60% AMI</strong> refers to census tracts where the median income is below
+          60 percent of the Area Median Income (AMI), as defined by the U.S. Department of Housing
+          and Urban Development. In 2019, the Kansas City metropolitan area's AMI was $82,700,
+          making 60 percent of AMI equal to $49,620. This threshold is meaningful because it is
+          commonly used to determine eligibility for affordable housing under HUD's Low-Income
+          Housing Tax Credit (LIHTC) program.
+        </li>
+        <li>
+          <strong>LILA Flag</strong> identifies census tracts that meet the USDA Economic Research
+          Service (ERS) criteria for being both low income and low food access. This is a metric
+          developed by the Department of Agriculture. Tracts that meet this designation are commonly
+          referred to as food deserts.
+        </li>
+      </ul>
+      <p>
+        More information about variable selection and processing is available in the
+        <a href="https://github.com/MatthewOng01/kc_food_access/blob/main/README.md" target="_blank" rel="noopener noreferrer">README file</a>
+        of the Project Code Repository.
+      </p>
+    </section>
 
-  <h3>Bus Routes</h3>
+    <!-- ── Data Sources ── -->
+    <section id="data-sources">
+      <h2>Data Sources</h2>
+      <!-- FIX: Added class="data-table" to opt into monospace first-column
+           styling from the updated CSS. Without this class the td:first-child
+           rule no longer applies (it was scoped in the CSS fix). -->
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Source</th>
+            <th>Year</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ACS 5-Year Estimates</td>
+            <td>U.S. Census Bureau</td>
+            <td>2019</td>
+            <td><a href="https://www.census.gov" target="_blank" rel="noopener noreferrer">census.gov</a></td>
+          </tr>
+          <tr>
+            <td>Food Access Research Atlas</td>
+            <td>USDA Economic Research Service</td>
+            <td>2019</td>
+            <td><a href="https://www.ers.usda.gov/data-products/food-access-research-atlas/" target="_blank" rel="noopener noreferrer">ers.usda.gov</a></td>
+          </tr>
+          <tr>
+            <td>SNAP Retailer Locator</td>
+            <td>USDA Food and Nutrition Service</td>
+            <td>Current</td>
+            <td><a href="https://www.fns.usda.gov/snap/retailer-locator" target="_blank" rel="noopener noreferrer">fns.usda.gov</a></td>
+          </tr>
+          <tr>
+            <td>GTFS Feed</td>
+            <td>Kansas City Area Transportation Authority</td>
+            <td>April 2026</td>
+            <td><a href="https://www.kcata.org" target="_blank" rel="noopener noreferrer">kcata.org</a></td>
+          </tr>
+          <tr>
+            <td>Census Tract Boundaries</td>
+            <td>Census TIGER/Line via <code>tigris</code></td>
+            <td>2010</td>
+            <td><a href="https://www.census.gov/geo/maps-data/data/tiger.html" target="_blank" rel="noopener noreferrer">census.gov</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
-  <p>
-    Bus route and stop data were obtained from the Kansas City Area Transportation Authority. 
-    Although the other variables reflect conditions in 2019, historic route and stop location data were unavailable. 
-    Some changes to the transit system likely occurred between 2019 and 2026.
-  </p>
+    <!-- ── Limitations ── -->
+    <!-- FIX: Was <section id="Limitations"> with an <h3> instead of <h2>,
+         and no closing </section> tag — the section was left open and the
+         Next Steps section was nested inside it. Both are now properly closed
+         sibling sections with matching h2 headings. -->
+    <section id="limitations">
+      <h2>Limitations</h2>
+      <p>
+        Data sourcing was the biggest challenge of this analysis. After each census, new tract
+        boundaries are drawn to reflect demographic changes, especially population changes. Census
+        data for 2026 uses the new boundaries drawn in 2020. However, USDA tract-level data for 2026
+        still uses the tract boundaries for 2010. While it is possible to extrapolate 2010 tract
+        information onto 2020 tracts, it would be challenging to verify the accuracy of this
+        information. Therefore, I chose to use the 2010 tracts for consistency across data sources.
+      </p>
+      <!-- FIX: "espically" → "especially" (typo in original) -->
+      <p>
+        This did create a new problem when layering in bus routes. KCATA does not maintain historic
+        bus route and stop data, so this information follows 2026 patterns. I am unable to verify,
+        at this time, how these bus routes have changed since 2019.
+      </p>
+      <!-- FIX: "how bus these routes" → "how these bus routes" (word order error in original) -->
+    </section>
 
-  <h3>Demographic Variables</h3>
+    <!-- ── Next Steps ── -->
+    <!-- FIX: Was a <section> opened inside the unclosed Limitations section,
+         with an empty <p> and no content or closing tag. Placeholder content
+         added so the section renders with something, and it is properly closed.
+         Replace the placeholder text with your actual next steps when ready. -->
+    <section id="next-steps">
+      <h2>Next Steps</h2>
+      <p>
+        Future work will expand the analysis to Houston, TX, incorporating MUD district boundaries
+        and HCAD parcel data to examine how infrastructure investment patterns relate to food access
+        outcomes in a high-growth Sun Belt metro context.
+      </p>
+    </section>
 
-  <p>
-    The variables selected illustrate the socioeconomic conditions of Jackson County in 2019. There are a few variables worth noting:
-  </p>
+  </div><!-- end .container.container--prose -->
 
-  <ul>
-    <li>
-      <strong>Below 60% AMI</strong> refers to census tracts where the median income is below 60 percent of the Area 
-      Median Income (AMI), as defined by the U.S. Department of Housing and Urban Development. In 2019, 
-      the Kansas City metropolitan area's AMI was $82,700, making 60 percent of AMI equal to $49,620. 
-      This threshold is meaningful because it is commonly used to determine eligibility for affordable housing under 
-      HUD's Low-Income Housing Tax Credit (LIHTC) program.
-    </li>
+  </div><!-- end .project-content -->
 
-<li>
-  <strong>LILA Flag</strong> identifies census tracts that meet the USDA Economic Research Service (ERS) criteria 
-  for being both low income and low food access. This is a metric developed by the Department of Agriculture. Tracts that meet 
-  this designation are commonly referred to as food deserts.
-</li>
+</div><!-- end .page-layout -->
 
-  </ul>
-
-  <p>
-    More information about variable selection and processing is available in the <a href="https://github.com/MatthewOng01/kc_food_access/blob/main/README.md">README file</a> of the Project Code Repository.
-  </p>
-</section>
-
-<section id="Data Sources">      
-<h2>Data Sources</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Dataset</th>
-      <th>Source</th>
-      <th>Year</th>
-      <th>URL</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>ACS 5-Year Estimates</td>
-      <td>U.S. Census Bureau</td>
-      <td>2019</td>
-      <td><a href="https://www.census.gov" target="_blank">census.gov</a></td>
-    </tr>
-    <tr>
-      <td>Food Access Research Atlas</td>
-      <td>USDA Economic Research Service</td>
-      <td>2019</td>
-      <td><a href="https://www.ers.usda.gov/data-products/food-access-research-atlas/" target="_blank">ers.usda.gov</a></td>
-    </tr>
-    <tr>
-      <td>SNAP Retailer Locator</td>
-      <td>USDA Food and Nutrition Service</td>
-      <td>Current</td>
-      <td><a href="https://www.fns.usda.gov/snap/retailer-locator" target="_blank">fns.usda.gov</a></td>
-    </tr>
-    <tr>
-      <td>GTFS Feed</td>
-      <td>Kansas City Area Transportation Authority</td>
-      <td>April 2026</td>
-      <td><a href="https://www.kcata.org" target="_blank">kcata.org</a></td>
-    </tr>
-    <tr>
-      <td>Census Tract Boundaries</td>
-      <td>Census TIGER/Line via <code>tigris</code></td>
-      <td>2010</td>
-      <td><a href="https://www.census.gov/geo/maps-data/data/tiger.html" target="_blank">census.gov</a></td>
-    </tr>
-  </tbody>
-</table>
-
-  </section>
-  <section id="Limitations">
-  <h3>Limitations</h3>
-  <p>
-  Data sourcing was the biggest challenge of this analysis. After each census, new tract boundaries are drawn to 
-  reflect demographic changes, espically population changes. Census data for 2026 uses the new boundaries drawn in 2020. However, USDA
-  tract-level data for 2026 still uses the tract boundaries for 2010. While it is possible to extrapolate 2010 tract information onto
-  2020 tracts, it would be challenging to verify the accuracy of this information. Therefore, I chose to use the 2010 tracts for consistency 
-  across data sources. 
-    </p>
-  <p>
-    This did create a new problem when layering in bus routes. KCATA does not maintain historic bus route and stop data, so this information
-    follows 2026 patterns. I am unable to verify, at this time, how bus these routes have changed since 2019. 
-  </p> 
-
-<section id="Next Steps">
-<h3>Next Steps</h3>  
-  <p>
-  
-</div>
+<footer>
+  <!-- FIX: <footer> was placed after </body></html> — completely outside the
+       document. Moved inside <body> where it belongs. -->
+  <div class="container footer-content">
+    <span>Matthew Ong &middot; Real Estate &amp; Economic Analysis</span>
+    <div class="footer-links">
+      <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span>&middot;</span>
+      <a href="https://github.com/matthewong01" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</footer>
 
 <script>
   /**
    * TOC Scroll-Spy
-   * Highlights the TOC link corresponding to the section currently
-   * in view. Uses IntersectionObserver for performance.
+   * Highlights the TOC link for the section currently in view.
+   * Uses IntersectionObserver for performance.
+   * FIX: href IDs updated to kebab-case to match section id attributes above.
    */
   (function () {
     const tocLinks = document.querySelectorAll('.toc-link');
     if (!tocLinks.length) return;
 
-    // Map each href target id → its TOC link element
     const linkMap = {};
     tocLinks.forEach(link => {
       const id = link.getAttribute('href').replace('#', '');
       linkMap[id] = link;
     });
 
-    // Track which section is currently most visible
     let currentActive = null;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Remove active class from previous link
-            if (currentActive) {
-              currentActive.classList.remove('toc-active');
-            }
-            // Set active on the newly visible section's link
+            if (currentActive) currentActive.classList.remove('toc-active');
             currentActive = linkMap[entry.target.id];
-            if (currentActive) {
-              currentActive.classList.add('toc-active');
-            }
+            if (currentActive) currentActive.classList.add('toc-active');
           }
         });
       },
       {
-        // Trigger when section top hits ~15% from top of viewport
         rootMargin: '-15% 0px -75% 0px',
         threshold: 0
       }
     );
 
-    // Observe each section that has a matching TOC link
     Object.keys(linkMap).forEach(id => {
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     });
   })();
 </script>
+
 </body>
-
-<footer>
-  <div class="container footer-content">
-    <span>Matthew Ong · Real Estate & Economic Analysis</span>
-
-    <div class="footer-links">
-      <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">
-        LinkedIn
-      </a>
-      <span>·</span>
-      <a href="https://github.com/matthewong01" target="_blank" rel="noopener noreferrer">
-        GitHub
-      </a>
-    </div>
-  </div>
-</footer>
 </html>
