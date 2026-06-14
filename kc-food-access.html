@@ -35,28 +35,7 @@
   </div>
 </header>
 
-<!-- PAGE LAYOUT WRAPPER — TOC sidebar + main content column -->
-<div class="page-layout">
-
-  <!-- TOC SIDEBAR (desktop only, hidden below 900px via CSS) -->
-  <aside class="toc-sidebar" aria-label="Table of contents">
-    <nav class="toc-nav">
-      <p class="toc-label">On this page</p>
-      <ul class="toc-list">
-        <li><a class="toc-link" href="#overview">Overview</a></li>
-        <li><a class="toc-link" href="#interactive-map">Interactive Map</a></li>
-        <li><a class="toc-link" href="#key-takeaways">Key Takeaways</a></li>
-        <li><a class="toc-link" href="#variable-selection">Variable Selection</a></li>
-        <li><a class="toc-link" href="#data-sources">Data Sources</a></li>
-        <li><a class="toc-link" href="#limitations">Limitations</a></li>
-        <li><a class="toc-link" href="#next-steps">Next Steps</a></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- MAIN PROJECT CONTENT -->
-  <div class="project-content">
-  <main class="container container--prose">
+<main class="container container--prose">
 
     <!-- Repo strip -->
     <div class="repo-strip repo-strip--stacked">
@@ -291,8 +270,6 @@
     </section>
 
   </div>
-  </div>
-</div>
 
 <footer>
   <div class="container footer-content">
@@ -305,47 +282,4 @@
   </div>
 </footer>
 
-<script>
-  /**
-   * TOC Scroll-Spy
-   * Highlights the TOC link for the section currently in view.
-   * Uses IntersectionObserver for performance.
-   * FIX: href IDs updated to kebab-case to match section id attributes above.
-   */
-  (function () {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    if (!tocLinks.length) return;
-
-    const linkMap = {};
-    tocLinks.forEach(link => {
-      const id = link.getAttribute('href').replace('#', '');
-      linkMap[id] = link;
-    });
-
-    let currentActive = null;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (currentActive) currentActive.classList.remove('toc-active');
-            currentActive = linkMap[entry.target.id];
-            if (currentActive) currentActive.classList.add('toc-active');
-          }
-        });
-      },
-      {
-        rootMargin: '-15% 0px -75% 0px',
-        threshold: 0
-      }
-    );
-
-    Object.keys(linkMap).forEach(id => {
-      const section = document.getElementById(id);
-      if (section) observer.observe(section);
-    });
-  })();
-</script>
-
-</body>
 </html>
