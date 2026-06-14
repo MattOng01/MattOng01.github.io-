@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- FIX: Added <!DOCTYPE html> and <html lang="en"> — previously absent. -->
 
 <head>
   <meta charset="UTF-8" />
@@ -24,7 +23,6 @@
     <h1>CAPM: Estimating Apple's Market Sensitivity Against the S&amp;P 500</h1>
     <p class="meta">Matthew Ong &middot; Oct 2020&ndash;Oct 2025 &middot; Daily Log Returns</p>
     <div class="tool-badges">
-      <!-- FIX: .tool-badge → .badge — migrated to unified badge component. -->
       <span class="badge">Financial Economics</span>
       <span class="badge">CAPM</span>
       <span class="badge">AAPL</span>
@@ -129,9 +127,6 @@
     <h2>Results</h2>
 
     <h3>Regression Output</h3>
-    <!-- FIX: Added class="data-table" to opt into monospace first-column
-         styling. Without this the td:first-child rule no longer applies
-         globally — it was scoped to .data-table in the CSS fix. -->
     <table class="data-table">
       <thead>
         <tr>
@@ -168,10 +163,6 @@
     </p>
 
     <h3>CAPM Regression Scatterplot</h3>
-    <!-- FIX: Removed duplicate figure caption. The original had one <p class="figure-caption">
-         correctly inside .figure, then a second identical one outside the closing </div>
-         accompanied by a stray orphaned </div> that had no opening tag. Both the
-         duplicate caption and the orphaned </div> have been removed. -->
     <div class="figure">
       <img
         src="https://raw.githubusercontent.com/MatthewOng01/MatthewOng01.github.io/main/apple_CAPM.png"
@@ -268,9 +259,6 @@
       <div class="pdf-fallback">
         If the PDF does not load,
         <a href="https://MatthewOng01.github.io/CAPM_writeup.pdf" target="_blank" rel="noopener noreferrer">download it here</a>.
-        <!-- FIX: Fallback href was a bare relative path "CAPM_writeup.pdf" —
-             changed to the full absolute URL matching the iframe src, so the
-             fallback link works regardless of where the page is opened. -->
       </div>
     </div>
   </section>
@@ -280,8 +268,6 @@
 <footer>
   <div class="container footer-content">
     <span>Matthew Ong &middot; Real Estate &amp; Economic Analysis</span>
-    <!-- FIX: Was a raw · character — replaced with &middot; for consistency
-         with every other page footer. -->
     <div class="footer-links">
       <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">
         LinkedIn
