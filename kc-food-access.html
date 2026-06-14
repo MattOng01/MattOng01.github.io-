@@ -1,36 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- FIX: Added <!DOCTYPE html> and <html lang="en"> — previously absent on
-     this page (and all other portfolio pages). Required for valid HTML5 and
-     for screen readers to identify the document language. -->
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Food Access &amp; Neighborhood Conditions · Jackson County · Matthew Ong</title>
-  <!-- FIX: Added "· Matthew Ong" to title for consistency with other project
-       pages (Apple_CAPM, Yellen, etc. all include the name in <title>). -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<!-- FIX: Moved <nav class="back-nav"> outside .page-layout so it spans full
-     width above the TOC/content grid, matching every other project page.
-     Previously it was split — one copy here at root (correct position) and
-     a second stray <a class="back-link"> inside .project-content (wrong).
-     The stray duplicate has been removed. -->
 <nav class="back-nav">
   <div class="container">
     <a href="index.html" class="back-link">&#8592; Back to portfolio</a>
   </div>
 </nav>
 
-<!-- FIX: Moved <header> outside .page-layout so it spans full width, matching
-     every other project page. Previously it was trapped inside
-     .project-content, which constrained it to the content column width and
-     broke the centered header layout. -->
 <header>
   <div class="container">
     <p class="eyebrow">Spatial Economics &amp; Data Mapping</p>
@@ -41,9 +27,6 @@
       <span>American Community Survey &middot; USDA Food Access Atlas</span>
     </p>
     <div class="tool-badges">
-      <!-- FIX: "R Studio" → "RStudio" and "qGIS" → "QGIS" — correct proper
-           noun capitalisation, consistent with other pages. -->
-      <!-- FIX: .tool-badge → .badge — migrated to unified badge component. -->
       <span class="badge">Spatial Economics</span>
       <span class="badge">Applied Economics</span>
       <span class="badge">RStudio</span>
@@ -59,9 +42,6 @@
   <aside class="toc-sidebar" aria-label="Table of contents">
     <nav class="toc-nav">
       <p class="toc-label">On this page</p>
-      <!-- FIX: TOC href values had spaces (e.g. "#Interactive Map") which are
-           invalid in fragment identifiers and break scroll-spy. Replaced with
-           kebab-case IDs that match the section id attributes below. -->
       <ul class="toc-list">
         <li><a class="toc-link" href="#overview">Overview</a></li>
         <li><a class="toc-link" href="#interactive-map">Interactive Map</a></li>
@@ -75,18 +55,10 @@
   </aside>
 
   <!-- MAIN PROJECT CONTENT -->
-  <!-- FIX: Was <main class="project-content"> containing a second
-       <main class="container container--prose"> — nested <main> tags are
-       invalid HTML. Outer element changed to <div class="project-content">;
-       inner <main> changed to <div class="container container--prose">.
-       There is now exactly one <main> on the page (below). -->
   <div class="project-content">
   <main class="container container--prose">
 
     <!-- Repo strip -->
-    <!-- FIX: Was <div class="repo-strip" style="display:flex; flex-direction:column; gap:8px;">
-         — inline styles removed entirely. Now uses .repo-strip--stacked modifier
-         class defined in the updated styles.css. -->
     <div class="repo-strip repo-strip--stacked">
       <a href="https://matthewong01.github.io/kc-food-access-map" target="_blank" rel="noopener noreferrer">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
@@ -109,11 +81,6 @@
     </div>
 
     <!-- ── Overview ── -->
-    <!-- FIX: Was <section><section id="Overview"> — a section nested directly
-         inside another section with no intervening content. The outer wrapper
-         served no purpose and created invalid nesting. Removed the outer
-         wrapper; all sections now sit flat as siblings. ID updated to
-         kebab-case to match TOC hrefs. -->
     <section id="overview">
       <h2>Overview</h2>
       <p>
@@ -135,11 +102,9 @@
       <p>I invite you to explore the map below.</p>
     </section>
 
-  </main><!-- end .container.container--prose -->
+  </main>
 
   <!-- ── Interactive Map ── -->
-  <!-- Map intentionally breaks out of .container to go full-width.
-       Section sits inside .project-content but outside the prose container. -->
   <section id="interactive-map">
     <div class="container container--prose">
       <h2>Interactive Map</h2>
@@ -157,8 +122,6 @@
   <div class="container container--prose">
 
     <!-- ── Key Takeaways ── -->
-    <!-- FIX: Was <section><section id="Key Takeaways"> — same double-nesting
-         bug as Overview. Flattened. ID updated to kebab-case. -->
     <section id="key-takeaways">
       <h2>Key Takeaways</h2>
       <div class="findings">
@@ -255,9 +218,6 @@
     <!-- ── Data Sources ── -->
     <section id="data-sources">
       <h2>Data Sources</h2>
-      <!-- FIX: Added class="data-table" to opt into monospace first-column
-           styling from the updated CSS. Without this class the td:first-child
-           rule no longer applies (it was scoped in the CSS fix). -->
       <table class="data-table">
         <thead>
           <tr>
@@ -303,10 +263,6 @@
     </section>
 
     <!-- ── Limitations ── -->
-    <!-- FIX: Was <section id="Limitations"> with an <h3> instead of <h2>,
-         and no closing </section> tag — the section was left open and the
-         Next Steps section was nested inside it. Both are now properly closed
-         sibling sections with matching h2 headings. -->
     <section id="limitations">
       <h2>Limitations</h2>
       <p>
@@ -317,38 +273,28 @@
         information onto 2020 tracts, it would be challenging to verify the accuracy of this
         information. Therefore, I chose to use the 2010 tracts for consistency across data sources.
       </p>
-      <!-- FIX: "espically" → "especially" (typo in original) -->
       <p>
         This did create a new problem when layering in bus routes. KCATA does not maintain historic
         bus route and stop data, so this information follows 2026 patterns. I am unable to verify,
         at this time, how these bus routes have changed since 2019.
       </p>
-      <!-- FIX: "how bus these routes" → "how these bus routes" (word order error in original) -->
     </section>
 
     <!-- ── Next Steps ── -->
-    <!-- FIX: Was a <section> opened inside the unclosed Limitations section,
-         with an empty <p> and no content or closing tag. Placeholder content
-         added so the section renders with something, and it is properly closed.
-         Replace the placeholder text with your actual next steps when ready. -->
     <section id="next-steps">
       <h2>Next Steps</h2>
       <p>
         Future work will expand the analysis to Houston, TX, incorporating MUD district boundaries
-        and HCAD parcel data to examine how infrastructure investment patterns relate to food access
-        outcomes in a high-growth Sun Belt metro context.
+        and examine how infrastructure investment patterns relate to food access
+        outcomes in a fast growing metro with unique financing tools. 
       </p>
     </section>
 
-  </div><!-- end .container.container--prose -->
-
-  </div><!-- end .project-content -->
-
-</div><!-- end .page-layout -->
+  </div>
+  </div>
+</div>
 
 <footer>
-  <!-- FIX: <footer> was placed after </body></html> — completely outside the
-       document. Moved inside <body> where it belongs. -->
   <div class="container footer-content">
     <span>Matthew Ong &middot; Real Estate &amp; Economic Analysis</span>
     <div class="footer-links">
