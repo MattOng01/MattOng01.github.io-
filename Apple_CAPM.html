@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- FIX: Added <!DOCTYPE html> and <html lang="en"> — previously absent. -->
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CAPM: Apple vs. S&P 500 · Matthew Ong</title>
+  <title>CAPM: Apple vs. S&amp;P 500 · Matthew Ong</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,17 +17,18 @@
     <a href="index.html" class="back-link">&#8592; Back to portfolio</a>
   </div>
 </nav>
-  
+
 <header>
   <div class="container">
     <p class="eyebrow">Financial Economics &middot; OLS Regression</p>
     <h1>CAPM: Estimating Apple's Market Sensitivity Against the S&amp;P 500</h1>
     <p class="meta">Matthew Ong &middot; Oct 2020&ndash;Oct 2025 &middot; Daily Log Returns</p>
     <div class="tool-badges">
-      <span class="tool-badge">Financial Economics</span>
-      <span class="tool-badge">CAPM</span>
-      <span class="tool-badge">AAPL</span>
-      <span class="tool-badge">R</span>
+      <!-- FIX: .tool-badge → .badge — migrated to unified badge component. -->
+      <span class="badge">Financial Economics</span>
+      <span class="badge">CAPM</span>
+      <span class="badge">AAPL</span>
+      <span class="badge">R</span>
     </div>
   </div>
 </header>
@@ -51,7 +56,6 @@
       portfolio construction and event-study analysis in legal contexts.
     </p>
 
-    <!-- Model summary stats -->
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-value">1.26</span>
@@ -125,14 +129,35 @@
     <h2>Results</h2>
 
     <h3>Regression Output</h3>
-    <table>
+    <!-- FIX: Added class="data-table" to opt into monospace first-column
+         styling. Without this the td:first-child rule no longer applies
+         globally — it was scoped to .data-table in the CSS fix. -->
+    <table class="data-table">
       <thead>
-        <tr><th>Coefficient</th><th>Estimate</th><th>Std. Error</th><th>t-Statistic</th></tr>
+        <tr>
+          <th>Coefficient</th>
+          <th>Estimate</th>
+          <th>Std. Error</th>
+          <th>t-Statistic</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>&alpha; (alpha)</td><td>&minus;0.0000185</td><td>0.0003336</td><td>&minus;0.055</td></tr>
-        <tr><td>&beta; (beta)</td><td>1.2598</td><td>0.03093</td><td>40.73</td></tr>
-        <tr><td>R&sup2;</td><td colspan="3">0.5699</td></tr>
+        <tr>
+          <td>&alpha; (alpha)</td>
+          <td>&minus;0.0000185</td>
+          <td>0.0003336</td>
+          <td>&minus;0.055</td>
+        </tr>
+        <tr>
+          <td>&beta; (beta)</td>
+          <td>1.2598</td>
+          <td>0.03093</td>
+          <td>40.73</td>
+        </tr>
+        <tr>
+          <td>R&sup2;</td>
+          <td colspan="3">0.5699</td>
+        </tr>
       </tbody>
     </table>
     <p>
@@ -142,14 +167,17 @@
       returns — the CAPM model accounts for Apple's performance well.
     </p>
 
-   <h3>CAPM Regression Scatterplot</h3>
-<div class="figure">
-  <img src="https://raw.githubusercontent.com/MatthewOng01/MatthewOng01.github.io/main/apple_CAPM.png" class="figure-real" alt="CAPM regression scatterplot: Apple vs S&P 500">
-  <p class="figure-caption">
-    CAPM regression: excess returns of Apple vs. S&P 500, Oct 2020–Oct 2025.
-    OLS fit line: y = 0.4523x + 0.0002, R² = 0.5699.
-  </p>
-</div>
+    <h3>CAPM Regression Scatterplot</h3>
+    <!-- FIX: Removed duplicate figure caption. The original had one <p class="figure-caption">
+         correctly inside .figure, then a second identical one outside the closing </div>
+         accompanied by a stray orphaned </div> that had no opening tag. Both the
+         duplicate caption and the orphaned </div> have been removed. -->
+    <div class="figure">
+      <img
+        src="https://raw.githubusercontent.com/MatthewOng01/MatthewOng01.github.io/main/apple_CAPM.png"
+        class="figure-real"
+        alt="CAPM regression scatterplot: Apple excess returns vs. S&amp;P 500 excess returns, Oct 2020–Oct 2025"
+      >
       <p class="figure-caption">
         CAPM regression: excess returns of Apple vs. S&amp;P 500, Oct 2020&ndash;Oct 2025.
         OLS fit line: y = 0.4523x + 0.0002, R&sup2; = 0.5699.
@@ -210,7 +238,7 @@
       </div>
       <div class="gap-item">
         <span class="tag">Single Factor</span>
-        Only market covariance is used to capture risk. Richer models such as Fama–French (1993)
+        Only market covariance is used to capture risk. Richer models such as Fama&ndash;French (1993)
         or Carhart (1997) incorporate additional risk factors for potentially more accurate predictions.
       </div>
       <div class="gap-item">
@@ -238,7 +266,11 @@
         aria-label="Embedded PDF: CAPM write-up">
       </iframe>
       <div class="pdf-fallback">
-        If the PDF does not load, <a href="CAPM_writeup.pdf" target="_blank">download it here</a>.
+        If the PDF does not load,
+        <a href="https://MatthewOng01.github.io/CAPM_writeup.pdf" target="_blank" rel="noopener noreferrer">download it here</a>.
+        <!-- FIX: Fallback href was a bare relative path "CAPM_writeup.pdf" —
+             changed to the full absolute URL matching the iframe src, so the
+             fallback link works regardless of where the page is opened. -->
       </div>
     </div>
   </section>
@@ -247,13 +279,14 @@
 
 <footer>
   <div class="container footer-content">
-    <span>Matthew Ong · Real Estate & Economic Analysis</span>
-
+    <span>Matthew Ong &middot; Real Estate &amp; Economic Analysis</span>
+    <!-- FIX: Was a raw · character — replaced with &middot; for consistency
+         with every other page footer. -->
     <div class="footer-links">
       <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">
         LinkedIn
       </a>
-      <span>·</span>
+      <span>&middot;</span>
       <a href="https://github.com/matthewong01" target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
