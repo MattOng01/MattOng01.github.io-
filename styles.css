@@ -673,8 +673,8 @@ footer {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .project-header { flex-direction: column; }
   h1 { font-size: 1.8rem; }
-  .tool-badges { justify-content: flex-start; }
-  .pdf-embed iframe { height: 420px; }
+  .tool-badges { justify-content: center; }
+   .pdf-embed iframe { height: 420px; }
 
   /* Repo strip */
   .repo-strip { flex-wrap: wrap; gap: 0.5rem; }
