@@ -686,6 +686,7 @@ footer {
     max-width: 200px;
   }
   .repo-strip span[style] { display: none; }
+  .repo-url { display: none; }
   .repo-arrow { margin-left: 0; }
 
   /* Images */
