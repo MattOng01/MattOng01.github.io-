@@ -505,6 +505,43 @@ tr:last-child td { border-bottom: none; }
   }
 }
 
+/* ── Tableau dashboard embed ───────────────────────────────────── */
+.tableau-embed {
+  width: 100%;
+  overflow: hidden;          /* contains Tableau's injected sizing  */
+  margin-top: 12px;
+}
+
+.tableau-embed > div {      /* the tableauPlaceholder div           */
+  width: 100% !important;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+   .tableau-embed {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tableau-embed iframe {
+    height: 700px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .tableau-embed {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-bottom: 1rem;
+  }
+  .tableau-embed iframe {
+    height: 70vh;
+    min-height: 500px;
+  }
+}
+
 /* ── Stats Grid ── */
 .stats-grid {
   display: grid;
