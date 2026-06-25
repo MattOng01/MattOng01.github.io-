@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Appreciation &middot; Kansas City MSA &middot; Matthew Ong</title>
+
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/map-base.css">
+
+    <style>
+        /* KC Housing Appreciation — project-specific overrides only */
+
+        /* Blues gradient matching the choropleth color scale (same as KC food access map) */
+        #legend-bar .gradient {
+            background: linear-gradient(to right, #E8EBEE, #B8C9DB, #7FA6C9, #4575A5, #0B2E59);
+        }
+
+        /* ── ZIP search box — GENERIC, move this block into map-base.css for reuse ── */
+        .zip-search-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        .zip-search-input:focus {
+            outline: none;
+            border-color: #4575A5;
+        }
+        #zip-search-msg {
+            font-size: 12px;
+            margin-top: 6px;
+            color: #b03030;
+            min-height: 14px;
+        }
+        /* ── end generic block ── */
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div id="header">
+    <div>
+        <h1>
+            <span class="mobile-title">Housing Appreciation — KC MSA</span>
+            <span class="desktop-title">Housing Price Appreciation &amp; Demographics — Kansas City MSA</span>
+        </h1>
+        <div class="mobile-subtitle">ACS &middot; Zillow ZHVI</div>
+        <div class="desktop-subtitle">American Community Survey &middot; Zillow Home Value Index, 2020&ndash;2024</div>
+    </div>
+</div>
+
+<!-- Desktop sidebar toggle -->
+<button id="sidebar-toggle" aria-label="Toggle sidebar">&#9664;</button>
+
+<!-- Mobile bottom sheet overlay -->
+<div id="sheet-overlay"></div>
+
+<!-- Mobile floating toggle -->
+<button id="mobile-toggle" aria-label="Toggle layers">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+    Layers
+</button>
+
+<!-- Sidebar -->
+<div id="sidebar">
+
+    <div class="sidebar-section">
+        <h3>Find a ZIP Code</h3>
+        <input
+            type="text"
+            id="zip-search"
+            list="zip-options"
+            placeholder="Enter ZIP code…"
+            autocomplete="off"
+            class="zip-search-input">
+        <datalist id="zip-options"></datalist>
+        <div id="zip-search-msg"></div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>Map Legend</h3>
+        <div id="legend-bar">
+            <div id="legend-label"></div>
+            <div id="legend-gradient"></div>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>Demographics</h3>
+
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_population" value="population">
+            <label for="r_population">Population</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_logpop" value="log_population">
+            <label for="r_logpop">Population (Log Scale)</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_income" value="median_income" checked>
+            <label for="r_income">Median Household Income</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_poverty" value="poverty_rate">
+            <label for="r_poverty">Poverty Rate</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_college" value="college_edu">
+            <label for="r_college">College Educated</label>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>Housing Appreciation</h3>
+
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_pctgrowth" value="pct_growth">
+            <label for="r_pctgrowth">Home Value Growth (%)</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" name="choropleth" id="r_loggrowth" value="log_growth">
+            <label for="r_loggrowth">Home Value Growth (Log Scale)</label>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>Points of Interest</h3>
+
+        <div class="checkbox-option">
+            <input type="checkbox" id="cb_poi" checked>
+            <label for="cb_poi">
+                <span class="swatch-circle" style="background:#3D3D3D;"></span>
+                Points of Interest
+            </label>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>References</h3>
+
+        <div class="checkbox-option">
+            <input type="checkbox" id="cb_roads" checked>
+            <label for="cb_roads">
+                <span class="swatch-line" style="background:#7A0019;"></span>
+                Reference Roads
+            </label>
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <h3>Data Sources</h3>
+        <p id="data-note">
+            ZCTA-level data: American Community Survey, 5-Year Estimates.<br>
+            Home values: Zillow Home Value Index (ZHVI), 2020 &amp; 2024.<br>
+            Points of interest: MCI Airport, Country Club Plaza, Power &amp; Light District, Legends Outlets, Lee's Summit, and the Kansas City CBD.<br><br>
+            Distance-to-POI figures shown in tract popups, measured from ZCTA centroid.
+        </p>
+    </div>
+
+</div><!-- /sidebar -->
+
+<!-- Map -->
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="js/leaflet.js"></script>
+
+<script>
+
+// ─────────────────────────────────────────────
+// 1. Initialize Map
+// ─────────────────────────────────────────────
+
+var isMobileInit = window.innerWidth < 768;
+var map = L.map('map', {
+    zoomControl: true,
+    maxZoom: 18,
+    minZoom: 8
+}).setView(
+    isMobileInit ? [39.05, -94.55] : [39.05, -94.55],
+    isMobileInit ? 9 : 10
+);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+}).addTo(map);
+
+// Explicit panes — guarantees stacking order regardless of which fetch() resolves first.
+// Higher zIndex = drawn on top = receives mouse/hover events first.
+map.createPane('tractsPane');
+map.getPane('tractsPane').style.zIndex = 400;   // choropleth, bottom
+
+map.createPane('roadsPane');
+map.getPane('roadsPane').style.zIndex = 410;    // reference roads, above tracts
+
+map.createPane('poiPane');
+map.getPane('poiPane').style.zIndex = 420;      // points of interest, top
+
+
+// ─────────────────────────────────────────────
+// 2. Choropleth Configuration
+// ─────────────────────────────────────────────
+
+var choroplethConfig = {
+    population:       { label: 'Population',                      format: '',  decimals: 0 },
+    log_population:   { label: 'Population (Log Scale)',           format: '',  decimals: 2 },
+    median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
+    poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
+    college_edu:      { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
+    pct_growth:       { label: 'Home Value Growth, 2020\u20132024 (%)', format: '%', decimals: 1, multiply: 100 },
+    log_growth:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
+};
+
+var colorScale = ['#E8EBEE', '#B8C9DB', '#7FA6C9', '#4575A5', '#0B2E59'];
+
+function getColor(value, min, max, binary, property) {
+    if (value === null || value === undefined) return '#cccccc';
+    if (binary) return value >= 1 ? '#08519c' : '#f0f4f8';
+    var ratio = Math.max(0, Math.min(1, (value - min) / (max - min)));
+    return colorScale[Math.floor(ratio * (colorScale.length - 1))];
+}
+
+function getMinMax(property) {
+    var values = json_zctas_kc.features
+        .map(function(f) { return f.properties[property]; })
+        .filter(function(v) { return v !== null && v !== undefined && !isNaN(v); });
+    return { min: Math.min.apply(null, values), max: Math.max.apply(null, values) };
+}
+
+var currentProperty = 'median_income';
+var currentMinMax   = null;
+
+
+// ─────────────────────────────────────────────
+// 3. ZCTA Choropleth Layer
+// ─────────────────────────────────────────────
+
+function tractStyle(feature) {
+    var val = feature.properties[currentProperty];
+    var cfg = choroplethConfig[currentProperty];
+    return {
+        fillColor:   getColor(val, currentMinMax.min, currentMinMax.max, cfg.binary, currentProperty),
+        fillOpacity: (val === null || val === undefined) ? 0 : 0.70,
+        color:   '#ffffff',
+        weight:  0.5,
+        opacity: 1
+    };
+}
+
+function formatValue(val, cfg) {
+    if (val === null || val === undefined) return 'N/A';
+    var v = parseFloat(cfg.multiply ? val * cfg.multiply : val).toFixed(cfg.decimals);
+    if (cfg.format === '$') return '$' + parseInt(v).toLocaleString();
+    if (cfg.format === '%') return v + '%';
+    return v;
+}
+
+function formatDistance(val) {
+    if (val === null || val === undefined) return 'N/A';
+    var miles = parseFloat(val) * 0.000621371; // meters -> miles
+    return miles.toFixed(1) + ' mi';
+}
+
+function tractPopup(feature, layer) {
+    var p = feature.properties;
+    layer.bindPopup(
+        '<div class="popup-title">ZIP ' + (p.ZCTA5CE20 || 'N/A') + '</div>' +
+        '<div class="popup-row"><span class="popup-key">Population</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Median Household Income</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Poverty Rate</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">College Educated</span><span class="popup-val">' + formatValue(p.college_edu, choroplethConfig.college_edu) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Home Value, 2020</span><span class="popup-val">' + (p.value_2020 ? '$' + parseInt(p.value_2020).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Home Value, 2024</span><span class="popup-val">' + (p.value_2024 ? '$' + parseInt(p.value_2024).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Growth ($)</span><span class="popup-val">' + (p.dollar_growth ? '$' + parseInt(p.dollar_growth).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Growth (%)</span><span class="popup-val">' + formatValue(p.pct_growth, choroplethConfig.pct_growth) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to CBD</span><span class="popup-val">' + formatDistance(p.cbd) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to MCI Airport</span><span class="popup-val">' + formatDistance(p.mci) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to Country Club Plaza</span><span class="popup-val">' + formatDistance(p.plaza) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to Power &amp; Light</span><span class="popup-val">' + formatDistance(p.pnl) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to Legends Outlets</span><span class="popup-val">' + formatDistance(p.legends) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Distance to Lee\u2019s Summit</span><span class="popup-val">' + formatDistance(p.lees_summit) + '</span></div>'
+    , { maxHeight: 320 });
+}
+
+var tractLayer;
+var zipLayers = {};   // ZCTA5CE20 -> Leaflet layer, built as features load. Generic pattern — reusable for any project keyed by a unique field.
+
+function tractOnEachFeature(feature, layer) {
+    tractPopup(feature, layer);
+    var zip = feature.properties.ZCTA5CE20;
+    if (zip) zipLayers[zip] = layer;
+}
+
+fetch('data/zctas_kc.geojson')
+    .then(r => r.json())
+    .then(function(data) {
+        window.json_zctas_kc = data;   // exposed globally so getMinMax() can reference it
+        currentMinMax = getMinMax(currentProperty);
+
+        tractLayer = L.geoJSON(data, {
+            pane: 'tractsPane',
+            style: tractStyle,
+            onEachFeature: tractOnEachFeature
+        }).addTo(map);
+
+        updateLegend(currentProperty);
+        populateZipDatalist(data);
+    });
+
+
+// ─────────────────────────────────────────────
+// 4. Overlay Layers
+// ─────────────────────────────────────────────
+
+// ── Points of Interest ──────────────────────
+var poiLayer = L.layerGroup();
+
+fetch('data/kc_poi.geojson')
+    .then(r => r.json())
+    .then(function(data) {
+        L.geoJSON(data, {
+            pointToLayer: function(feature, latlng) {
+                return L.circleMarker(latlng, {
+                    pane: 'poiPane',
+                    radius: 6,
+                    fillColor: '#3D3D3D',
+                    color:     '#ffffff',
+                    weight: 1.5, opacity: 1, fillOpacity: 1
+                });
+            },
+            onEachFeature: function(feature, layer) {
+                var p = feature.properties;
+                layer.bindPopup(
+                    '<div class="popup-title">' + (p.Name || p.name || 'Point of Interest') + '</div>'
+                );
+            }
+        }).addTo(poiLayer);
+        poiLayer.addTo(map);
+    });
+
+// ── Reference Roads ─────────────────────────
+var roadsLayer = L.layerGroup();
+
+fetch('data/reference_roads.geojson')
+    .then(r => r.json())
+    .then(function(data) {
+        L.geoJSON(data, {
+            pane: 'roadsPane',
+            style: function(feature) {
+                if (feature.properties.road_name === 'State Line') {
+                return { color: '#2B7A78', weight: 3, opacity: 0.85, dashArray: '6, 4' };
+                }
+                return { color: '#7A0019', weight: 3, opacity: 0.85 };
+                },
+            onEachFeature: function(feature, layer) {
+                var p = feature.properties;
+                if (p.road_name) {
+                    layer.bindTooltip(p.road_name, { sticky: true });
+                }
+            }
+        }).addTo(roadsLayer);
+        roadsLayer.addTo(map);
+    });
+
+
+// ─────────────────────────────────────────────
+// 5. Legend Update
+// ─────────────────────────────────────────────
+
+function updateLegend(property) {
+    var cfg = choroplethConfig[property];
+    var mm  = getMinMax(property);
+    document.getElementById('legend-label').textContent = cfg.label;
+
+    document.getElementById('legend-gradient').innerHTML =
+        '<div class="gradient"></div>' +
+        '<div class="labels"><span id="legend-min"></span><span id="legend-max"></span></div>';
+
+    if (cfg.binary) {
+        document.getElementById('legend-min').textContent = 'No (0)';
+        document.getElementById('legend-max').textContent = 'Yes (1)';
+    } else {
+        var mult   = cfg.multiply || 1;
+        var minVal = (mm.min * mult).toFixed(cfg.decimals);
+        var maxVal = (mm.max * mult).toFixed(cfg.decimals);
+        document.getElementById('legend-min').textContent =
+            cfg.format === '$' ? '$' + parseInt(minVal).toLocaleString() :
+            cfg.format === '%' ? minVal + '%' : minVal;
+        document.getElementById('legend-max').textContent =
+            cfg.format === '$' ? '$' + parseInt(maxVal).toLocaleString() :
+            cfg.format === '%' ? maxVal + '%' : maxVal;
+    }
+}
+
+
+// ─────────────────────────────────────────────
+// 6. Radio Button Logic — Choropleth Switching
+// ─────────────────────────────────────────────
+
+document.querySelectorAll('input[name="choropleth"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        currentProperty = this.value;
+        currentMinMax   = getMinMax(currentProperty);
+        if (tractLayer) tractLayer.setStyle(tractStyle);
+        updateLegend(currentProperty);
+    });
+});
+
+
+// ─────────────────────────────────────────────
+// 7. Checkbox Logic — Overlay Toggling
+// ─────────────────────────────────────────────
+
+document.getElementById('cb_poi').addEventListener('change', function() {
+    this.checked ? poiLayer.addTo(map) : map.removeLayer(poiLayer);
+});
+document.getElementById('cb_roads').addEventListener('change', function() {
+    this.checked ? roadsLayer.addTo(map) : map.removeLayer(roadsLayer);
+});
+
+
+// ─────────────────────────────────────────────
+// 7b. ZIP Code Search
+//     GENERIC PATTERN — reusable for any future map.
+//     Requires: a populated lookup object (zipLayers), and a
+//     <datalist> + <input list="..."> pair in the sidebar HTML.
+// ─────────────────────────────────────────────
+
+function populateZipDatalist(data) {
+    var datalist = document.getElementById('zip-options');
+    var zips = data.features
+        .map(function(f) { return f.properties.ZCTA5CE20; })
+        .filter(Boolean)
+        .sort();
+    datalist.innerHTML = zips.map(function(z) {
+        return '<option value="' + z + '">';
+    }).join('');
+}
+
+function searchZip(rawValue) {
+    var msgEl = document.getElementById('zip-search-msg');
+    var zip = (rawValue || '').trim();
+
+    if (!zip) { msgEl.textContent = ''; return; }
+
+    var layer = zipLayers[zip];
+    if (!layer) {
+        msgEl.textContent = 'No ZIP "' + zip + '" found in this map.';
+        return;
+    }
+
+    msgEl.textContent = '';
+
+    map.fitBounds(layer.getBounds(), { maxZoom: 13, padding: [40, 40] });
+    layer.openPopup();
+
+    // Brief highlight flash so the matched ZIP is easy to spot visually,
+    // then revert to its normal choropleth style.
+    var originalStyle = tractStyle(layer.feature);
+    layer.setStyle({ color: '#222222', weight: 3 });
+    layer.bringToFront();
+    setTimeout(function() {
+        layer.setStyle(originalStyle);
+    }, 1800);
+
+    if (isMobile()) closeSheet();
+}
+
+var zipSearchInput = document.getElementById('zip-search');
+
+zipSearchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') searchZip(this.value);
+});
+// Fires when a <datalist> suggestion is clicked/selected, not just on Enter.
+zipSearchInput.addEventListener('change', function() {
+    searchZip(this.value);
+});
+
+
+// ─────────────────────────────────────────────
+// 8. Sidebar Toggle — Desktop + Mobile
+// ─────────────────────────────────────────────
+
+var sidebar    = document.getElementById('sidebar');
+var desktopBtn = document.getElementById('sidebar-toggle');
+var mobileBtn  = document.getElementById('mobile-toggle');
+var mapEl      = document.getElementById('map');
+var overlay    = document.getElementById('sheet-overlay');
+
+function isMobile() { return window.innerWidth < 768; }
+
+desktopBtn.addEventListener('click', function() {
+    var hidden = sidebar.classList.toggle('sidebar-hidden');
+    mapEl.classList.toggle('sidebar-hidden', hidden);
+    desktopBtn.classList.toggle('sidebar-hidden', hidden);
+    desktopBtn.innerHTML = hidden ? '&#9654;' : '&#9664;';
+    setTimeout(function() { map.invalidateSize(); }, 320);
+});
+
+function openSheet() {
+    sidebar.classList.remove('sidebar-hidden');
+    overlay.classList.add('active');
+    mobileBtn.classList.add('sheet-open');
+    mobileBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close';
+}
+
+function closeSheet() {
+    sidebar.classList.add('sidebar-hidden');
+    overlay.classList.remove('active');
+    mobileBtn.classList.remove('sheet-open');
+    mobileBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg> Layers';
+}
+
+mobileBtn.addEventListener('click', function() {
+    sidebar.classList.contains('sidebar-hidden') ? openSheet() : closeSheet();
+});
+
+overlay.addEventListener('click', closeSheet);
+
+function initSidebarState() {
+    if (isMobile()) {
+        sidebar.classList.add('sidebar-hidden');
+        overlay.classList.remove('active');
+    } else {
+        sidebar.classList.remove('sidebar-hidden');
+        mapEl.classList.remove('sidebar-hidden');
+        desktopBtn.classList.remove('sidebar-hidden');
+        desktopBtn.innerHTML = '&#9664;';
+    }
+    map.invalidateSize();
+}
+
+initSidebarState();
+
+window.addEventListener('resize', initSidebarState);
+
+</script>
+
+<div id="footer">
+    Matthew Ong &middot; <a href="https://MatthewOng01.github.io/kc-housing-appreciation.html" target="_blank">MatthewOng01.github.io/kc-housing-appreciation</a> &middot; June 2026
+</div>
+
+</body>
+</html>
