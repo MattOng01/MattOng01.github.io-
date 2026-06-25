@@ -1,0 +1,82 @@
+{
+  "type": "FeatureCollection",
+  "name": "kc-poi",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "fid": 1,
+        "name": "Airport (MCI)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.71766002844255,
+          39.30013288533891
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fid": 2,
+        "name": "The Plaza"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.59178259938665,
+          39.04235553948145
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fid": 3,
+        "name": "Power and Light"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.58107595450532,
+          39.098937183611085
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fid": 4,
+        "name": "The Legends"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.83114550740413,
+          39.12379543549984
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "fid": 5,
+        "name": "Lee's Summit"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -94.38404394800926,
+          38.91521413151608
+        ]
+      }
+    }
+  ]
+}
