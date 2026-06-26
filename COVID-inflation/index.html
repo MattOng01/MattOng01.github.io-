@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testing Yellen's Inflation model on COVID-19 · Matthew Ong</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="back-nav">
+  <div class="container">
+    <a href="index.html" class="back-link">&#8592; Back to portfolio</a>
+  </div>
+</nav>
+  
+<header>
+  <div class="container">
+    <p class="eyebrow">Macroeconomics &middot; Time-Series Analysis</p>
+    <h1>Testing Yellen's Inflation model on COVID-19</h1>
+    <p class="meta">Matthew Ong &middot; 1983&ndash;2023 &middot; OLS Time-Series Replication &amp; Extension</p>
+    <div class="tool-badges">
+      <span class="tool-badge">Macroeconomics</span>
+      <span class="tool-badge">Inflation</span>
+      <span class="tool-badge">Supply Chain</span>
+      <span class="tool-badge">COVID-19</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <a href="https://github.com/MatthewOng01/Yellen-Inflation-Model-COVID-Test" target="_blank" rel="noopener noreferrer" class="repo-strip">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    <span class="repo-label">Code Repository</span>
+    <span class="repo-url"> github.com/MatthewOng01/Yellen-Inflation-Model-COVID-Test</span>
+    <span class="repo-arrow">&#8594;</span>
+  </a>
+
+  <!-- OVERVIEW -->
+  <section>
+    <h2>Overview</h2>
+    <p>
+      This project replicates and extends the 2015 inflation forecasting model associated with
+      Janet Yellen, evaluating its performance during the COVID-era inflation period from 2020 to 2023.
+    </p>
+    <p>
+      The central question is whether standard pre-pandemic predictors of inflation — labor market
+      tightness, inflation expectations, and import pressure — remain adequate during a period of
+      acute supply-side disruption, or whether direct measures of supply chain congestion add
+      meaningful explanatory power.
+    </p>
+    <div class="pullquote">
+      The Global Supply Chain Pressure Index outperforms the Import Price Index as a predictor
+      of COVID-era inflation, while port-level congestion data prove statistically inconclusive
+      due to limited observations.
+    </div>
+    <p>
+      In addition to replicating the original specification, the project compares alternative
+      supply chain indices and introduces direct port congestion data obtained via request from
+      the U.S. Department of Transportation — data not typically available in standard
+      macroeconomic datasets.
+    </p>
+  </section>
+
+  <!-- RESEARCH QUESTION -->
+  <section>
+    <h2>Research Question</h2>
+    <p>
+      Did import pressure and supply chain congestion significantly contribute to U.S. inflation
+      during the COVID period? The analysis addresses two specific sub-questions:
+    </p>
+    <div class="gap-grid">
+      <div class="gap-item">
+        <span class="tag">Supply Chain Index</span>
+        Does the Global Supply Chain Pressure Index (GSCPI) outperform the Import Price Index (IPI)
+        as a predictor of inflation?
+      </div>
+      <div class="gap-item">
+        <span class="tag">Port-Level Data</span>
+        Do observed port wait times and cargo volume provide additional explanatory power beyond
+        aggregate supply chain indices?
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <section>
+    <h2>Data</h2>
+    <p>
+      All variables are converted to quarterly percent changes. The baseline replication spans
+      1983–2023; the port congestion extension is limited to 2018–2022 by data availability,
+      yielding as few as 12–15 observations in models that include port-level variables.
+    </p>
+
+    <h3>Dependent Variable</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>CPI</td><td>U.S. Bureau of Labor Statistics</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Independent Variables</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Description</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>CPI<sub>t−1</sub>, CPI<sub>t−2</sub></td><td>Lagged CPI (2 lags)</td><td>BLS</td></tr>
+        <tr><td>EI</td><td>1-year inflation expectations</td><td>Cleveland Federal Reserve</td></tr>
+        <tr><td>U/V</td><td>Labor market tightness — Unemployment-to-Vacancy ratio</td><td>BLS</td></tr>
+        <tr><td>IPI</td><td>Import Price Index</td><td>BLS</td></tr>
+        <tr><td>GSCPI</td><td>Global Supply Chain Pressure Index</td><td>Federal Reserve Bank of New York</td></tr>
+        <tr><td>WaitTime, Volume</td><td>Port wait time and cargo volume</td><td>U.S. Department of Transportation</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MODEL SPECIFICATION -->
+  <section>
+    <h2>Model Specification</h2>
+    <p>
+      Four OLS specifications are estimated, each adding complexity to isolate the contribution
+      of supply-side variables to inflation during the pandemic period.
+    </p>
+
+    <h3>Baseline — Yellen (2015) Specification</h3>
+    <div class="formula">
+      CPI<sub>t</sub> = &beta;<sub>0</sub> + &beta;<sub>1</sub>CPI<sub>t&minus;1</sub> + &beta;<sub>2</sub>CPI<sub>t&minus;2</sub> + &beta;<sub>3</sub>EI<sub>t</sub> + &beta;<sub>4</sub>(U/V)<sub>t</sub> + &beta;<sub>5</sub>IPI<sub>t</sub> + &epsilon;<sub>t</sub>
+    </div>
+
+    <h3>Alternative — CEA-Style Modification</h3>
+    <div class="formula">
+      CPI<sub>t</sub> = &beta;<sub>0</sub> + &beta;<sub>1</sub>CPI<sub>t&minus;1</sub> + &beta;<sub>2</sub>CPI<sub>t&minus;2</sub> + &beta;<sub>3</sub>EI<sub>t</sub> + &beta;<sub>4</sub>(U/V)<sub>t</sub> + &beta;<sub>5</sub>GSCPI<sub>t</sub> + &epsilon;<sub>t</sub>
+    </div>
+    <p>Replaces IPI with the GSCPI to test whether a broader supply chain index improves fit.</p>
+
+    <h3>Extended Models — Port-Level Data</h3>
+    <div class="model-spec-row">
+      <div class="model-spec">
+        <span class="tag">Port Wait Time</span>
+        Baseline specification + &beta;<sub>6</sub>WaitTime<sub>t</sub>
+      </div>
+      <div class="model-spec">
+        <span class="tag">Cargo Volume</span>
+        Baseline specification + &beta;<sub>6</sub>Volume<sub>t</sub>
+      </div>
+    </div>
+    <p>
+      All models use OLS with a quarterly lag structure to address autocorrelation. Estimation
+      method is <code>lm()</code> in R, with output formatted via <code>stargazer</code>.
+    </p>
+  </section>
+
+  <!-- KEY FINDINGS -->
+  <section>
+    <h2>Key Findings</h2>
+    <div class="findings">
+      <div class="finding">
+        <div class="finding-num">1</div>
+        <p><strong>GSCPI outperforms IPI.</strong> The Global Supply Chain Pressure Index is
+        statistically significant and economically meaningful as a predictor of COVID-era
+        inflation, outperforming the Import Price Index in explanatory power.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-num">2</div>
+        <p><strong>IPI shows weaker fit.</strong> The Import Price Index, used in the original
+        Yellen specification, captures less of the inflation variation during the pandemic period
+        relative to the broader GSCPI measure.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-num">3</div>
+        <p><strong>Port data: directionally consistent, statistically inconclusive.</strong>
+        Port wait time and cargo volume carry coefficient signs consistent with supply-side
+        inflation theory, but neither achieves statistical significance — a result attributable
+        largely to the limited sample of 12–15 observations.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-num">4</div>
+        <p><strong>Supply-side channels matter.</strong> Taken together, results suggest that
+        aggregate supply chain pressure indices meaningfully improve inflation forecasting during
+        the COVID period, supporting a supply-side interpretation of the 2021–2023 inflation surge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIMITATIONS -->
+  <section>
+    <h2>Limitations</h2>
+    <p>Results should be interpreted as exploratory rather than causal. Several constraints bear on the analysis:</p>
+    <div class="gap-grid">
+      <div class="gap-item">
+        <span class="tag">Sample Size</span>
+        Port-level regressions have only 12–15 observations, substantially limiting statistical power.
+      </div>
+      <div class="gap-item">
+        <span class="tag">Endogeneity</span>
+        Potential endogeneity between supply chain pressure and inflation is not formally addressed.
+      </div>
+      <div class="gap-item">
+        <span class="tag">Structural Break</span>
+        The COVID period may represent a structural break, affecting coefficient stability across
+        the full 1983–2023 sample.
+      </div>
+      <div class="gap-item">
+        <span class="tag">Causal Inference</span>
+        OLS time-series results establish association but cannot establish causal direction without
+        further identification strategy.
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section>
+    <h2>Tools &amp; Code</h2>
+    <p>
+      All estimation was carried out in <strong>R</strong> using <code>lm()</code> for OLS
+      regression and <code>stargazer</code> for formatted regression output. Data wrangling
+      and visualization used the <code>tidyverse</code> suite.
+    </p>
+    <div class="gap-grid">
+      <div class="gap-item"><span class="tag">lm()</span>OLS time-series regression across all four model specifications</div>
+      <div class="gap-item"><span class="tag">stargazer</span>Formatted regression tables for side-by-side model comparison</div>
+      <div class="gap-item"><span class="tag">tidyverse</span>Data cleaning, reshaping, and visualization</div>
+      <div class="gap-item"><span class="tag">U.S. DOT</span>Port wait time and cargo volume data obtained via direct agency request</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-content">
+    <span>Matthew Ong · Real Estate & Economic Analysis</span>
+
+    <div class="footer-links">
+      <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
+      <span>·</span>
+      <a href="https://github.com/matthewong01" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
