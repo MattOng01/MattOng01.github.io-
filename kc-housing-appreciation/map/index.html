@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Housing Appreciation &middot; Kansas City MSA &middot; Matthew Ong</title>
+    <title>Housing Appreciation Map &middot; KC MSA &middot; Matthew Ong</title>
 
     <link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/map-base.css">
@@ -111,7 +111,7 @@
             <label for="r_poverty">Poverty Rate</label>
         </div>
         <div class="radio-option">
-            <input type="radio" name="choropleth" id="r_college" value="college_edu">
+            <input type="radio" name="choropleth" id="r_college" value="college_plus">
             <label for="r_college">College Educated</label>
         </div>
     </div>
@@ -214,7 +214,7 @@ var choroplethConfig = {
     log_population:   { label: 'Population (Log Scale)',           format: '',  decimals: 2 },
     median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
     poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
-    college_edu:      { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
+    college_plus:     { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
     pct_growth:       { label: 'Home Value Growth, 2020\u20132024 (%)', format: '%', decimals: 1, multiply: 100 },
     log_growth:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
 };
@@ -276,11 +276,11 @@ function tractPopup(feature, layer) {
         '<div class="popup-row"><span class="popup-key">Population</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Median Household Income</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Poverty Rate</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">College Educated</span><span class="popup-val">' + formatValue(p.college_edu, choroplethConfig.college_edu) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Home Value, 2020</span><span class="popup-val">' + (p.value_2020 ? '$' + parseInt(p.value_2020).toLocaleString() : 'N/A') + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Home Value, 2024</span><span class="popup-val">' + (p.value_2024 ? '$' + parseInt(p.value_2024).toLocaleString() : 'N/A') + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Growth ($)</span><span class="popup-val">' + (p.dollar_growth ? '$' + parseInt(p.dollar_growth).toLocaleString() : 'N/A') + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Growth (%)</span><span class="popup-val">' + formatValue(p.pct_growth, choroplethConfig.pct_growth) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">College Educated</span><span class="popup-val">' + formatValue(p.college_plus, choroplethConfig.college_plus) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Home Value, 2012</span><span class="popup-val">' + (p.price_2012 ? '$' + parseInt(p.price_2012).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Home Value, 2026</span><span class="popup-val">' + (p.price_2026 ? '$' + parseInt(p.price_2026).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Growth ($)</span><span class="popup-val">' + (p.dollar_change ? '$' + parseInt(p.dollar_change).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Growth (%)</span><span class="popup-val">' + formatValue(p.pct_change, choroplethConfig.pct_change) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Distance to CBD</span><span class="popup-val">' + formatDistance(p.cbd) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Distance to MCI Airport</span><span class="popup-val">' + formatDistance(p.mci) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Distance to Country Club Plaza</span><span class="popup-val">' + formatDistance(p.plaza) + '</span></div>' +
@@ -299,10 +299,10 @@ function tractOnEachFeature(feature, layer) {
     if (zip) zipLayers[zip] = layer;
 }
 
-fetch('data/zctas_kc.geojson')
+fetch('data/spatial_combined_clean.geojson')
     .then(r => r.json())
     .then(function(data) {
-        window.json_zctas_kc = data;   // exposed globally so getMinMax() can reference it
+        window.json_zctas_kc = data; 
         currentMinMax = getMinMax(currentProperty);
 
         tractLayer = L.geoJSON(data, {
