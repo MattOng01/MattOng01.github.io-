@@ -120,11 +120,11 @@
         <h3>Housing Appreciation</h3>
 
         <div class="radio-option">
-            <input type="radio" name="choropleth" id="r_pctgrowth" value="pct_growth">
+            <input type="radio" name="choropleth" id="r_pctgrowth" value="pct_change">
             <label for="r_pctgrowth">Home Value Growth (%)</label>
         </div>
         <div class="radio-option">
-            <input type="radio" name="choropleth" id="r_loggrowth" value="log_growth">
+            <input type="radio" name="choropleth" id="r_loggrowth" value="log_change">
             <label for="r_loggrowth">Home Value Growth (Log Scale)</label>
         </div>
     </div>
@@ -215,8 +215,8 @@ var choroplethConfig = {
     median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
     poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
     college_plus:     { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
-    pct_growth:       { label: 'Home Value Growth, 2020\u20132024 (%)', format: '%', decimals: 1, multiply: 100 },
-    log_growth:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
+    pct_change:       { label: 'Home Value Growth, 2012\u20132026 (%)', format: '%', decimals: 1, multiply: 100 },
+    log_change:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
 };
 
 var colorScale = ['#E8EBEE', '#B8C9DB', '#7FA6C9', '#4575A5', '#0B2E59'];
