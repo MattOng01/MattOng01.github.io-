@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/map-base.css">
 
-    <style>Darker = higher growth.
+    <style>
         /* KC Housing Appreciation — project-specific overrides only */
 
         /* Blues gradient matching the choropleth color scale (same as KC food access map) */
@@ -120,11 +120,11 @@
         <h3>Housing Appreciation</h3>
 
         <div class="radio-option">
-            <input type="radio" name="choropleth" id="r_pctgrowth" value="pct_change">
+            <input type="radio" name="choropleth" id="r_pctgrowth" value="pct_growth">
             <label for="r_pctgrowth">Home Value Growth (%)</label>
         </div>
         <div class="radio-option">
-            <input type="radio" name="choropleth" id="r_loggrowth" value="log_change">
+            <input type="radio" name="choropleth" id="r_loggrowth" value="log_growth">
             <label for="r_loggrowth">Home Value Growth (Log Scale)</label>
         </div>
     </div>
@@ -210,13 +210,13 @@ map.getPane('poiPane').style.zIndex = 420;      // points of interest, top
 // ─────────────────────────────────────────────
 
 var choroplethConfig = {
-    population:       { label: 'Population (2026)',                      format: '',  decimals: 0 },
+    population:       { label: 'Population',                      format: '',  decimals: 0 },
     log_population:   { label: 'Population (Log Scale)',           format: '',  decimals: 2 },
-    median_income:    { label: 'Median Household Income (2026)',          format: '$', decimals: 0 },
-    poverty_rate:     { label: 'Poverty Rate (%) (2026)',                 format: '%', decimals: 1, multiply: 100 },
-    college_plus:     { label: 'College Educated (%) (2026)',             format: '%', decimals: 1, multiply: 100 },
-    pct_change:       { label: 'Home Value Growth, 2012\u20132026 (%)', format: '%', decimals: 1, multiply: 100, clampPercentile: 0.95 },
-    log_change:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
+    median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
+    poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
+    college_plus:     { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
+    pct_growth:       { label: 'Home Value Growth, 2020\u20132024 (%)', format: '%', decimals: 1, multiply: 100 },
+    log_growth:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
 };
 
 var colorScale = ['#E8EBEE', '#B8C9DB', '#7FA6C9', '#4575A5', '#0B2E59'];
@@ -229,18 +229,10 @@ function getColor(value, min, max, binary, property) {
 }
 
 function getMinMax(property) {
-    var cfg = choroplethConfig[property];
     var values = json_zctas_kc.features
         .map(function(f) { return f.properties[property]; })
-        .filter(function(v) { return v !== null && v !== undefined && !isNaN(v); })
-        .sort(function(a, b) { return a - b; });
-    var min = values[0];
-    var max = values[values.length - 1];
-    if (cfg && cfg.clampPercentile) {
-        var idx = Math.floor(cfg.clampPercentile * values.length);
-        max = values[Math.min(idx, values.length - 1)];
-    }
-    return { min: min, max: max };
+        .filter(function(v) { return v !== null && v !== undefined && !isNaN(v); });
+    return { min: Math.min.apply(null, values), max: Math.max.apply(null, values) };
 }
 
 var currentProperty = 'median_income';
@@ -281,10 +273,10 @@ function tractPopup(feature, layer) {
     var p = feature.properties;
     layer.bindPopup(
         '<div class="popup-title">ZIP ' + (p.ZCTA5CE20 || 'N/A') + '</div>' +
-        '<div class="popup-row"><span class="popup-key">Population (2026)</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Median Household Income (2026)</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Poverty Rate (2026)</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">College Educated (2026)</span><span class="popup-val">' + formatValue(p.college_plus, choroplethConfig.college_plus) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Population</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Median Household Income</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Poverty Rate</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">College Educated</span><span class="popup-val">' + formatValue(p.college_plus, choroplethConfig.college_plus) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Home Value, 2012</span><span class="popup-val">' + (p.price_2012 ? '$' + parseInt(p.price_2012).toLocaleString() : 'N/A') + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Home Value, 2026</span><span class="popup-val">' + (p.price_2026 ? '$' + parseInt(p.price_2026).toLocaleString() : 'N/A') + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Growth ($)</span><span class="popup-val">' + (p.dollar_change ? '$' + parseInt(p.dollar_change).toLocaleString() : 'N/A') + '</span></div>' +
@@ -363,15 +355,15 @@ fetch('data/reference_roads.geojson')
         L.geoJSON(data, {
             pane: 'roadsPane',
             style: function(feature) {
-                if (feature.properties.named === 'State Line') {
+                if (feature.properties.road_name === 'State Line') {
                 return { color: '#2B7A78', weight: 3, opacity: 0.85, dashArray: '6, 4' };
                 }
                 return { color: '#7A0019', weight: 3, opacity: 0.85 };
                 },
             onEachFeature: function(feature, layer) {
                 var p = feature.properties;
-                if (p.named) {
-                    layer.bindTooltip(p.named, { sticky: true });
+                if (p.road_name) {
+                    layer.bindTooltip(p.road_name, { sticky: true });
                 }
             }
         }).addTo(roadsLayer);
@@ -405,20 +397,6 @@ function updateLegend(property) {
         document.getElementById('legend-max').textContent =
             cfg.format === '$' ? '$' + parseInt(maxVal).toLocaleString() :
             cfg.format === '%' ? maxVal + '%' : maxVal;
-
-        // If a percentile cap is active, append a note so readers know outliers are clamped
-        var noteEl = document.getElementById('legend-clamp-note');
-        if (!noteEl) {
-            noteEl = document.createElement('div');
-            noteEl.id = 'legend-clamp-note';
-            noteEl.style.cssText = 'font-size:11px;color:#666;margin-top:4px;';
-            document.getElementById('legend-bar').appendChild(noteEl);
-        }
-        if (cfg.clampPercentile) {
-            noteEl.textContent = 'Color scale capped at ' + (cfg.clampPercentile * 100) + 'th percentile.';
-        } else {
-            noteEl.textContent = '';
-        }
     }
 }
 
@@ -433,12 +411,6 @@ document.querySelectorAll('input[name="choropleth"]').forEach(function(radio) {
         currentMinMax   = getMinMax(currentProperty);
         if (tractLayer) tractLayer.setStyle(tractStyle);
         updateLegend(currentProperty);
-        // Re-apply selection outline with updated fill color
-        if (selectedZipLayer) {
-            var base = tractStyle(selectedZipLayer.feature);
-            selectedZipLayer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
-            selectedZipLayer.bringToFront();
-        }
     });
 });
 
@@ -473,8 +445,6 @@ function populateZipDatalist(data) {
     }).join('');
 }
 
-var selectedZipLayer = null;
-
 function searchZip(rawValue) {
     var msgEl = document.getElementById('zip-search-msg');
     var zip = (rawValue || '').trim();
@@ -489,20 +459,17 @@ function searchZip(rawValue) {
 
     msgEl.textContent = '';
 
-    // Clear previous selection outline
-    if (selectedZipLayer) {
-        selectedZipLayer.setStyle(tractStyle(selectedZipLayer.feature));
-        selectedZipLayer = null;
-    }
-
     map.fitBounds(layer.getBounds(), { maxZoom: 13, padding: [40, 40] });
     layer.openPopup();
 
-    // Persistent black outline on the selected ZIP
-    var base = tractStyle(layer.feature);
-    layer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
+    // Brief highlight flash so the matched ZIP is easy to spot visually,
+    // then revert to its normal choropleth style.
+    var originalStyle = tractStyle(layer.feature);
+    layer.setStyle({ color: '#222222', weight: 3 });
     layer.bringToFront();
-    selectedZipLayer = layer;
+    setTimeout(function() {
+        layer.setStyle(originalStyle);
+    }, 1800);
 
     if (isMobile()) closeSheet();
 }
