@@ -12,7 +12,7 @@
         /* KC Housing Appreciation — project-specific overrides only */
 
         /* Blues gradient matching the choropleth color scale (same as KC food access map) */
-        #legend-gradient .gradient {
+        #legend-bar .gradient {
             background: linear-gradient(to right, #E8EBEE, #B8C9DB, #7FA6C9, #4575A5, #0B2E59);
         }
 
@@ -433,6 +433,12 @@ document.querySelectorAll('input[name="choropleth"]').forEach(function(radio) {
         currentMinMax   = getMinMax(currentProperty);
         if (tractLayer) tractLayer.setStyle(tractStyle);
         updateLegend(currentProperty);
+        // Re-apply selection outline with updated fill color
+        if (selectedZipLayer) {
+            var base = tractStyle(selectedZipLayer.feature);
+            selectedZipLayer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
+            selectedZipLayer.bringToFront();
+        }
     });
 });
 
@@ -467,6 +473,8 @@ function populateZipDatalist(data) {
     }).join('');
 }
 
+var selectedZipLayer = null;
+
 function searchZip(rawValue) {
     var msgEl = document.getElementById('zip-search-msg');
     var zip = (rawValue || '').trim();
@@ -481,17 +489,20 @@ function searchZip(rawValue) {
 
     msgEl.textContent = '';
 
+    // Clear previous selection outline
+    if (selectedZipLayer) {
+        selectedZipLayer.setStyle(tractStyle(selectedZipLayer.feature));
+        selectedZipLayer = null;
+    }
+
     map.fitBounds(layer.getBounds(), { maxZoom: 13, padding: [40, 40] });
     layer.openPopup();
 
-    // Brief highlight flash so the matched ZIP is easy to spot visually,
-    // then revert to its normal choropleth style.
-    var originalStyle = tractStyle(layer.feature);
-    layer.setStyle({ color: '#222222', weight: 3 });
+    // Persistent black outline on the selected ZIP
+    var base = tractStyle(layer.feature);
+    layer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
     layer.bringToFront();
-    setTimeout(function() {
-        layer.setStyle(originalStyle);
-    }, 1800);
+    selectedZipLayer = layer;
 
     if (isMobile()) closeSheet();
 }
