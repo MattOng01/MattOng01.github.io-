@@ -12,7 +12,7 @@
         /* KC Housing Appreciation — project-specific overrides only */
 
         /* Blues gradient matching the choropleth color scale (same as KC food access map) */
-        #legend-bar .gradient {
+        #legend-gradient .gradient {
             background: linear-gradient(to right, #E8EBEE, #B8C9DB, #7FA6C9, #4575A5, #0B2E59);
         }
 
@@ -363,15 +363,15 @@ fetch('data/reference_roads.geojson')
         L.geoJSON(data, {
             pane: 'roadsPane',
             style: function(feature) {
-                if (feature.properties.road_name === 'State Line') {
+                if (feature.properties.named === 'State Line') {
                 return { color: '#2B7A78', weight: 3, opacity: 0.85, dashArray: '6, 4' };
                 }
                 return { color: '#7A0019', weight: 3, opacity: 0.85 };
                 },
             onEachFeature: function(feature, layer) {
                 var p = feature.properties;
-                if (p.road_name) {
-                    layer.bindTooltip(p.road_name, { sticky: true });
+                if (p.named) {
+                    layer.bindTooltip(p.named, { sticky: true });
                 }
             }
         }).addTo(roadsLayer);
