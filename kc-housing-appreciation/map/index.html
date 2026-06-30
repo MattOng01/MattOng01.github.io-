@@ -215,7 +215,7 @@ var choroplethConfig = {
     median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
     poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
     college_plus:     { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
-    pct_change:       { label: 'Home Value Growth, 2012\u20132026 (%)', format: '%', decimals: 1, multiply: 100 },
+    pct_change:       { label: 'Home Value Growth, 2012\u20132026 (%)', format: '%', decimals: 1, multiply: 100, clampPercentile: 0.95 },
     log_change:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
 };
 
@@ -229,10 +229,18 @@ function getColor(value, min, max, binary, property) {
 }
 
 function getMinMax(property) {
+    var cfg = choroplethConfig[property];
     var values = json_zctas_kc.features
         .map(function(f) { return f.properties[property]; })
-        .filter(function(v) { return v !== null && v !== undefined && !isNaN(v); });
-    return { min: Math.min.apply(null, values), max: Math.max.apply(null, values) };
+        .filter(function(v) { return v !== null && v !== undefined && !isNaN(v); })
+        .sort(function(a, b) { return a - b; });
+    var min = values[0];
+    var max = values[values.length - 1];
+    if (cfg && cfg.clampPercentile) {
+        var idx = Math.floor(cfg.clampPercentile * values.length);
+        max = values[Math.min(idx, values.length - 1)];
+    }
+    return { min: min, max: max };
 }
 
 var currentProperty = 'median_income';
@@ -397,6 +405,20 @@ function updateLegend(property) {
         document.getElementById('legend-max').textContent =
             cfg.format === '$' ? '$' + parseInt(maxVal).toLocaleString() :
             cfg.format === '%' ? maxVal + '%' : maxVal;
+
+        // If a percentile cap is active, append a note so readers know outliers are clamped
+        var noteEl = document.getElementById('legend-clamp-note');
+        if (!noteEl) {
+            noteEl = document.createElement('div');
+            noteEl.id = 'legend-clamp-note';
+            noteEl.style.cssText = 'font-size:11px;color:#666;margin-top:4px;';
+            document.getElementById('legend-bar').appendChild(noteEl);
+        }
+        if (cfg.clampPercentile) {
+            noteEl.textContent = 'Color scale capped at ' + (cfg.clampPercentile * 100) + 'th percentile. Darker = higher growth.';
+        } else {
+            noteEl.textContent = '';
+        }
     }
 }
 
