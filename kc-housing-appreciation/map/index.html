@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/map-base.css">
 
-    <style>Darker = higher growth.
+    <style>
+        /* Darker = higher growth. */
         /* KC Housing Appreciation — project-specific overrides only */
 
         /* Blues gradient matching the choropleth color scale (same as KC food access map) */
@@ -305,6 +306,9 @@ function tractOnEachFeature(feature, layer) {
     tractPopup(feature, layer);
     var zip = feature.properties.ZCTA5CE20;
     if (zip) zipLayers[zip] = layer;
+    layer.on('click', function() {
+        selectZip(layer);
+    });
 }
 
 fetch('data/spatial_combined_clean.geojson')
@@ -475,6 +479,19 @@ function populateZipDatalist(data) {
 
 var selectedZipLayer = null;
 
+function selectZip(layer) {
+    // Clear previous selection outline
+    if (selectedZipLayer && selectedZipLayer !== layer) {
+        selectedZipLayer.setStyle(tractStyle(selectedZipLayer.feature));
+    }
+
+    // Persistent black outline on the selected ZIP
+    var base = tractStyle(layer.feature);
+    layer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
+    layer.bringToFront();
+    selectedZipLayer = layer;
+}
+
 function searchZip(rawValue) {
     var msgEl = document.getElementById('zip-search-msg');
     var zip = (rawValue || '').trim();
@@ -489,20 +506,10 @@ function searchZip(rawValue) {
 
     msgEl.textContent = '';
 
-    // Clear previous selection outline
-    if (selectedZipLayer) {
-        selectedZipLayer.setStyle(tractStyle(selectedZipLayer.feature));
-        selectedZipLayer = null;
-    }
-
     map.fitBounds(layer.getBounds(), { maxZoom: 13, padding: [40, 40] });
     layer.openPopup();
 
-    // Persistent black outline on the selected ZIP
-    var base = tractStyle(layer.feature);
-    layer.setStyle({ fillColor: base.fillColor, fillOpacity: base.fillOpacity, color: '#000000', weight: 2.5, opacity: 1 });
-    layer.bringToFront();
-    selectedZipLayer = layer;
+    selectZip(layer);
 
     if (isMobile()) closeSheet();
 }
