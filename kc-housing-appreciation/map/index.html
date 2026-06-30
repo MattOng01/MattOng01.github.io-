@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/map-base.css">
 
-    <style>
+    <style>Darker = higher growth.
         /* KC Housing Appreciation — project-specific overrides only */
 
         /* Blues gradient matching the choropleth color scale (same as KC food access map) */
@@ -415,7 +415,7 @@ function updateLegend(property) {
             document.getElementById('legend-bar').appendChild(noteEl);
         }
         if (cfg.clampPercentile) {
-            noteEl.textContent = 'Color scale capped at ' + (cfg.clampPercentile * 100) + 'th percentile. Darker = higher growth.';
+            noteEl.textContent = 'Color scale capped at ' + (cfg.clampPercentile * 100) + 'th percentile.';
         } else {
             noteEl.textContent = '';
         }
