@@ -210,11 +210,11 @@ map.getPane('poiPane').style.zIndex = 420;      // points of interest, top
 // ─────────────────────────────────────────────
 
 var choroplethConfig = {
-    population:       { label: 'Population',                      format: '',  decimals: 0 },
+    population:       { label: 'Population (2026)',                      format: '',  decimals: 0 },
     log_population:   { label: 'Population (Log Scale)',           format: '',  decimals: 2 },
-    median_income:    { label: 'Median Household Income',          format: '$', decimals: 0 },
-    poverty_rate:     { label: 'Poverty Rate (%)',                 format: '%', decimals: 1, multiply: 100 },
-    college_plus:     { label: 'College Educated (%)',             format: '%', decimals: 1, multiply: 100 },
+    median_income:    { label: 'Median Household Income (2026)',          format: '$', decimals: 0 },
+    poverty_rate:     { label: 'Poverty Rate (%) (2026)',                 format: '%', decimals: 1, multiply: 100 },
+    college_plus:     { label: 'College Educated (%) (2026)',             format: '%', decimals: 1, multiply: 100 },
     pct_change:       { label: 'Home Value Growth, 2012\u20132026 (%)', format: '%', decimals: 1, multiply: 100, clampPercentile: 0.95 },
     log_change:       { label: 'Home Value Growth (Log Scale)',    format: '',  decimals: 2 }
 };
@@ -281,10 +281,10 @@ function tractPopup(feature, layer) {
     var p = feature.properties;
     layer.bindPopup(
         '<div class="popup-title">ZIP ' + (p.ZCTA5CE20 || 'N/A') + '</div>' +
-        '<div class="popup-row"><span class="popup-key">Population</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Median Household Income</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">Poverty Rate</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
-        '<div class="popup-row"><span class="popup-key">College Educated</span><span class="popup-val">' + formatValue(p.college_plus, choroplethConfig.college_plus) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Population (2026)</span><span class="popup-val">' + (p.population ? parseInt(p.population).toLocaleString() : 'N/A') + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Median Household Income (2026)</span><span class="popup-val">' + formatValue(p.median_income, choroplethConfig.median_income) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">Poverty Rate (2026)</span><span class="popup-val">' + formatValue(p.poverty_rate, choroplethConfig.poverty_rate) + '</span></div>' +
+        '<div class="popup-row"><span class="popup-key">College Educated (2026)</span><span class="popup-val">' + formatValue(p.college_plus, choroplethConfig.college_plus) + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Home Value, 2012</span><span class="popup-val">' + (p.price_2012 ? '$' + parseInt(p.price_2012).toLocaleString() : 'N/A') + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Home Value, 2026</span><span class="popup-val">' + (p.price_2026 ? '$' + parseInt(p.price_2026).toLocaleString() : 'N/A') + '</span></div>' +
         '<div class="popup-row"><span class="popup-key">Growth ($)</span><span class="popup-val">' + (p.dollar_change ? '$' + parseInt(p.dollar_change).toLocaleString() : 'N/A') + '</span></div>' +
