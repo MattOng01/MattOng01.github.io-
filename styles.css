@@ -516,6 +516,8 @@ tr:last-child td { border-bottom: none; }
 
 .tableau-embed > div {      /* the tableauPlaceholder div           */
   width: 100% !important;
+  display: flex;
+  justify-content: center;
 }
 
 /* Tablet */
