@@ -1,27 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Housing Appreciation · Kansas City MSA · Matthew Ong</title>
+  <title>Housing Appreciation · Beta &amp; Sigma Convergence · KC MSA · Matthew Ong</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* ── Writeup-specific only — not in styles.css ── */
+    pre {
+      background: var(--accent-lt);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      font-family: monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--accent);
+      overflow-x: auto;
+      margin: 1.4rem 0;
+      white-space: pre;
+    }
+
+    .table-embed {
+      margin: 2rem 0;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .table-embed iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      min-height: 280px;
+    }
+
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .coverage-grid { grid-template-columns: 1fr; }
+    }
+
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 3rem 0;
+    }
+  </style>
 </head>
 
 <body>
 
+<!-- ── Back nav ── -->
 <nav class="back-nav">
   <div class="container">
     <a href="../index.html" class="back-link">&#8592; Back to portfolio</a>
   </div>
 </nav>
 
+<!-- ── Header ── -->
 <header>
   <div class="container">
-    <p class="eyebrow">Eyebrow Category</p>
+    <p class="eyebrow">Real Estate Economics · Kansas City MSA</p>
     <h1>Housing Appreciation</h1>
-    <h3>Kansas City MSA by ZIP-Code · 2000-2026</h3>
+    <h3>Kansas City MSA by ZIP-Code · 2000–2026</h3>
     <p class="meta">
       <span>Matthew Ong</span> &middot;
       <span>June 2026</span> &middot;
@@ -30,11 +81,13 @@
     <div class="tool-badges">
       <span class="badge">RStudio</span>
       <span class="badge">QGIS</span>
+      <span class="badge">Leaflet</span>
       <span class="badge">Tableau</span>
     </div>
   </div>
 </header>
 
+<!-- ── Repo strip ── -->
 <main class="container container--prose">
   <div class="repo-strip repo-strip--stacked">
     <a href="https://matthewong01.github.io/kc-housing-appreciation/map/index.html" target="_blank" rel="noopener noreferrer">
@@ -52,7 +105,7 @@
     <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
       <span class="repo-label">Project Code Repository</span>
-      <span>github.com/MatthewOng01/KC_House_Price_Appreciation</span>
+      <span class="repo-url">github.com/MatthewOng01/KC_House_Price_Appreciation</span>
       <span class="repo-arrow">&#8594;</span>
     </a>
   </div>
@@ -60,32 +113,22 @@
   <!-- ── Overview ── -->
   <section id="overview">
     <h2>Overview</h2>
-    <p>This project looks at two growth economics phenomena: beta and sigma convergence. 
-</p>
-    <p>One theory of economic growth, formalized by Robert Solow in 1956 illistrates how economices grow at different rates 
+    <p>This project looks at two growth economics phenomena: beta and sigma convergence.</p>
+    <p>One theory of economic growth, formalized by Robert Solow in 1956, illustrates how economies grow at different rates
     depending on their level of economic output. In the long run, Solow argued, economies converge at a stable level of output, so
-    more affluent economies would grow relatavely slower as they approach this level compared to less affluent economies.</p>
-<p>This has important implications for real estate, urban planning, and policy. 
-</p>
+    more affluent economies would grow relatively slower as they approach this level compared to less affluent economies.</p>
+    <p>This has important implications for real estate, urban planning, and policy.</p>
     <p>This growth convergence has two related but different identifiers, called beta and sigma convergence.</p>
-    <p> Beta convergence occurs when less affluent economies grow faster than more affluent economies.</p>
-    <p> Sigma convergence occurs when the gap between rich and poor economies shrinks (the standard deviation of their log growth becomes
-    smaller across time). </p>
-<p>
-  In Kansas City, there is evidence of both Beta and Sigma convergence in ZIP-code level house prices from 2000-2026. 
-</p>
+    <p>Beta convergence occurs when less affluent economies grow faster than more affluent economies.</p>
+    <p>Sigma convergence occurs when the gap between rich and poor economies shrinks — the standard deviation of their log growth becomes
+    smaller across time.</p>
+    <p>In Kansas City, there is evidence of both beta and sigma convergence in ZIP-code level house prices from 2000–2026.</p>
   </section>
-
-</main>
-
-
-<div class="container container--prose">
 
   <!-- ── Key Takeaways ── -->
   <section id="key-takeaways">
     <h2>Key Takeaways</h2>
     <div class="findings">
-      <!-- TODO: Add one .finding block per takeaway. Minimum 3, no strict maximum. -->
       <div class="finding">
         <div class="finding-num">1</div>
         <p>Finding one.</p>
@@ -103,70 +146,294 @@
 
   <!-- ── Data Sources ── -->
   <section id="data-sources">
-      <h2>Data Sources</h2>
-      <table class="data-table" style="table-layout: fixed;">
-        <colgroup>
-          <col style="width: 26%">
-          <col style="width: 18%">
-          <col style="width: 18%">
-          <col style="width: 38%">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Dataset</th>
-            <th>Source</th>
-            <th>Year</th>
-            <th>URL</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>American Community Survey</td>
-            <td>US Census Bureau</td>
-            <td>2024 Five-year estimate</td>
-            <td><a href="https://www.census.gov/programs-surveys/acs/news/data-releases.html" target="_blank" rel="noopener noreferrer">census.gov</a></td>
-          </tr>
+    <h2>Data Sources</h2>
+    <table class="data-table" style="table-layout: fixed;">
+      <colgroup>
+        <col style="width: 26%">
+        <col style="width: 18%">
+        <col style="width: 18%">
+        <col style="width: 38%">
+      </colgroup>
+      <thead>
         <tr>
-            <td>Home Value Index (ZHVI)</td>
-            <td>Zillow</td>
-            <td>2000-2026</td>
-            <td><a href="https://www.zillow.com/research/data/" target="_blank" rel="noopener noreferrer">https://www.zillow.com/research/data/</a></td>
-          </tr>
-        </tbody>
-      </table>
+          <th>Dataset</th>
+          <th>Source</th>
+          <th>Year</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>American Community Survey</td>
+          <td>US Census Bureau</td>
+          <td>2024 Five-year estimate</td>
+          <td><a href="https://www.census.gov/programs-surveys/acs/news/data-releases.html" target="_blank" rel="noopener noreferrer">census.gov</a></td>
+        </tr>
+        <tr>
+          <td>Home Value Index (ZHVI)</td>
+          <td>Zillow</td>
+          <td>2000–2026</td>
+          <td><a href="https://www.zillow.com/research/data/" target="_blank" rel="noopener noreferrer">zillow.com/research/data</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<hr class="section-rule"/>
+
+<!-- ════════════════════════════════════════
+     BETA + SIGMA — TOC SIDEBAR LAYOUT
+     ════════════════════════════════════════ -->
+<div class="page-layout">
+
+  <!-- TOC Sidebar -->
+  <nav class="toc-sidebar" aria-label="On this page">
+    <p class="toc-label">On this page</p>
+    <ul class="toc-list">
+      <li><a class="toc-link" href="#beta-what">Beta Convergence</a></li>
+      <li><a class="toc-link" href="#beta-data">Data</a></li>
+      <li><a class="toc-link" href="#beta-regression">Regression</a></li>
+      <li><a class="toc-link" href="#beta-discussion">Discussion</a></li>
+      <li><a class="toc-link" href="#spatial-autocorrelation">Spatial Autocorrelation</a></li>
+      <li><a class="toc-link" href="#sigma-what">Sigma Convergence</a></li>
+      <li><a class="toc-link" href="#sigma-data">Sigma Data</a></li>
+      <li><a class="toc-link" href="#sigma-analysis">Sigma Analysis</a></li>
+      <li><a class="toc-link" href="#sigma-discussion">Sigma Discussion</a></li>
+      <li><a class="toc-link" href="#conclusions">Conclusions</a></li>
+      <li><a class="toc-link" href="#limitations">Limitations</a></li>
+      <li><a class="toc-link" href="#next-steps">Next Steps</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <div class="project-content">
+
+    <!-- ── Beta: What it is ── -->
+    <section id="beta-what">
+      <h2>Beta Convergence</h2>
+      <h3>What It Is and Why It Matters</h3>
+      <p>Beta convergence (&beta;-convergence) tests whether lower-priced markets appreciate faster than higher-priced ones — the housing analog of the Barro and Sala-i-Martin (1992) convergence hypothesis from growth economics. A negative coefficient on initial price implies that price gaps between cheap and expensive ZIP codes are narrowing over time, consistent with capital flowing toward undervalued markets, demand spillovers from expensive neighborhoods into adjacent affordable ones, and supply constraints binding more tightly in already-expensive areas.</p>
+
+      <p>The regression specification follows the standard formulation:</p>
+
+      \[
+        \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
+      \]
+
+      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end. A statistically significant negative \(\hat{\beta}\) is evidence of convergence. The implied half-life of the gap — the time for the price difference between a cheap and expensive ZIP to halve — is:</p>
+
+      \[
+        t_{1/2} = -\frac{\log 2}{\log(1 + \hat{\beta})}
+      \]
     </section>
 
+    <hr class="section-rule"/>
 
-  <section>
-    <h2>Beta Convergence</h2>
-    <p></p>
-  </section>
-  <!-- ── Limitations ── -->
-  <section id="limitations">
-    <h2>Limitations</h2>
-    <!-- TODO: Note data vintage issues, geographic resolution trade-offs, anything the reader should know -->
-    <p>Limitations paragraph.</p>
-  </section>
+    <!-- ── Beta: Data ── -->
+    <section id="beta-data">
+      <h3>Data</h3>
+      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP Code Tabulation Area (ZCTA) level. Four study periods are examined, each representing a distinct macroeconomic regime:</p>
 
-  <!-- ── Next Steps ── -->
-  <section id="next-steps">
-    <h2>Next Steps</h2>
-    <!-- TODO: Describe follow-on work, extensions, or related projects in the pipeline -->
-    <p>Next steps paragraph.</p>
-  </section>
+      <ul>
+        <li><strong>2001–2026</strong>: Full cycle — dot-com aftermath, subprime boom, GFC crash, recovery, and pandemic surge.</li>
+        <li><strong>2012–2026</strong>: Post-GFC recovery through pandemic; secular appreciation cycle.</li>
+        <li><strong>2018–2026</strong>: Late-cycle through pandemic; captures the full rate-environment shift.</li>
+        <li><strong>2020–2026</strong>: Pandemic era; most ZIPs with complete data, strongest convergence signal.</li>
+      </ul>
 
-</div>
+      <p>Zillow coverage thins considerably in lower-value, lower-turnover markets for earlier periods. ZIPs with missing initial or terminal values are excluded from each period's regression. The maps below show geographic coverage for each study window — exclusions are not random and are discussed under <a href="#limitations">Limitations</a>.</p>
 
+      <div class="table-embed">
+        <iframe src="tables/coverage_table.html" title="ZIP Code Coverage by Study Period"></iframe>
+      </div>
+
+      <div class="coverage-grid">
+        <div class="figure">
+          <img class="figure-real" src="figures/na2001_map.png" alt="ZIP coverage map, 2001–2026"/>
+          <p class="figure-caption">Figure 1. ZIP code coverage, 2001–2026. Gray ZIPs excluded due to missing Zillow data at period start.</p>
+        </div>
+        <div class="figure">
+          <img class="figure-real" src="figures/na2012_map.png" alt="ZIP coverage map, 2012–2026"/>
+          <p class="figure-caption">Figure 2. ZIP code coverage, 2012–2026.</p>
+        </div>
+        <div class="figure">
+          <img class="figure-real" src="figures/na2018_map.png" alt="ZIP coverage map, 2018–2026"/>
+          <p class="figure-caption">Figure 3. ZIP code coverage, 2018–2026.</p>
+        </div>
+        <div class="figure">
+          <img class="figure-real" src="figures/na2020_map.png" alt="ZIP coverage map, 2020–2026"/>
+          <p class="figure-caption">Figure 4. ZIP code coverage, 2020–2026. Largest sample; most complete coverage.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Beta: Regression ── -->
+    <section id="beta-regression">
+      <h3>Regression Analysis</h3>
+      <p>Separate OLS regressions are estimated for each study period. Log cumulative growth is regressed on log initial home value:</p>
+
+<pre>beta2001_2026 &lt;- lm(growth_2001_2026 ~ log_price_2001, data = beta_data)
+beta2012_2026 &lt;- lm(growth_2012_2026 ~ log_price_2012, data = beta_data)
+beta2018_2026 &lt;- lm(growth_2018_2026 ~ log_price_2018, data = beta_data)
+beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre>
+
+      <div class="table-embed">
+        <iframe src="tables/beta_convergence.html" title="Beta Convergence Regression Results"></iframe>
+      </div>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Beta: Discussion ── -->
+    <section id="beta-discussion">
+      <h3>Discussion</h3>
+      <p>[Discussion of beta convergence results — sign, magnitude, and significance of \(\hat{\beta}\) across periods; implied half-life; comparison of the four regimes; the divergence-then-convergence narrative around the GFC.]</p>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Spatial Autocorrelation ── -->
+    <section id="spatial-autocorrelation">
+      <h3>Spatial Autocorrelation</h3>
+      <p>[Moran's I test results, whether a spatial lag or spatial error model was warranted, test statistic, p-value, and interpretation.]</p>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Sigma: What it is ── -->
+    <section id="sigma-what">
+      <h2>Sigma Convergence</h2>
+      <h3>What It Is and Why It Matters</h3>
+      <p>Sigma convergence (&sigma;-convergence) measures whether the <em>cross-sectional dispersion</em> of home values across ZIP codes is declining over time. Where beta convergence tests the rate relationship between initial price and subsequent growth, sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:</p>
+
+      \[
+        \sigma_t = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\!\left(\log P_{i,t} - \overline{\log P_t}\right)^2}
+      \]
+
+      <p>is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence — a negative \(\hat{\beta}\) implies a tendency toward compression, but cross-sectional shocks can widen dispersion even when the convergence mechanism is operating.</p>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Sigma: Data ── -->
+    <section id="sigma-data">
+      <h3>Data</h3>
+      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. The full time series is plotted below, with distinct convergence regimes shaded.</p>
+
+      <div class="figure">
+        <img class="figure-real" src="figures/sigma_map1.png" alt="Sigma convergence over time, 2000–2026"/>
+        <p class="figure-caption">Figure 5. Cross-sectional standard deviation of log home values across KC MSA ZIP codes, 2000–2026. Shading indicates four identified convergence regimes.</p>
+      </div>
+
+      <p>Four sub-periods are examined to isolate distinct macro regimes:</p>
+      <ul>
+        <li><strong>2000–2006</strong>: Pre-GFC expansion — broad appreciation driven by subprime credit expansion.</li>
+        <li><strong>2007–2014</strong>: GFC and aftermath — foreclosure crisis differentially compressed lower-tier markets, widening dispersion.</li>
+        <li><strong>2015–2026</strong>: Post-recovery through pandemic — sustained compression as demand cascaded from expensive to affordable ZIPs.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Sigma: Analysis ── -->
+    <section id="sigma-analysis">
+      <h3>Analysis</h3>
+      <p>Linear time trends are estimated within each sub-period to characterize the direction and pace of dispersion change:</p>
+
+<pre>sigma2000_2026 &lt;- lm(sigma ~ Year, data = sigma_data)
+
+sigma2000_2006 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2000, Year &lt;= 2006))
+sigma2007_2014 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2007, Year &lt;= 2014))
+sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015))</pre>
+
+      <div class="table-embed">
+        <iframe src="tables/sigma_convergence.html" title="Sigma Convergence Regression Results"></iframe>
+      </div>
+
+      <div class="figure">
+        <img class="figure-real" src="figures/sigma_map2.png" alt="Sigma convergence with fitted regime trends"/>
+        <p class="figure-caption">Figure 6. Cross-sectional dispersion with fitted linear trends overlaid for each sub-period. Positive slope = divergence; negative slope = sigma convergence.</p>
+      </div>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Sigma: Discussion ── -->
+    <section id="sigma-discussion">
+      <h3>Discussion</h3>
+      <p>[Discussion of sigma convergence results by regime — direction and magnitude of slope in each sub-period; whether sigma convergence corroborates or contradicts the beta findings; interpretation of the GFC divergence episode.]</p>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Conclusions ── -->
+    <section id="conclusions">
+      <h2>Conclusions</h2>
+      <p>[Synthesize beta and sigma findings into a coherent narrative about convergence regimes in KC housing markets.]</p>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Limitations ── -->
+    <section id="limitations">
+      <h2>Limitations</h2>
+      <ul>
+        <li><strong>Survivorship bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
+        <li><strong>ZCTA vs. ZIP codes.</strong> Zillow reports at the ZIP code level; Census boundaries use ZCTAs, which do not always align exactly with USPS ZIP codes. Boundary discrepancies are minor but not zero.</li>
+        <li><strong>OLS assumptions.</strong> Standard OLS convergence regressions assume independent errors. Spatial autocorrelation testing (see above) evaluates whether this assumption holds; results should be interpreted accordingly.</li>
+        <li><strong>Single metro.</strong> Findings are specific to the Kansas City MSA and may not generalize to other metro areas with different supply elasticities, demographic compositions, or spatial structures.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule"/>
+
+    <!-- ── Next Steps ── -->
+    <section id="next-steps">
+      <h2>Next Steps</h2>
+      <p>[Future work — e.g. adding demographic controls to the beta convergence specification, extending to other metros, spatial lag/error model if autocorrelation is present, panel approach using annual data rather than endpoint-to-endpoint growth rates.]</p>
+    </section>
+
+  </div><!-- /.project-content -->
+</div><!-- /.page-layout -->
+
+<!-- ── Footer ── -->
 <footer>
-  <div class="container footer-content">
-    <span>Matthew Ong &middot; Real Estate &amp; Economic Analysis</span>
-    <div class="footer-links">
+  <div class="container">
+    <p>Matthew Ong &middot; Real Estate &amp; Economic Analysis &middot;
       <a href="https://linkedin.com/in/matthewong01" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <span>&middot;</span>
+      &middot;
       <a href="https://github.com/matthewong01" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </div>
+    </p>
   </div>
 </footer>
+
+<!-- ── TOC scroll-spy ── -->
+<script>
+  (function() {
+    var links = document.querySelectorAll('.toc-link');
+    var sections = Array.from(links).map(function(l) {
+      return document.querySelector(l.getAttribute('href'));
+    }).filter(Boolean);
+
+    function onScroll() {
+      var scrollY = window.scrollY + 120;
+      var current = sections[0];
+      sections.forEach(function(s) {
+        if (s.offsetTop <= scrollY) current = s;
+      });
+      links.forEach(function(l) {
+        l.classList.toggle('toc-active',
+          l.getAttribute('href') === '#' + current.id);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
 
 </body>
 </html>
