@@ -221,11 +221,8 @@
         \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
       \]
 
-      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end. A statistically significant negative \(\hat{\beta}\) is evidence of convergence. The implied half-life of the gap — the time for the price difference between a cheap and expensive ZIP to halve — is:</p>
-
-      \[
-        t_{1/2} = -\frac{\log 2}{\log(1 + \hat{\beta})}
-      \]
+      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end. A statistically significant negative \(\hat{\beta}\) is evidence of convergence. 
+     
     </section>
 
     <hr class="section-rule"/>
@@ -233,22 +230,16 @@
     <!-- ── Beta: Data ── -->
     <section id="beta-data">
       <h3>Data</h3>
-      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP Code Tabulation Area (ZCTA) level. Four study periods are examined, each representing a distinct macroeconomic regime:</p>
-
-      <ul>
-        <li><strong>2001–2026</strong>: Full cycle — dot-com aftermath, subprime boom, GFC crash, recovery, and pandemic surge.</li>
-        <li><strong>2012–2026</strong>: Post-GFC recovery through pandemic; secular appreciation cycle.</li>
-        <li><strong>2018–2026</strong>: Late-cycle through pandemic; captures the full rate-environment shift.</li>
-        <li><strong>2020–2026</strong>: Pandemic era; most ZIPs with complete data, strongest convergence signal.</li>
-      </ul>
-
-      <p>Zillow coverage thins considerably in lower-value, lower-turnover markets for earlier periods. ZIPs with missing initial or terminal values are excluded from each period's regression. The maps below show geographic coverage for each study window — exclusions are not random and are discussed under <a href="#limitations">Limitations</a>.</p>
-
+      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP-Code Tabulation Area (ZCTA) level. This public dataset covers home prices from 2000 until early 2026. 
+        However, the dataset has significant gaps. Zillow coverage thins considerably in lower-value, lower-turnover markets for earlier periods. ZIPs with missing initial or terminal 
+        values are excluded from each period's regression. My first step was identifiying what zipcodes were missing across the data and determining when the dataset 
+        was complete enough for meaningful results.</p>
+      <p>I found the number of percent of missing ZIP-Codes for each year (out of the 200 in the Kansas City MSA).</p>
       <div class="table-embed">
         <iframe src="tables/coverage_table.html" title="ZIP Code Coverage by Study Period"></iframe>
       </div>
+      <p>The maps below show geographic coverage for each study window — exclusions are not random and are discussed under <a href="#limitations">Limitations</a>.</p>
 
-      <div class="coverage-grid">
         <div class="figure">
           <img class="figure-real" src="figures/na2001_map.png" alt="ZIP coverage map, 2001–2026"/>
           <p class="figure-caption">Figure 1. ZIP code coverage, 2001–2026. Gray ZIPs excluded due to missing Zillow data at period start.</p>
@@ -267,7 +258,20 @@
         </div>
       </div>
     </section>
+    
+      <p>These four study periods are identiifed for stastical and economic reasons. Statistically, 2012 was the first year where
+      over 90 percent of zipcodes were present; 2018 had 95 percent, and 2020 had 98 percent. Economically, each period also represents 
+        a distinct macroeconomic regime:</p>
+    
+      <ul>
+        <li><strong>2001–2026</strong>: Full cycle, covering the dot-com aftermath, subprime boom, Financial Crisis, recovery, and COVID.</li>
+        <li><strong>2012–2026</strong>: Financial Crisis recovery through pandemic; secular appreciation cycle.</li>
+        <li><strong>2018–2026</strong>: Late-cycle through pandemic; captures the full interest rate-environment shift.</li>
+        <li><strong>2020–2026</strong>: Pandemic era; most ZIPs with complete data, strongest convergence signal.</li>
+      </ul>
 
+
+    
     <hr class="section-rule"/>
 
     <!-- ── Beta: Regression ── -->
