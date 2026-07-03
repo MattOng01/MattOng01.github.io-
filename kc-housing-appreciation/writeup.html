@@ -103,27 +103,39 @@
 
   <!-- ── Data Sources ── -->
   <section id="data-sources">
-    <h2>Data Sources</h2>
-    <table class="data-table">
-      <thead>
+      <h2>Data Sources</h2>
+      <table class="data-table" style="table-layout: fixed;">
+        <colgroup>
+          <col style="width: 26%">
+          <col style="width: 18%">
+          <col style="width: 18%">
+          <col style="width: 38%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Source</th>
+            <th>Year</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>American Community Survey</td>
+            <td>US Census Bureau</td>
+            <td>2024 Five-year estimate</td>
+            <td><a href="https://www.census.gov/programs-surveys/acs/news/data-releases.html" target="_blank" rel="noopener noreferrer">census.gov</a></td>
+          </tr>
         <tr>
-          <th>Dataset</th>
-          <th>Source</th>
-          <th>Year</th>
-          <th>URL</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- TODO: Add one <tr> per dataset -->
-        <tr>
-          <td>Dataset Name</td>
-          <td>Source Organization</td>
-          <td>Year</td>
-          <td><a href="https://example.com" target="_blank" rel="noopener noreferrer">example.com</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+            <td>Home Value Index (ZHVI)</td>
+            <td>Zillow</td>
+            <td>2000-2026</td>
+            <td><a href="https://www.zillow.com/research/data/" target="_blank" rel="noopener noreferrer">https://www.zillow.com/research/data/</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
 
   <section>
     <h2>Beta Convergence</h2>
