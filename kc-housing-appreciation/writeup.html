@@ -294,7 +294,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Beta: Discussion ── -->
     <section id="beta-discussion">
       <h3>Discussion</h3>
-      <p>[Discussion of beta convergence results — sign, magnitude, and significance of \(\hat{\beta}\) across periods; implied half-life; comparison of the four regimes; the divergence-then-convergence narrative around the GFC.]</p>
+      <p>write something here</p>
     </section>
 
     <hr class="section-rule"/>
@@ -302,7 +302,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Spatial Autocorrelation ── -->
     <section id="spatial-autocorrelation">
       <h3>Spatial Autocorrelation</h3>
-      <p>[Moran's I test results, whether a spatial lag or spatial error model was warranted, test statistic, p-value, and interpretation.]</p>
+      <p>Moran's I test results a spatial lag or spatial error model????</p>
     </section>
 
     <hr class="section-rule"/>
@@ -325,18 +325,19 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Sigma: Data ── -->
     <section id="sigma-data">
       <h3>Data</h3>
-      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. The full time series is plotted below, with distinct convergence regimes shaded.</p>
+      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. The full time series is plotted below.</p>
 
       <div class="figure">
         <img class="figure-real" src="figures/sigma_map1.png" alt="Sigma convergence over time, 2000–2026"/>
         <p class="figure-caption">Figure 5. Cross-sectional standard deviation of log home values across KC MSA ZIP codes, 2000–2026. Shading indicates four identified convergence regimes.</p>
       </div>
 
-      <p>Four sub-periods are examined to isolate distinct macro regimes:</p>
+      <p>Four sub-periods were used to explore Sigma Convergence. Again, these periods seem meaningful statistiaclly and econonomically:</p>
       <ul>
-        <li><strong>2000–2006</strong>: Pre-GFC expansion — broad appreciation driven by subprime credit expansion.</li>
-        <li><strong>2007–2014</strong>: GFC and aftermath — foreclosure crisis differentially compressed lower-tier markets, widening dispersion.</li>
-        <li><strong>2015–2026</strong>: Post-recovery through pandemic — sustained compression as demand cascaded from expensive to affordable ZIPs.</li>
+        <li><strong>2000–2026</strong>: Captures the full data set.</li>
+        <li><strong>2000–2006</strong>: Pre-Financial Crisis expansion — broad appreciation driven by subprime credit expansion. Negative slope, indicating price compression.</li>
+        <li><strong>2007–2014</strong>: Financial Crisis and aftermath — foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
+        <li><strong>2015–2026</strong>: Post-recovery through pandemic — sustained compression as demand cascaded from expensive to affordable ZIPs – negative slope, again.</li>
       </ul>
     </section>
 
@@ -348,7 +349,6 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
       <p>Linear time trends are estimated within each sub-period to characterize the direction and pace of dispersion change:</p>
 
 <pre>sigma2000_2026 &lt;- lm(sigma ~ Year, data = sigma_data)
-
 sigma2000_2006 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2000, Year &lt;= 2006))
 sigma2007_2014 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2007, Year &lt;= 2014))
 sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015))</pre>
@@ -368,7 +368,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Sigma: Discussion ── -->
     <section id="sigma-discussion">
       <h3>Discussion</h3>
-      <p>[Discussion of sigma convergence results by regime — direction and magnitude of slope in each sub-period; whether sigma convergence corroborates or contradicts the beta findings; interpretation of the GFC divergence episode.]</p>
+      <p>write something here</p>
     </section>
 
     <hr class="section-rule"/>
@@ -376,7 +376,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Conclusions ── -->
     <section id="conclusions">
       <h2>Conclusions</h2>
-      <p>[Synthesize beta and sigma findings into a coherent narrative about convergence regimes in KC housing markets.]</p>
+      <p>take aways -- economics, policy, real estate, ????</p>
     </section>
 
     <hr class="section-rule"/>
@@ -388,6 +388,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
         <li><strong>Survivorship bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
         <li><strong>ZCTA vs. ZIP codes.</strong> Zillow reports at the ZIP code level; Census boundaries use ZCTAs, which do not always align exactly with USPS ZIP codes. Boundary discrepancies are minor but not zero.</li>
         <li><strong>OLS assumptions.</strong> Standard OLS convergence regressions assume independent errors. Spatial autocorrelation testing (see above) evaluates whether this assumption holds; results should be interpreted accordingly.</li>
+        <li><strong>OLS assumptions, cont.</strong>OLS also requires that no there are no ommitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly a unconditional convergence test. No casual inference should be drawn. 
         <li><strong>Single metro.</strong> Findings are specific to the Kansas City MSA and may not generalize to other metro areas with different supply elasticities, demographic compositions, or spatial structures.</li>
       </ul>
     </section>
@@ -397,7 +398,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Next Steps ── -->
     <section id="next-steps">
       <h2>Next Steps</h2>
-      <p>[Future work — e.g. adding demographic controls to the beta convergence specification, extending to other metros, spatial lag/error model if autocorrelation is present, panel approach using annual data rather than endpoint-to-endpoint growth rates.]</p>
+      <p>figure out something interesting</p>
     </section>
 
   </div><!-- /.project-content -->
