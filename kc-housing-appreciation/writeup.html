@@ -112,16 +112,17 @@
   <!-- ── Overview ── -->
   <section id="overview">
     <h2>Overview</h2>
-    <p>This project looks at two growth economics phenomena: beta and sigma convergence.</p>
-    <p>One theory of economic growth, formalized by Robert Solow in 1956, illustrates how economies grow at different rates
-    depending on their level of economic output. In the long run, Solow argued, economies converge at a stable level of output, so
-    more affluent economies would grow relatively slower as they approach this level compared to less affluent economies.</p>
-    <p>This has important implications for real estate, urban planning, and policy.</p>
-    <p>This growth convergence has two related but different identifiers, called beta and sigma convergence.</p>
-    <p>Beta convergence occurs when less affluent economies grow faster than more affluent economies.</p>
-    <p>Sigma convergence occurs when the gap between rich and poor economies shrinks — the standard deviation of their log growth becomes
-    smaller across time.</p>
-    <p>In Kansas City, there is evidence of both beta and sigma convergence in ZIP-code level house prices from 2000–2026.</p>
+    <p>Do cheaper neighborhoods catch up to expensive ones over time, or does the gap between them persist — or even widen? 
+      This project tests that question in Kansas City housing markets using two related but distinct convergence concepts from 
+      Growth Economics, going back to Robert Solow's 1956 growth model: <strong>Beta Convergence</strong>, which 
+      asks whether lower-priced ZIP-codes appreciate faster than higher-priced ones, and <strong>Sigma Convergence</strong>, 
+      which asks whether the overall spread between rich and poor ZIP codes is shrinking over time.</p>
+    <p>The distinction matters beyond the theory. If cheaper ZIP codes are systematically catching up, that has real implications 
+      for where affordability pressure is building or easing, where investment capital is likely to flow next, and how urban 
+      planners and policymakers should think about equitable growth across a metro area.</p>
+    <p>Using ZIP-code-level home price data for the Kansas City MSA from 2000–2026, this project finds evidence of both beta and sigma convergence. 
+      However, as the sections below show, the strength of that convergence varies considerably depending on the time period examined 
+      and isn't immune to reversal during periods of economic stress.</p>
   </section>
 
   <!-- ── Key Takeaways ── -->
@@ -212,15 +213,22 @@
     <section id="beta-what">
       <h2>Beta Convergence</h2>
       <h3>What It Is and Why It Matters</h3>
-      <p>Beta convergence (&beta;-convergence) tests whether lower-priced markets appreciate faster than higher-priced ones — the housing analog of the Barro and Sala-i-Martin (1992) convergence hypothesis from growth economics. A negative coefficient on initial price implies that price gaps between cheap and expensive ZIP codes are narrowing over time, consistent with capital flowing toward undervalued markets, demand spillovers from expensive neighborhoods into adjacent affordable ones, and supply constraints binding more tightly in already-expensive areas.</p>
-
-      <p>The regression specification follows the standard formulation:</p>
+<p>Growth Economics theorizes that economies with different levels of growth will experience different rates of growth. 
+  Robert Solow (1956) predicted that less-developed economies will develop faster than more advanced economics as they approach 
+  their long-run level of wealth. This conclusion comes from the relative marginal productivity of inputs. </p>
+<p>A similar phenomenon occurs in real estate markets when lower-priced markets appreciate faster than higher priced markets. 
+  This phenomenon, known as Beta convergence (&beta;-convergence), has significant implications for policy and investment. </p>
+<p>The regression specification follows the standard formulation:</p>
 
       \[
         \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
       \]
 
-      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end. A statistically significant negative \(\hat{\beta}\) is evidence of convergence. 
+      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value 
+        at the end. A negative coefficient on initial price implies that price gaps between cheap and expensive ZIP codes are narrowing 
+        over time, consistent with capital flowing toward undervalued markets, demand spillovers from expensive neighborhoods into 
+        adjacent affordable ones, and supply constraints binding more tightly in already-expensive areas. </p>
+ 
      
     </section>
 
@@ -229,15 +237,23 @@
     <!-- ── Beta: Data ── -->
     <section id="beta-data">
       <h3>Data</h3>
-      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP-Code Tabulation Area (ZCTA) level. This public dataset covers home prices from 2000 until early 2026. 
-        However, the dataset has significant gaps. Zillow coverage thins considerably in lower-value, lower-turnover markets for earlier periods. ZIPs with missing initial or terminal 
-        values are excluded from each period's regression. My first step was identifiying what zipcodes were missing across the data and determining when the dataset 
-        was complete enough for meaningful results.</p>
-      <p>I found the number of percent of missing ZIP-Codes for each year (out of the 200 in the Kansas City MSA).</p>
+      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP-Code Tabulation Area (ZCTA) level. Each year’s data 
+        point is January’s average home sales. The data was filtered to only include the 200 ZIP-codes in the Kansas City MSA. This public 
+        dataset covers home prices from January 2000 until January 2026. However, the dataset has significant gaps. Zillow coverage thins 
+        considerably for earlier periods. My first step was identifying what ZIP-codes were missing across the data and, importantly, 
+        determining when the dataset was complete enough for meaningful results.</p>
+      <p>I found the number of missing ZIP-Codes for each year and calculated the percent of missing ZIP-Codes.</p>
       <div class="table-embed">
-        <iframe src="tables/coverage_table.html" title="ZIP Code Coverage by Study Period"></iframe>
+          <iframe src="tables/coverage_table.html"
+            title="ZIP Code Coverage by Study Period"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
       </div>
-      <p>The maps below show geographic coverage for each study window — exclusions are not random and are discussed under <a href="#limitations">Limitations</a>.</p>
+      <p>The period 2001-2026 includes all possible years but has the most missing data. The first year where over 90 percent of ZIP-codes report data is 2012. 
+        Data coverage improves again in 2018 and 2020.</p>
+      <p>To better understand what ZIP-codes are missing, I mapped each of those periods, where ZIP-codes in red are missing from the sample. Exclusions do not 
+        appear to be random and are discussed under <a href="#limitations">Limitations</a>.</p>
 
       <div class="coverage-grid">
         <div class="figure">
@@ -259,15 +275,13 @@
       </div>
 
     
-      <p>These four study periods are identiifed for stastical and economic reasons. Statistically, 2012 was the first year where
-      over 90 percent of zipcodes were present; 2018 had 95 percent, and 2020 had 98 percent. Economically, each period also represents 
-        a distinct macroeconomic regime:</p>
+      <p>Each of these periods – 2012-2026, 2018-2026, and 2020-2026 – are also economically meaningful:</p>
     
       <ul>
-        <li><strong>2001–2026</strong>: Full cycle, covering the dot-com aftermath, subprime boom, Financial Crisis, recovery, and COVID.</li>
-        <li><strong>2012–2026</strong>: Financial Crisis recovery through pandemic; secular appreciation cycle.</li>
-        <li><strong>2018–2026</strong>: Late-cycle through pandemic; captures the full interest rate-environment shift.</li>
-        <li><strong>2020–2026</strong>: Pandemic era; most ZIPs with complete data, strongest convergence signal.</li>
+        <li><strong>2001–2026</strong>: The full model. This captures a full economic cycle, covering the dot-com aftermath, subprime mortgage boom, Financial Crisis, recovery, and COVID.</li>
+        <li><strong>2012–2026</strong>: Financial Crisis recovery through the Pandemic.</li>
+        <li><strong>2018–2026</strong>: Late recovery cycle from 2008 through the pandemic; captures the full interest rate environment shift.</li>
+        <li><strong>2020–2026</strong>: Pandemic-era inflation, and recovery.</li>
       </ul>
   </section>
 
@@ -279,11 +293,13 @@
       <h3>Regression Analysis</h3>
       <p>Separate OLS regressions are estimated for each study period. Log cumulative growth is regressed on log initial home value:</p>
 
-<pre>beta2001_2026 &lt;- lm(growth_2001_2026 ~ log_price_2001, data = beta_data)
+<pre style="margin-left: auto; margin-right: auto; max-width: 500px;">
+beta2001_2026 &lt;- lm(growth_2001_2026 ~ log_price_2001, data = beta_data)
 beta2012_2026 &lt;- lm(growth_2012_2026 ~ log_price_2012, data = beta_data)
 beta2018_2026 &lt;- lm(growth_2018_2026 ~ log_price_2018, data = beta_data)
 beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre>
 
+    <p>The regression results are reported below.</p>
       <div class="table-embed">
   <iframe src="tables/beta_convergence.html"
           title="Beta Convergence Regression Results"
@@ -296,8 +312,22 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
 
     <!-- ── Beta: Discussion ── -->
     <section id="beta-discussion">
-      <h3>Discussion</h3>
-      <p>write something here</p>
+      <h3>Results and Discussion</h3>
+      <p>All four study periods show a statistically significant negative coefficient on initial log home price, providing consistent evidence 
+        of beta convergence across every window tested. The magnitude of the effect, however, is not stable over time. The 2012–2026 period shows 
+        the strongest convergence signal (&beta; = -0.368), nearly 2 times larger than the other three windows. This is consistent with the 
+        economic narrative underlying the period selection: 2012 marks the start of the post-Financial Crisis recovery, when lower-priced ZIP-codes, 
+        disproportionately affected most by foreclosure, had the most room to recover relative to already-expensive markets 
+        that held their value through the downturn.</p>
+      <p>The shorter, more recent windows (2018–2026, 2020–2026) show progressively weaker convergence (&beta; = -0.230 and -0.161, respectively), 
+        alongside declining R<sup>2</sup> (0.708 and 0.571). This pattern suggests that as the Financial Crisis recovery matured, the convergence weakened.</p>
+      <p>This seems plausible, as the Pandemic-era housing market was driven by remote work migration, inventory shortages, historically low interest rates, 
+        and many people paying cash for homes – something we would expect more of in affluent neighborhoods.</p>
+      <p>The 2001–2026 full-cycle estimate (&beta; = -0.237) falls between these, but should be interpreted cautiously given it reflects 
+        only 62 of 200 ZIPs (see <a href="#limitations">Limitations</a>.).</p>
+      <p>Given this pattern, the 2012–2026 period was selected as the primary specification for further analysis, both because it shows the 
+        strongest and best-fitting convergence relationship (R<sup>2</sup> = 0.796) and because it spans a coherent, economically meaningful regime rather 
+        than a shorter or more volatile window.</p>
     </section>
 
     <hr class="section-rule"/>
@@ -305,7 +335,25 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Spatial Autocorrelation ── -->
     <section id="spatial-autocorrelation">
       <h3>Spatial Autocorrelation</h3>
-      <p>Moran's I test results a spatial lag or spatial error model????</p>
+      <p>The statistical test used to calculate beta convergence (OLS regression) depends on the assumption of independent statistical errors across 
+        observations. Given that home price appreciation is inherently geographic, this assumption is unlikely to hold: appreciation in one ZIP-code 
+        plausibly correlates with appreciation in adjacent ZIP-codes. This may be due to direct spillover (demand or development effects crossing 
+        ZIP-code boundaries) or shared unobserved factors (school quality, walkability, amenity access) that themselves cluster spatially. </p>
+      <p>For example, Shawnee Mission East, a premier public high school, is located in 66208; however, ZIP-code 66207 is still within district 
+        boundaries. Families that were drawn to Shawnee Mission East were not limited to just homes in 66208. This is an example of a spill-over effect, 
+        and would violate the independent error assumptions for OLS and is known as <em>Spatial Autocorrelation</em>.</p>
+      <p>Luckily, there is a method to test for and address this violation. Spatial autocorrelation was tested for the primary 2012–2026 specification.</p>
+
+      <p><strong>Weights matrix.</strong> First, we assign a weight to each ZIP-code. There are several ways to do this, and the method depends 
+        on the type of spatial autocorrelation we suspect. In this case, I expect most of the autocorrelation to be spill-over effects (such as in the 
+        Shawnee Mission East example). Therefore, my weight matrix followed a Queen Contiguity pattern. In this type of matrix, the weight assigned to 
+        a ZIP-code depends on the number of direct neighboring ZIP-codes it has, and the rows are standardized so that each ZIP's neighbors are weighted 
+        equally and sum to one. No islands (zero-neighbor ZIPs) were present. The average ZIP had approximately 5.2 neighbors. The full spatial weights 
+        matrix is available in the project repository. [add hyperlink to file] Below is a sample of what the matrix looks like:</p>
+        
+    <p>[add picture of weights matrix] also have the zipcode map here?</p>
+
+      <p><strong>Moran's I</strong></p>
     </section>
 
     <hr class="section-rule"/>
@@ -314,13 +362,16 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <section id="sigma-what">
       <h2>Sigma Convergence</h2>
       <h3>What It Is and Why It Matters</h3>
-      <p>Sigma convergence (&sigma;-convergence) measures whether the <em>cross-sectional dispersion</em> of home values across ZIP codes is declining over time. Where beta convergence tests the rate relationship between initial price and subsequent growth, sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:</p>
+      <p>Sigma convergence (&sigma;-convergence) measures whether the <em>cross-sectional dispersion</em>, or the range of home values across 
+        ZIP codes is declining over time. Where beta convergence tests the rate relationship between initial price and subsequent growth, 
+        sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:
 
       \[
         \sigma_t = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\!\left(\log P_{i,t} - \overline{\log P_t}\right)^2}
       \]
 
-      <p>is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence — a negative \(\hat{\beta}\) implies a tendency toward compression, but cross-sectional shocks can widen dispersion even when the convergence mechanism is operating.</p>
+       is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence.</p>
+
     </section>
 
     <hr class="section-rule"/>
