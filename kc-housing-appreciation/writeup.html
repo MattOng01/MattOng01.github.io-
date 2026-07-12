@@ -293,7 +293,7 @@
       <h3>Regression Analysis</h3>
       <p>Separate OLS regressions are estimated for each study period. Log cumulative growth is regressed on log initial home value:</p>
 
-<pre style="margin-left: auto; margin-right: auto; max-width: 500px;">
+<pre>
 beta2001_2026 &lt;- lm(growth_2001_2026 ~ log_price_2001, data = beta_data)
 beta2012_2026 &lt;- lm(growth_2012_2026 ~ log_price_2012, data = beta_data)
 beta2018_2026 &lt;- lm(growth_2018_2026 ~ log_price_2018, data = beta_data)
@@ -379,19 +379,20 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Sigma: Data ── -->
     <section id="sigma-data">
       <h3>Data</h3>
-      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. The full time series is plotted below.</p>
+      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. 
+        The full time series is plotted below.</p>
 
       <div class="figure">
         <img class="figure-real" src="figures/sigma_map1.png" alt="Sigma convergence over time, 2000–2026"/>
         <p class="figure-caption">Figure 5. Cross-sectional standard deviation of log home values across KC MSA ZIP codes, 2000–2026. Shading indicates four identified convergence regimes.</p>
       </div>
 
-      <p>Four sub-periods were used to explore Sigma Convergence. Again, these periods seem meaningful statistiaclly and econonomically:</p>
+      <p>The graph reveals four sub-periods were used to explore Sigma Convergence. Again, these sub-periods are economically significant:</p>
       <ul>
-        <li><strong>2000–2026</strong>: Captures the full data set.</li>
-        <li><strong>2000–2006</strong>: Pre-Financial Crisis expansion — broad appreciation driven by subprime credit expansion. Negative slope, indicating price compression.</li>
-        <li><strong>2007–2014</strong>: Financial Crisis and aftermath — foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
-        <li><strong>2015–2026</strong>: Post-recovery through pandemic — sustained compression as demand cascaded from expensive to affordable ZIPs – negative slope, again.</li>
+        <li><strong>2000–2026</strong>: The full model.</li>
+        <li><strong>2000–2006</strong>: Pre-Financial Crisis expansion, where broad appreciation was driven by subprime credit expansion. Negative slope, indicating price compression.</li>
+        <li><strong>2007–2014</strong>: The Financial Crisis and aftermath. Foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
+        <li><strong>2015–2026</strong>: Post-recovery through the Pandemic. Sustained compression as demand shifted from expensive to affordable ZIPs – negative slope, again.</li>
       </ul>
     </section>
 
@@ -402,13 +403,17 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
       <h3>Analysis</h3>
       <p>Linear time trends are estimated within each sub-period to characterize the direction and pace of dispersion change:</p>
 
-<pre>sigma2000_2026 &lt;- lm(sigma ~ Year, data = sigma_data)
+<pre>
+sigma2000_2026 &lt;- lm(sigma ~ Year, data = sigma_data)
 sigma2000_2006 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2000, Year &lt;= 2006))
 sigma2007_2014 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2007, Year &lt;= 2014))
 sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015))</pre>
 
       <div class="table-embed">
-        <iframe src="tables/sigma_convergence.html" title="Sigma Convergence Regression Results"></iframe>
+        <iframe src="tables/sigma_convergence.html" 
+          title="Sigma Convergence Regression Results"
+          scrolling="no"
+          onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'"></iframe>
       </div>
 
       <div class="figure">
@@ -422,7 +427,18 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Sigma: Discussion ── -->
     <section id="sigma-discussion">
       <h3>Discussion</h3>
-      <p>write something here</p>
+      <p>The sigma convergence results tell a more cyclical story than beta convergence alone would suggest. The range of log home 
+        values compressed steadily during the pre-Financial Crisis expansion (2000–2006), consistent with broad-based appreciation lifting 
+        lower-value ZIPs alongside higher-value ones.</p>
+      <p>This compression reversed sharply during the Financial Crisis and its aftermath (2007–2014), when dispersion widened. 
+        This is consistent with the foreclosure crisis disproportionately depressing lower-income markets rather than affecting 
+        all ZIP-codes uniformly, temporarily undoing prior convergence gains. From 2015 onward, dispersion resumed its decline, consistent 
+        with the strong housing market and beta convergence signal identified in the 2012–2026 regression.</p>
+      <p>This regime-dependent pattern is a useful complement to the beta convergence findings: it demonstrates that convergence is 
+        not a constant process, but can instead pause or reverse during periods of asymmetric shock. It also reinforces that beta 
+        convergence alone is an incomplete test. While a negative beta coefficient indicates a tendency toward compression on average, 
+        the sigma convergence series shows this tendency was actively overridden during 2007–2014, precisely the kind of divergence episode 
+        beta convergence alone cannot capture.</p>
     </section>
 
     <hr class="section-rule"/>
