@@ -112,11 +112,13 @@
   <!-- ── Overview ── -->
   <section id="overview">
     <h2>Overview</h2>
-    <p>Do cheaper neighborhoods catch up to expensive ones over time, or does the gap between them persist — or even widen? 
-      This project tests that question in Kansas City housing markets using two related but distinct convergence concepts from 
-      Growth Economics, going back to Robert Solow's 1956 growth model: <strong>Beta Convergence</strong>, which 
-      asks whether lower-priced ZIP-codes appreciate faster than higher-priced ones, and <strong>Sigma Convergence</strong>, 
-      which asks whether the overall spread between rich and poor ZIP codes is shrinking over time.</p>
+    <p>Home prices rarely appreciate uniformly across a metropolitan area. Some neighborhoods consistently 
+      outperform others, while lower-priced areas occasionally experience periods of unusually rapid 
+      appreciation. Understanding whether these patterns reflect random market fluctuations or a systematic 
+      convergence process has important implications for investors, developers, lenders, and policymakers. </p>
+    <p>One way to evaluate this is through <strong><em>&beta;</em>-convergence</strong>, an economic framework that 
+      tests whether lower-priced markets tend to appreciate faster than higher-priced markets over time.</p>
+
     <p>The distinction matters beyond the theory. If cheaper ZIP codes are systematically catching up, that has real implications 
       for where affordability pressure is building or easing, where investment capital is likely to flow next, and how urban 
       planners and policymakers should think about equitable growth across a metro area.</p>
@@ -213,21 +215,17 @@
     <section id="beta-what">
       <h2>Beta Convergence</h2>
       <h3>What It Is and Why It Matters</h3>
-<p>Growth Economics theorizes that economies with different levels of growth will experience different rates of growth. 
-  Robert Solow (1956) predicted that less-developed economies will develop faster than more advanced economics as they approach 
-  their long-run level of wealth. This conclusion comes from the relative marginal productivity of inputs. </p>
-<p>A similar phenomenon occurs in real estate markets when lower-priced markets appreciate faster than higher priced markets. 
-  This phenomenon, known as Beta convergence (&beta;-convergence), has significant implications for policy and investment. </p>
+<p>Originally developed in the economic growth literature, <<em>&beta;</em>-convergence describes the tendency 
+  for poorer economies to grow faster than richer ones because of diminishing marginal returns to capital. 
+  Applied to housing markets, the same framework predicts that lower-priced neighborhoods may experience 
+  faster appreciation than expensive ones, gradually reducing differences in home values.</p>
 <p>The regression specification follows the standard formulation:</p>
 
       \[
         \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
       \]
 
-      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value 
-        at the end. A negative coefficient on initial price implies that price gaps between cheap and expensive ZIP codes are narrowing 
-        over time, consistent with capital flowing toward undervalued markets, demand spillovers from expensive neighborhoods into 
-        adjacent affordable ones, and supply constraints binding more tightly in already-expensive areas. </p>
+      <p>where  is the median home value in ZIP code  at the start of the study period and  is the value at the end.</p>
  
      
     </section>
@@ -237,12 +235,15 @@
     <!-- ── Beta: Data ── -->
     <section id="beta-data">
       <h3>Data</h3>
-      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP-Code Tabulation Area (ZCTA) level. Each year’s data 
-        point is January’s average home sales. The data was filtered to only include the 200 ZIP-codes in the Kansas City MSA. This public 
-        dataset covers home prices from January 2000 until January 2026. However, the dataset has significant gaps. Zillow coverage thins 
-        considerably for earlier periods. My first step was identifying what ZIP-codes were missing across the data and, importantly, 
-        determining when the dataset was complete enough for meaningful results.</p>
+      <p>Home value data are drawn from the Zillow Home Value Index (ZHVI) at the ZIP-Code Tabulation Area (ZCTA) 
+        level. Each year’s data point is January’s average home sales. The data was filtered to only include the 
+        200 ZIP-codes in the Kansas City MSA. This public dataset covers home prices from January 2000 until 
+        January 2026. However, the dataset has significant gaps. Zillow coverage thins considerably for 
+        earlier periods. My first step was identifying what ZIP-codes were missing across the data and,
+        importantly, determining when the dataset was complete enough for meaningful results.</p>
+      
       <p>I found the number of missing ZIP-Codes for each year and calculated the percent of missing ZIP-Codes.</p>
+      
       <div class="table-embed">
           <iframe src="tables/coverage_table.html"
             title="ZIP Code Coverage by Study Period"
@@ -306,28 +307,100 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
           scrolling="no"
           onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
   </iframe>
+
+  <p>The four beta convergence regressions above span different time horizons — 25, 14, 8, and 6 years — but each regresses <em>cumulative</em> 
+    log growth over its full window on initial log price.</p>
+  <p>This matters because <em>&beta;</em> from a cumulative-growth regression isn't a "rate" in the way it might appear. Formally,</p>
+        <pre> <em>&beta;</em>_T = −(1 − e^(−bT)),</pre>
 </div>
+
+  <p>where b is the true underlying annual convergence rate and T is the length of the window. <em>&beta;</em>_T mechanically 
+    grows as T grows because there is a longer window for mean reversion to accumulate into the coefficient (which we expect 
+    for most time-series variables). This means the raw <em>&beta;</em>'s reported above cannot be compared directly to ask 
+    whether convergence is speeding up or slowing down over time. Any difference in magnitude can (at least partially) be 
+    attributable to window length alone, not to a genuine change in the underlying process.</p>
+
+  <p>To make the four periods comparable, each <em>&beta;</em> needs to be converted to an annualized convergence speed. 
+    Annualization allows coefficients estimated over different time horizons to be interpreted on a common annual basis. </p>
+
+  <p>Following the standard transformation from the convergence literature (Barro & Sala-i-Martin), the annualized 
+    convergence speed b is recovered from the estimated <em>&beta;</em> and the window length T as:</p>
+
+      <pre>[
+b = -\frac{\ln(1+\beta)}{T}
+]</pre>
+
+  <p>Standard errors on b were obtained via the delta method, using SE(b) ≈ SE(<em>&beta;</em>) / [(1+<em>&beta;</em>)·T], 
+    with 95% confidence intervals constructed as b ± 1.96·SE(b).</p>
+
+        <div class="table-embed">
+          <iframe src="tables/convergence_table"
+            title="Annualized Log(growth)"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+           <p class="figure-caption">Beta convergence coefficients and annualized convergence speed by study period. 
+             Raw <em>&beta;</em> is not directly comparable across periods of different length; annualized 
+             speed (b = −ln(1+<em>&beta;</em>)/T) adjusts for this.</p>
+      </div>
+
+  <p>Once annualized, the picture looks different from the raw <em>&beta;</em>'s alone: 2012–2026, 2018–2026, 
+    and 2020–2026 converge to a similar range (roughly 2.9%–3.3% per year), 
+    while 2001–2026 sits noticeably lower, at approximately 1.1% per year.</p>
+  <p>The three post-2012 estimates are close enough in raw terms to look interchangeable.</p>
+
+              <div class="table-embed">
+          <iframe src="tables/pvalue_comparisons_table.html"
+            title="Comparsion table"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+      </div>
+
 
     <hr class="section-rule"/>
 
     <!-- ── Beta: Discussion ── -->
     <section id="beta-discussion">
       <h3>Results and Discussion</h3>
-      <p>All four study periods show a statistically significant negative coefficient on initial log home price, providing consistent evidence 
-        of beta convergence across every window tested. The magnitude of the effect, however, is not stable over time. The 2012–2026 period shows 
-        the strongest convergence signal (&beta; = -0.368), nearly 2 times larger than the other three windows. This is consistent with the 
-        economic narrative underlying the period selection: 2012 marks the start of the post-Financial Crisis recovery, when lower-priced ZIP-codes, 
-        disproportionately affected most by foreclosure, had the most room to recover relative to already-expensive markets 
-        that held their value through the downturn.</p>
-      <p>The shorter, more recent windows (2018–2026, 2020–2026) show progressively weaker convergence (&beta; = -0.230 and -0.161, respectively), 
-        alongside declining R<sup>2</sup> (0.708 and 0.571). This pattern suggests that as the Financial Crisis recovery matured, the convergence weakened.</p>
-      <p>This seems plausible, as the Pandemic-era housing market was driven by remote work migration, inventory shortages, historically low interest rates, 
-        and many people paying cash for homes – something we would expect more of in affluent neighborhoods.</p>
-      <p>The 2001–2026 full-cycle estimate (&beta; = -0.237) falls between these, but should be interpreted cautiously given it reflects 
-        only 62 of 200 ZIPs (see <a href="#limitations">Limitations</a>.).</p>
-      <p>Given this pattern, the 2012–2026 period was selected as the primary specification for further analysis, both because it shows the 
-        strongest and best-fitting convergence relationship (R<sup>2</sup> = 0.796) and because it spans a coherent, economically meaningful regime rather 
-        than a shorter or more volatile window.</p>
+      <p>All four study periods show a statistically significant negative coefficient on initial log home price, providing 
+        consistent evidence of beta convergence across every window tested. In raw form, the magnitude of <em>&beta;</em> 
+        varies substantially across periods — from −0.368 (2012–2026) to −0.161 (2020–2026) — but this variation is not 
+        directly interpretable, since each <em>&beta;</em> reflects cumulative growth over windows of different lengths 
+        (14, 8, and 6 years, respectively). A longer window mechanically produces a larger-magnitude <em>&beta;</em> 
+        even if the underlying rate of convergence is unchanged, so comparing these coefficients at face value risks 
+        confusing a statistical artifact of window length for a genuine economic trend.</p>
+      
+      <p>Once converted to an annualized convergence speed the picture changes: 2012–2026, 2018–2026, and 2020–2026 
+        converge to a similar annual rate of roughly 2.9%–3.3%, and pairwise z-tests confirm these three estimates 
+        are not statistically distinguishable from one another (all p > 0.15). Rather than convergence weakening as
+        the Financial Crisis recovery matured, the more accurate reading is that the rate of convergence has been 
+        stable across the post-2012 period, including through the Pandemic-era housing market, despite that market 
+        being driven by a distinct set of forces (remote work migration, inventory shortages, historically low 
+        interest rates, and cash buyers disproportionately concentrated in affluent neighborhoods). That 
+        stability is itself a notable finding: it suggests the underlying convergence process in the KC metro 
+        has been robust to a fairly different demand environment, rather than being an artifact of 
+        Financial-Crisis-specific dynamics.</p>
+
+        <div class="table-embed">
+          <iframe src="tables/pvalue_comparisons_table.html"
+            title="Comparsion table"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+      </div>
+      
+      <p>The 2001–2026 full-cycle estimate stands apart: its annualized speed (≈1.1%/year) is significantly lower 
+        than all three post-2012 estimates (all p < 0.001), a gap far too large and precise to attribute to noise. 
+          However, this period also relies on only 62 of 200 ZIP-codes with non-random coverage (see <a href="#limitations">Limitations</a>.), 
+          so the lower estimate cannot yet be read as evidence that convergence
+          was genuinely slower in the earlier 2000s–2010s regime. It may reflect that the 62 ZIPs with early 
+          data are a systematically different subset of the metro (e.g., more established, higher-coverage suburbs) 
+          rather than a representative sample of the full convergence process. Disentangling a true regime difference 
+          from this coverage-driven composition effect requires a more complete pre-2012 panel and is left to future 
+          work.</p>
+      <p>Given this pattern, the 2012–2026 period was selected as the primary specification for further analysis because it spans a coherent, 
+        economically meaningful regime while including price data for over 90% of ZIP-codes.</p>
     </section>
 
     <hr class="section-rule"/>
@@ -335,26 +408,99 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <!-- ── Spatial Autocorrelation ── -->
     <section id="spatial-autocorrelation">
       <h3>Spatial Autocorrelation</h3>
-      <p>The statistical test used to calculate beta convergence (OLS regression) depends on the assumption of independent statistical errors across 
-        observations. Given that home price appreciation is inherently geographic, this assumption is unlikely to hold: appreciation in one ZIP-code 
-        plausibly correlates with appreciation in adjacent ZIP-codes. This may be due to direct spillover (demand or development effects crossing 
-        ZIP-code boundaries) or shared unobserved factors (school quality, walkability, amenity access) that themselves cluster spatially. </p>
-      <p>For example, Shawnee Mission East, a premier public high school, is located in 66208; however, ZIP-code 66207 is still within district 
-        boundaries. Families that were drawn to Shawnee Mission East were not limited to just homes in 66208. This is an example of a spill-over effect, 
-        and would violate the independent error assumptions for OLS and is known as <em>Spatial Autocorrelation</em>.</p>
+      <p>The statistical test used to calculate beta convergence (OLS regression) depends on the assumption of independent statistical errors 
+        across observations. Given that home price appreciation is inherently geographic, this assumption is unlikely to hold: appreciation 
+        in one ZIP-code plausibly correlates with appreciation in adjacent ZIP-codes. This may be due to direct spillover 
+        (demand or development effects crossing ZIP-code boundaries) or shared unobserved factors (school quality, walkability, amenity access) 
+        that themselves cluster spatially. </p>
+      
+      <p>For example, Shawnee Mission East, a premier public high school, is located in 66208; however, ZIP-code 66207 is still within district boundaries. 
+        Families that were drawn to Shawnee Mission East were not limited to just homes in 66208. Because Shawnee Mission East’s location in 66208 may affect 
+        home prices in 66207, there could be <em>Spatial Autocorrelation</em>.</p>
+      
       <p>Luckily, there is a method to test for and address this violation. Spatial autocorrelation was tested for the primary 2012–2026 specification.</p>
 
-      <p><strong>Weights matrix.</strong> First, we assign a weight to each ZIP-code. There are several ways to do this, and the method depends 
-        on the type of spatial autocorrelation we suspect. In this case, I expect most of the autocorrelation to be spill-over effects (such as in the 
-        Shawnee Mission East example). Therefore, my weight matrix followed a Queen Contiguity pattern. In this type of matrix, the weight assigned to 
-        a ZIP-code depends on the number of direct neighboring ZIP-codes it has, and the rows are standardized so that each ZIP's neighbors are weighted 
-        equally and sum to one. No islands (zero-neighbor ZIPs) were present. The average ZIP had approximately 5.2 neighbors. The full spatial weights 
-        matrix is available in the project repository. [add hyperlink to file] Below is a sample of what the matrix looks like:</p>
+      <h4>Weights Matrix</h4>
+      <p>First, we assign a weight to each ZIP-code. There are several ways to do this, and the method depends on the type of spatial autocorrelation 
+        we suspect. In this case, I expect most of the autocorrelation to be spill-over effects (such as in the Shawnee Mission East example). 
+        Therefore, my weight matrix followed a Queen Contiguity pattern. In this type of matrix, the weight assigned to a ZIP-code depends on the number 
+        of direct neighboring ZIP-codes it has, and the rows are standardized so that each ZIP's neighbors are weighted equally and sum to one. 
+        No islands (zero-neighbor ZIPs) were present. The average ZIP had approximately 5.2 neighbors. The full spatial weights matrix is available in 
+        the project repository. [add hyperlink to file] Below is a sample of what the matrix looks like:</p>
         
     <p>[add picture of weights matrix] also have the zipcode map here?</p>
 
-      <p><strong>Moran's I</strong></p>
+<h4>Moran's I</h4>
+      <p>Moran's I was applied to the OLS residuals to test whether the regression residuals from the beta convergence model are spatially clustered. 
+        Essentially, whether ZIP-codes that appreciate faster than the model predicts (positive residuals) tend to sit next to other ZIP-codes 
+        with positive residuals, and likewise for negative residuals. If residuals are spatially random, Moran's I should be close to zero. 
+        If they cluster – high residuals next to high, low next to low – Moran's I will be positive. If they act like a checkerboard, it will be negative.</p>
+
+      <p>Formally, Moran's I is calculated as:</p>
+
+      <pre>[
+I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - \bar{e})(e_j - \bar{e})}{\sum_{i}(e_i - \bar{e})^2}
+]</pre>
+
+      <p>where (e_i) is the OLS residual for ZIP-code (i), (w_{ij}) is the weight between ZIP (i) and (j) from the Queen contiguity matrix 
+        described above, and (N) is the number of ZIPs. In plain terms, the numerator asks whether the residuals of neighboring ZIP-codes 
+        move together, and the denominator normalizes this by the overall variance of the residuals.</p>
+
+      <p>I ran Moran's I on the residuals from the primary 2012–2026 beta convergence regression using the Queen contiguity weights matrix. 
+        The result was I = 0.632, with a p-value (< 0.001) well below all conventional significance thresholds. This is a strong positive 
+          value, suggesting that residuals are clustering geographically, not scattered randomly across the metro.</p>
+
+      <div class="table-embed">
+          <iframe src="tables/moran_2012.html"
+            title="Moran's I Results"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+      </div>
+
+      <p>Substantively, this confirms the concern raised earlier: ZIP-codes that appreciated faster (or slower) than the beta convergence 
+        model predicts are not doing so in isolation – they are not necessarily independent. This is consistent with the Shawnee Mission 
+        East example: school district boundaries and other neighborhood amenities that affect home value don't follow ZIP-code lines, 
+        so their effects on price bleed into adjacent areas. Spatial dependence violates the independence assumption underlying 
+        conventional OLS inference. Coefficient estimates remain consistent under exogeneity, but estimated standard errors become unreliable.</p>
+
+      <h4>Lagrange Multiplier Diagnostics</h4>
+      <p>Moran's I told us the OLS residuals are spatially clustered, but it doesn't tell us <em>why</em>. Spatial dependence can 
+        enter a regression in two structurally different ways, and mistaking one for the other leads to the wrong fix. Lagrange Multiplier 
+        (LM) tests are designed to distinguish between them.</p>
+
+    <p>The first possibility is a <strong>spatial lag</strong> process: the outcome itself directly depends on appreciation in neighboring 
+      ZIP-codes, independent of any other factor. This would be the case if, say, price growth in one ZIP-code directly bid up demand in 
+      the ZIP-code next door, through something like a spillover in buyer search behavior.</p>
+
+    <p>The second possibility is a <strong>spatial error</strong> process: the clustering isn't in the outcome itself, but in <em>something 
+      left out of the model</em> that happens to be spatially correlated. The Shawnee Mission East–style effects don't appreciate ZIP-codes 
+      directly; they're just factors that (a) affect price and (b) cluster geographically. If the model omits them, the omission shows 
+      up as correlated error terms rather than a direct lag effect.</p>
+    <p>This distinction matters because the two diagnoses call for different models. A spatial lag problem is corrected with a Spatial Lag Model 
+      (which adds a spatially lagged dependent variable as a regressor). A spatial error problem is corrected with a Spatial Error Model 
+      (which models the error term itself as spatially autocorrelated, consistent under the assumption that the omitted spatial factors are 
+      uncorrelated with initial price).</p>
+
+    <p><strong>How the test works</strong></p>
+    <p>I used the standard (non-robust) Lagrange Multiplier tests (LM-lag and LM-error).  Each test for one form of dependence, but they 
+      cross-contaminate: a true spatial error process will often trip the LM-lag test too, and vice versa, because the two forms of dependence 
+      are correlated with each other in most real spatial data. Running only the standard tests risks picking the wrong model.</p>
+
+    <p>I used the robust Lagrange Multiplier tests (Anselin et al.). These test for each form of dependence (LM-lag and LM-error). What is 
+      beneficial here is that the robust form of the test identifies correlation between the lag and error factors and removes them 
+      before testing. Robust LM-lag tests for a lag effect <em>after</em> controlling for the possibility of error dependence, and 
+      robust LM-error does the reverse. The decision rule is:</p>
     </section>
+
+      <ul>
+        <li>If both standard tests are significant, look at the robust versions.</li>
+        <li>Whichever robust test remains significant (and the other doesn't) identifies the preferred model.</li>
+        <li>If both robust tests are significant, the higher-magnitude test statistic wins.</li>
+        <li>Recent spatial research (DRS Saputro et al.) has a way to correct for lag and error dependence when 
+          they are both present, and this is more robust than treating only the higher-magnitude test; however, 
+          the underlying math is much more complex.</li>
+      </ul>
 
     <hr class="section-rule"/>
 
