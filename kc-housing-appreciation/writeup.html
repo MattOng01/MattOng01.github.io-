@@ -49,6 +49,10 @@
       .coverage-grid { grid-template-columns: 1fr; }
     }
 
+    .equation{margin:1.75rem 0;text-align:center;font-size:1.05rem;}
+
+    .toc-sublist{margin:.35rem 0 .6rem 1rem;padding-left:.8rem;border-left:1px solid var(--rule);} .toc-sublist .toc-link{font-size:.92rem;}
+
     .section-rule {
       border: none;
       border-top: 1px solid var(--rule);
@@ -133,15 +137,15 @@
     <div class="findings">
       <div class="finding">
         <div class="finding-num">1</div>
-        <p>beta convergence exists</p>
+        <p>Lower-priced ZIP-codes converge toward higher-priced ones at roughly 3% per year, a rate that has held stable since 2012.</p>
       </div>
       <div class="finding">
         <div class="finding-num">2</div>
-        <p>Sigma convergence exists</p>
+        <p>Price dispersion narrowed overall, but reversed between 2007–2014 as the foreclosure crisis hit lower-tier markets hardest.</p>
       </div>
       <div class="finding">
         <div class="finding-num">3</div>
-        <p>spatial autocorrelation is a thing, too</p>
+        <p>Appreciation clusters geographically (Moran's I = 0.632), so comps should be pulled by radius rather than restricted to a single ZIP-code.</p>
       </div>
     </div>
   </section>
@@ -193,19 +197,23 @@
   <nav class="toc-sidebar" aria-label="On this page">
     <p class="toc-label">On this page</p>
     <ul class="toc-list">
-      <li><a class="toc-link" href="#beta-what">Beta Convergence</a></li>
-      <li><a class="toc-link" href="#beta-data">Data</a></li>
-      <li><a class="toc-link" href="#beta-regression">Regression</a></li>
-      <li><a class="toc-link" href="#beta-discussion">Discussion</a></li>
-      <li><a class="toc-link" href="#spatial-autocorrelation">Spatial Autocorrelation</a></li>
-      <li><a class="toc-link" href="#sigma-what">Sigma Convergence</a></li>
-      <li><a class="toc-link" href="#sigma-data">Sigma Data</a></li>
-      <li><a class="toc-link" href="#sigma-analysis">Sigma Analysis</a></li>
-      <li><a class="toc-link" href="#sigma-discussion">Sigma Discussion</a></li>
-      <li><a class="toc-link" href="#conclusions">Conclusions</a></li>
-      <li><a class="toc-link" href="#limitations">Limitations</a></li>
-      <li><a class="toc-link" href="#next-steps">Next Steps</a></li>
-    </ul>
+<li><a class="toc-link" href="#beta-what">Beta Convergence</a>
+<ul class="toc-sublist">
+<li><a class="toc-link" href="#beta-data">Data</a></li>
+<li><a class="toc-link" href="#beta-regression">Regression</a></li>
+<li><a class="toc-link" href="#beta-discussion">Discussion</a></li>
+<li><a class="toc-link" href="#spatial-autocorrelation">Spatial Autocorrelation</a></li>
+</ul></li>
+<li><a class="toc-link" href="#sigma-what">Sigma Convergence</a>
+<ul class="toc-sublist">
+<li><a class="toc-link" href="#sigma-data">Data</a></li>
+<li><a class="toc-link" href="#sigma-analysis">Analysis</a></li>
+<li><a class="toc-link" href="#sigma-discussion">Discussion</a></li>
+</ul></li>
+<li><a class="toc-link" href="#conclusions">Conclusions</a></li>
+<li><a class="toc-link" href="#limitations">Limitations</a></li>
+<li><a class="toc-link" href="#next-steps">Next Steps</a></li>
+</ul>
   </nav>
 
   <!-- Main content -->
@@ -215,7 +223,7 @@
     <section id="beta-what">
       <h2>Beta Convergence</h2>
       <h3>What It Is and Why It Matters</h3>
-<p>Originally developed in the economic growth literature, <<em>&beta;</em>-convergence describes the tendency 
+<p>Originally developed in the economic growth literature, <em>&beta;</em>-convergence describes the tendency 
   for poorer economies to grow faster than richer ones because of diminishing marginal returns to capital. 
   Applied to housing markets, the same framework predicts that lower-priced neighborhoods may experience 
   faster appreciation than expensive ones, gradually reducing differences in home values.</p>
@@ -225,7 +233,7 @@
         \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
       \]
 
-      <p>where  is the median home value in ZIP code  at the start of the study period and  is the value at the end.</p>
+      <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end.</p>
  
      
     </section>
@@ -326,15 +334,15 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
   <p>Following the standard transformation from the convergence literature (Barro & Sala-i-Martin), the annualized 
     convergence speed b is recovered from the estimated <em>&beta;</em> and the window length T as:</p>
 
-      <pre>[
+      <div class="equation">\[
 b = -\frac{\ln(1+\beta)}{T}
-]</pre>
+\]</div>
 
   <p>Standard errors on b were obtained via the delta method, using SE(b) ≈ SE(<em>&beta;</em>) / [(1+<em>&beta;</em>)·T], 
     with 95% confidence intervals constructed as b ± 1.96·SE(b).</p>
 
         <div class="table-embed">
-          <iframe src="tables/convergence_table"
+          <iframe src="tables/convergence_table.html"
             title="Annualized Log(growth)"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
@@ -351,12 +359,13 @@ b = -\frac{\ln(1+\beta)}{T}
 
               <div class="table-embed">
           <iframe src="tables/pvalue_comparisons_table.html"
-            title="Comparsion table"
+            title="Comparison table"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
       </div>
 
+    </section>
 
     <hr class="section-rule"/>
 
@@ -384,7 +393,7 @@ b = -\frac{\ln(1+\beta)}{T}
 
         <div class="table-embed">
           <iframe src="tables/pvalue_comparisons_table.html"
-            title="Comparsion table"
+            title="Comparison table"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
@@ -426,9 +435,7 @@ b = -\frac{\ln(1+\beta)}{T}
         Therefore, my weight matrix followed a Queen Contiguity pattern. In this type of matrix, the weight assigned to a ZIP-code depends on the number 
         of direct neighboring ZIP-codes it has, and the rows are standardized so that each ZIP's neighbors are weighted equally and sum to one. 
         No islands (zero-neighbor ZIPs) were present. The average ZIP had approximately 5.2 neighbors. The full spatial weights matrix is available in 
-        the project repository. [add hyperlink to file] Below is a sample of what the matrix looks like:</p>
-        
-    <p>[add picture of weights matrix] also have the zipcode map here?</p>
+        the <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">project repository</a>.</p>
 
 <h4>Moran's I</h4>
       <p>Moran's I was applied to the OLS residuals to test whether the regression residuals from the beta convergence model are spatially clustered. 
@@ -438,12 +445,12 @@ b = -\frac{\ln(1+\beta)}{T}
 
       <p>Formally, Moran's I is calculated as:</p>
 
-      <pre>[
+      <div class="equation">\[
 I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - \bar{e})(e_j - \bar{e})}{\sum_{i}(e_i - \bar{e})^2}
-]</pre>
+\]</div>
 
-      <p>where (e_i) is the OLS residual for ZIP-code (i), (w_{ij}) is the weight between ZIP (i) and (j) from the Queen contiguity matrix 
-        described above, and (N) is the number of ZIPs. In plain terms, the numerator asks whether the residuals of neighboring ZIP-codes 
+      <p>where \(e_i\) is the OLS residual for ZIP-code (i), \(w_{ij}\) is the weight between ZIP (i) and (j) from the Queen contiguity matrix 
+        described above, and \(N\) is the number of ZIPs. In plain terms, the numerator asks whether the residuals of neighboring ZIP-codes 
         move together, and the denominator normalizes this by the overall variance of the residuals.</p>
 
       <p>I ran Moran's I on the residuals from the primary 2012–2026 beta convergence regression using the Queen contiguity weights matrix. 
@@ -522,13 +529,12 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
     (SEM) is estimated as the correction. The SEM keeps the same regression structure as the original beta convergence model, but adds a term that 
     explicitly models spatial autocorrelation in the error:</p>
 
-      <pre>[
-\log!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta,\log(P_{i,0}) + u_i, \quad u_i = \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
-]
-</pre>
+      <div class="equation">\[
+\log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + u_i, \quad u_i = \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
+\]</div>
 
   <p>Here, (<em>&lambda;</em>) captures how strongly the error in one ZIP-code is tied to errors in its neighbors, using the same Queen contiguity weights 
-    matrix from the Moran's I and LM steps. If (\lambda) is close to zero, spatial structure isn't doing much work and OLS was fine all along. 
+    matrix from the Moran's I and LM steps. If \(\lambda\) is close to zero, spatial structure isn't doing much work and OLS was fine all along. 
     If (<em>&lambda;</em>) is large, it suggests omitted spatially correlated factors may be exerting a real pull on the residuals, and 
     OLS standard errors can't be trusted.</p>
 
@@ -546,7 +552,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
 
       <div class="table-embed">
           <iframe src="tables/ols_vs_sem.html"
-            title="OLS verses SEM Test"
+            title="OLS versus SEM Test"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
@@ -571,11 +577,12 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
         ZIP codes is declining over time. Where beta convergence tests the rate relationship between initial price and subsequent growth, 
         sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:</p>
 
-      <pre>  \[
+      <div class="equation">\[
         \sigma_t = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\!\left(\log P_{i,t} - \overline{\log P_t}\right)^2}
-      \]</pre>
+      \]</div>
     
       <p>is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence.</p>
+    </section>
   <hr class="section-rule"/>
       
   <section id="sigma-data">
@@ -676,7 +683,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
         <li><strong>Sample bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
         <li><strong>ZCTA vs. ZIP codes.</strong> Zillow reports at the ZIP code level; Census boundaries use ZCTAs, which do not always align exactly with USPS ZIP codes. Boundary discrepancies are minor but not zero.</li>
         <li><strong>OLS assumptions.</strong> Standard OLS convergence regressions assume independent errors. Spatial autocorrelation testing (see above) evaluates whether this assumption holds; results should be interpreted accordingly.</li>
-        <li><strong>OLS assumptions, cont.</strong>OLS also requires that no there are no ommitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly a unconditional convergence test. No casual inference should be drawn.</li>
+        <li><strong>OLS assumptions, cont.</strong>OLS also requires that there be no omitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly an unconditional convergence test. No causal inference should be drawn.</li>
         <li><strong>Bias.</strong>The primary model still has missing data. Although 92% of ZIP-codes have data for the 2012-2026 period, the missing data may not be random and correlate to under-priced ZIP-codes.</li>
         <li><strong>Time Units</strong>I chose January as the representative data point for each year. This was arbitrary as data for each month was available (up to June 2026).</li>
         <li><strong>Single metro.</strong> Findings are specific to the Kansas City MSA and may not generalize to other metro areas with different supply elasticities, demographic compositions, or spatial structures.</li>
@@ -690,12 +697,12 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
       <h2>Next Steps</h2>
       <p>This analysis is strictly an unconditional convergence test. It shows that convergence is happening but not why. A natural next step would be to find 
         conditional convergence by identifying covariates that explain appreciation directly and running them through the spatial errors framework. These 
-        variables could include school quality, transit access, grocery store access [hyperlink to that project], and new 
+        variables could include school quality, transit access, <a href="https://matthewong01.github.io/kc-food-access" target="_blank" rel="noopener noreferrer">grocery store access</a>, and new 
         construction activity. Adding these would improve the model’s explanatory power and begin to untangle which omitted factors are driving the spatial error 
         clustering.</p>
       <p>The sigma convergence periods were chosen visually. This is not necessarily wrong, but there is a formal test to identify break points 
         (the Bai-Perron test). Future work would incorporate that.</p>
-      <p>his analysis relies on a single observation per year (January ZHVI), rather than the full monthly series available from Zillow. Given that beta and 
+      <p>This analysis relies on a single observation per year (January ZHVI), rather than the full monthly series available from Zillow. Given that beta and 
         sigma convergence are measured over multi-year windows, within-year seasonal variation in home prices is unlikely to meaningfully affect the estimated 
         convergence coefficients. Testing this directly with monthly observations, potentially using a panel or time-series specification rather than repeated 
         cross-sections, is a natural robustness check for future work</p>
