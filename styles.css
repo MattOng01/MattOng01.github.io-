@@ -465,6 +465,20 @@ tr:last-child td { border-bottom: none; }
   border-top: 1px solid var(--rule);
 }
 
+/* ── Small HTML Table Embed ── */
+.table-embed {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.table-embed iframe {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  border: none;
+}
+
 /* ── Full-Width Map Embed ─────────────────────────────────────────────────
    FIX: Source-order bug corrected. Previously the base .map-embed styles
    were defined AFTER their @media overrides (base at lines 387-403,
