@@ -310,60 +310,66 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
 
     <p>The regression results are reported below.</p>
       <div class="table-embed">
-  <iframe src="tables/beta_convergence.html"
+        <iframe src="tables/beta_convergence.html"
           title="Beta Convergence Regression Results"
           scrolling="no"
           onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
-  </iframe>
+        </iframe>
+      </div>
 
   <p>The four beta convergence regressions above span different time horizons — 25, 14, 8, and 6 years — but each regresses <em>cumulative</em> 
     log growth over its full window on initial log price.</p>
-  <p>This matters because <em>&beta;</em> from a cumulative-growth regression isn't a "rate" in the way it might appear. Formally,</p>
-        <pre> <em>&beta;</em>_T = −(1 − e^(−bT)),</pre>
-</div>
+  <p>This distinction is important because the estimated coefficient,<em>&beta;</em>, from a cumulative-growth regression is not directly 
+    interpretable as an annual rate of convergence. Formally,</p>
 
-  <p>where b is the true underlying annual convergence rate and T is the length of the window. <em>&beta;</em>_T mechanically 
-    grows as T grows because there is a longer window for mean reversion to accumulate into the coefficient (which we expect 
-    for most time-series variables). This means the raw <em>&beta;</em>'s reported above cannot be compared directly to ask 
-    whether convergence is speeding up or slowing down over time. Any difference in magnitude can (at least partially) be 
-    attributable to window length alone, not to a genuine change in the underlying process.</p>
+      \[
+        \beta_T = -(1 - e^{-bT})
+      \]
 
-  <p>To make the four periods comparable, each <em>&beta;</em> needs to be converted to an annualized convergence speed. 
-    Annualization allows coefficients estimated over different time horizons to be interpreted on a common annual basis. </p>
 
-  <p>Following the standard transformation from the convergence literature (Barro & Sala-i-Martin), the annualized 
-    convergence speed b is recovered from the estimated <em>&beta;</em> and the window length T as:</p>
+  <p>where b is the underlying annual convergence speed and T is the length of the study period. Because convergence accumulates over time, 
+    the magnitude of <em>&beta;</em> increases mechanically as the observation window becomes longer. Consequently, differences in the raw 
+    coefficients may simply reflect differences in window length rather than changes in the underlying convergence process.</p>
+  <p>To place all four study periods on a common basis, each estimated coefficient was converted to an annualized convergence speed using 
+    the standard transformation from the convergence literature (Barro & Sala-i-Martin):</p>
 
-      <div class="equation">\[
-b = -\frac{\ln(1+\beta)}{T}
-\]</div>
+        <div class="equation">\[
+          b = -\frac{\ln(1+\beta)}{T}
+          \]</div>
 
-  <p>Standard errors on b were obtained via the delta method, using SE(b) ≈ SE(<em>&beta;</em>) / [(1+<em>&beta;</em>)·T], 
-    with 95% confidence intervals constructed as b ± 1.96·SE(b).</p>
+  <p>Standard errors for the annualized convergence speeds were obtained using the delta method, with 95% confidence intervals 
+    calculated as b ± 1.96·SE(b).</p>
 
         <div class="table-embed">
-          <iframe src="tables/convergence_table.html"
-            title="Annualized Log(growth)"
+          <iframe src="tables/standardized_convergence.html"
+            title="Raw <em>&beta;</em> coefficients + annualized convergence speeds"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
-           <p class="figure-caption">Beta convergence coefficients and annualized convergence speed by study period. 
-             Raw <em>&beta;</em> is not directly comparable across periods of different length; annualized 
-             speed (b = −ln(1+<em>&beta;</em>)/T) adjusts for this.</p>
+           <p class="figure-caption">Beta convergence coefficients and annualized convergence speeds by study period. Raw <em>&beta;</em> coefficients 
+             reflect cumulative growth over different time horizons and are therefore not directly comparable. Annualized convergence speeds 
+             place all estimates on a common annual basis.</p>
       </div>
 
-  <p>Once annualized, the picture looks different from the raw <em>&beta;</em>'s alone: 2012–2026, 2018–2026, 
-    and 2020–2026 converge to a similar range (roughly 2.9%–3.3% per year), 
-    while 2001–2026 sits noticeably lower, at approximately 1.1% per year.</p>
-  <p>The three post-2012 estimates are close enough in raw terms to look interchangeable.</p>
+  <p>The table shows that annualization substantially changes the comparison across study periods. While the raw β coefficients differ considerably 
+    because of the varying lengths of the estimation windows, the annualized convergence speeds for the 2012–2026, 2018–2026, and 2020–2026 samples 
+    cluster within a narrow range of approximately 2.9–3.3% per year. In contrast, the 2001–2026 sample exhibits a noticeably slower annualized 
+    convergence speed of approximately 1.1% per year. Although the post-2012 estimates appear similar, formal statistical testing is required to 
+    determine whether these differences exceed sampling variability.</p>
 
-              <div class="table-embed">
-          <iframe src="tables/pvalue_comparisons_table.html"
-            title="Comparison table"
+      <div class="table-embed">
+          <iframe src="tables/pvalue_standardized_convergence.html"
+            title="Pairwise z-tests of annualized convergence speeds"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
+          <p class="figure-caption">Pairwise tests of equality of annualized convergence speeds. The table reports z-tests comparing the estimated 
+            annual convergence rates across study periods.</p>
       </div>
+
+    <p>The pairwise comparisons indicate that the annualized convergence speeds estimated for the 2012–2026, 2018–2026, and 2020–2026 periods are not 
+      statistically distinguishable from one another (all p > 0.15). By contrast, each post-2012 estimate differs significantly from 
+      the annualized convergence speed estimated for the full 2001–2026 period (all p < 0.001).</p>
 
     </section>
 
@@ -372,44 +378,24 @@ b = -\frac{\ln(1+\beta)}{T}
     <!-- ── Beta: Discussion ── -->
     <section id="beta-discussion">
       <h3>Results and Discussion</h3>
-      <p>All four study periods show a statistically significant negative coefficient on initial log home price, providing 
-        consistent evidence of beta convergence across every window tested. In raw form, the magnitude of <em>&beta;</em> 
-        varies substantially across periods — from −0.368 (2012–2026) to −0.161 (2020–2026) — but this variation is not 
-        directly interpretable, since each <em>&beta;</em> reflects cumulative growth over windows of different lengths 
-        (14, 8, and 6 years, respectively). A longer window mechanically produces a larger-magnitude <em>&beta;</em> 
-        even if the underlying rate of convergence is unchanged, so comparing these coefficients at face value risks 
-        confusing a statistical artifact of window length for a genuine economic trend.</p>
+      <p>All four study periods produce statistically significant negative coefficients on initial log home price, providing 
+        consistent evidence of beta convergence across every estimation window. After adjusting for differences in window 
+        length, the evidence suggests that the annual pace of convergence has remained remarkably stable throughout the post-2012 period. 
+        Despite substantial differences in housing market conditions—including the post-Financial Crisis recovery, historically low 
+        mortgage rates, inventory shortages, remote-work migration, and the COVID-19 housing boom—the estimated convergence speed remains 
+        consistently near 3% per year. Rather than indicating that convergence strengthened or weakened over successive subperiods, the results
+        suggest that the underlying convergence process has been robust across a variety of market environments.</p>
       
-      <p>Once converted to an annualized convergence speed the picture changes: 2012–2026, 2018–2026, and 2020–2026 
-        converge to a similar annual rate of roughly 2.9%–3.3%, and pairwise z-tests confirm these three estimates 
-        are not statistically distinguishable from one another (all p > 0.15). Rather than convergence weakening as
-        the Financial Crisis recovery matured, the more accurate reading is that the rate of convergence has been 
-        stable across the post-2012 period, including through the Pandemic-era housing market, despite that market 
-        being driven by a distinct set of forces (remote work migration, inventory shortages, historically low 
-        interest rates, and cash buyers disproportionately concentrated in affluent neighborhoods). That 
-        stability is itself a notable finding: it suggests the underlying convergence process in the KC metro 
-        has been robust to a fairly different demand environment, rather than being an artifact of 
-        Financial-Crisis-specific dynamics.</p>
-
-        <div class="table-embed">
-          <iframe src="tables/pvalue_comparisons_table.html"
-            title="Comparison table"
-            scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
-          </iframe>
-      </div>
+      <p>The 2001–2026 estimate presents a different picture, with an annualized convergence speed of approximately 1.1% per year that is 
+        significantly lower than each of the post-2012 estimates. However, this finding should be interpreted cautiously. The 2001–2026 
+        regression relies on only 62 ZIP codes with available historical price data, compared with approximately 90% coverage in the later 
+        samples (see <a href="#limitations">Limitations</a>). Because these ZIP codes are not randomly distributed across the metropolitan area, 
+        the slower estimated convergence speed may reflect sample composition rather than a genuinely different convergence regime. A more 
+        complete pre-2012 panel would be required to distinguish between these explanations.</p>
       
-      <p>The 2001–2026 full-cycle estimate stands apart: its annualized speed (≈1.1%/year) is significantly lower 
-        than all three post-2012 estimates (all p < 0.001), a gap far too large and precise to attribute to noise. 
-          However, this period also relies on only 62 of 200 ZIP-codes with non-random coverage (see <a href="#limitations">Limitations</a>.), 
-          so the lower estimate cannot yet be read as evidence that convergence
-          was genuinely slower in the earlier 2000s–2010s regime. It may reflect that the 62 ZIPs with early 
-          data are a systematically different subset of the metro (e.g., more established, higher-coverage suburbs) 
-          rather than a representative sample of the full convergence process. Disentangling a true regime difference 
-          from this coverage-driven composition effect requires a more complete pre-2012 panel and is left to future 
-          work.</p>
-      <p>Given this pattern, the 2012–2026 period was selected as the primary specification for further analysis because it spans a coherent, 
-        economically meaningful regime while including price data for over 90% of ZIP-codes.</p>
+      <p>Given this tradeoff between historical coverage and sample representativeness, the 2012–2026 specification was selected as the primary 
+        model for the remainder of the analysis. This period captures a coherent post-Financial Crisis housing regime while retaining observations 
+        for more than 90% of ZIP codes in the Kansas City metropolitan area.</p>
     </section>
 
     <hr class="section-rule"/>
@@ -437,6 +423,15 @@ b = -\frac{\ln(1+\beta)}{T}
         No islands (zero-neighbor ZIPs) were present. The average ZIP had approximately 5.2 neighbors. The full spatial weights matrix is available in 
         the <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">project repository</a>.</p>
 
+      <div class="table-embed">
+          <iframe src="tables/weight_matrix_sample.html"
+            title="Sample Weights Matrix"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+          <p class="figure-caption">This are the weights for five ZIP-codes: 64108, 64109m 64110, 64111, and 64112. ZIP-code 64112 does not touch 64108, so their weight is 0.</p>
+      </div>
+
 <h4>Moran's I</h4>
       <p>Moran's I was applied to the OLS residuals to test whether the regression residuals from the beta convergence model are spatially clustered. 
         Essentially, whether ZIP-codes that appreciate faster than the model predicts (positive residuals) tend to sit next to other ZIP-codes 
@@ -458,7 +453,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
           value, suggesting that residuals are clustering geographically, not scattered randomly across the metro.</p>
 
       <div class="table-embed">
-          <iframe src="tables/moran_2012.html"
+          <iframe src="tables/moran_I_test.html"
             title="Moran's I Results"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
