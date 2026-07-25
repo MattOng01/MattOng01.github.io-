@@ -244,7 +244,10 @@
           <iframe src="tables/coverage_table.html"
             title="ZIP Code Coverage by Study Period"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
       </div>
       <p>The period 2001-2026 includes all possible years but has the most missing data. The first year where over 90 percent of ZIP-codes report data is 2012. 
@@ -301,8 +304,11 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
         <iframe src="tables/beta_convergence.html"
           title="Beta Convergence Regression Results"
           scrolling="no"
-          onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
-        </iframe>
+          onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
+          </iframe>
       </div>
 
   <p>The four beta convergence regressions above span different time horizons — 25, 14, 8, and 6 years — but each regresses <em>cumulative</em> 
@@ -332,7 +338,10 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
           <iframe src="tables/standardized_convergence.html"
             title="Raw <em>&beta;</em> coefficients + annualized convergence speeds"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
            <p class="figure-caption">Beta convergence coefficients and annualized convergence speeds by study period. Raw <em>&beta;</em> coefficients 
              reflect cumulative growth over different time horizons and are therefore not directly comparable. Annualized convergence speeds 
@@ -415,7 +424,10 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
           <iframe src="tables/weight_matrix_sample.html"
             title="Sample Weights Matrix"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
           <p class="figure-caption">This are the weights for five ZIP-codes: 64108, 64109m 64110, 64111, and 64112. ZIP-code 64112 does not touch 64108, so their weight is 0.</p>
       </div>
@@ -444,7 +456,10 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
           <iframe src="tables/moran_I_test.html"
             title="Moran's I Results"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
       </div>
 
@@ -497,7 +512,10 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
           <iframe src="tables/lm_test.html"
             title="Lagrange Multiplier Test Results"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
       </div>
 
@@ -537,7 +555,10 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
           <iframe src="tables/ols_vs_sem.html"
             title="OLS versus SEM Test"
             scrolling="no"
-            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+            onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
           </iframe>
       </div>
 
@@ -600,8 +621,11 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
         <iframe src="tables/sigma_convergence.html" 
           title="Sigma Convergence Regression Results"
           scrolling="no"
-          onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'"></iframe>
-      </div>
+          onload="
+                  this.style.width = this.contentDocument.body.scrollWidth + 'px';
+                  this.style.height = this.contentDocument.body.scrollHeight + 'px';
+                  ">
+          </iframe>
 
       <div class="figure">
         <img class="figure-real" src="figures/sigma_map2.png" alt="Sigma convergence with fitted regime trends"/>
