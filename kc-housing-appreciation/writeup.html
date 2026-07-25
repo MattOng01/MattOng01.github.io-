@@ -491,7 +491,6 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
       beneficial here is that the robust form of the test identifies correlation between the lag and error factors and removes them 
       before testing. Robust LM-lag tests for a lag effect <em>after</em> controlling for the possibility of error dependence, and 
       robust LM-error does the reverse. The decision rule is:</p>
-    </section>
 
       <ul>
         <li>If both standard tests are significant, look at the robust versions.</li>
@@ -502,6 +501,66 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
           the underlying math is much more complex.</li>
       </ul>
 
+   <p><strong>What I found</strong></p>
+      <pre>lm_tests <- lm.LMtests(beta_model, lw_queen_2012, test = "all", zero.policy = TRUE)</pre>
+         <div class="table-embed">
+          <iframe src="tables/lm_test.html"
+            title="Lagrange Multiplier Test Results"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+      </div>
+
+  <p>Running all four tests on the 2012–2026 beta convergence residuals, I found that both the classic Error and Lag 
+    models were statistically significant; however, once running the robust test (which controls for correlation between 
+    the lag and errors), only the Error model produced a statistically significant result. This indicates that the spatial 
+    dependence identified by Moran's I is better characterized as an omitted, spatially-correlated factor than as direct spillover in the 
+    outcome itself. This points to the <strong>Spatial Error Model</strong> as the appropriate correction, which is estimated in the next section.</p>
+
+<p><strong>Spatial Error Model</strong></p>
+  <p>The robust LM-error test identified the omitted-variable form of spatial dependence as the preferred specification, so the Spatial Error Model 
+    (SEM) is estimated as the correction. The SEM keeps the same regression structure as the original beta convergence model, but adds a term that 
+    explicitly models spatial autocorrelation in the error:</p>
+
+      <pre>[
+\log!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta,\log(P_{i,0}) + u_i, \quad u_i = \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
+]
+</pre>
+
+  <p>Here, (<em>&lambda;</em>) captures how strongly the error in one ZIP-code is tied to errors in its neighbors, using the same Queen contiguity weights 
+    matrix from the Moran's I and LM steps. If (\lambda) is close to zero, spatial structure isn't doing much work and OLS was fine all along. 
+    If (<em>&lambda;</em>) is large, it suggests omitted spatially correlated factors may be exerting a real pull on the residuals, and 
+    OLS standard errors can't be trusted.</p>
+
+  <pre>error_model_2012 <- errorsarlm(growth_2012_2026 ~ log_price_2012, 
+                               data = spatial_df_2012, 
+                               listw = lw_queen_2012, 
+                               zero.policy = TRUE)
+</pre>
+
+  <p>Estimating the SEM on the 2012–2026 data returns (<em>&lambda;</em> = 0.533) (p &lt; 0.001), confirming that spatial dependence in the residuals is both 
+    real and substantial — consistent with the Moran's I result. The coefficient on initial log price is <em>&beta;</em> = −0.361 (p &lt; 0.001), close 
+      to but not identical to the original OLS estimate of <em>&beta;</em> = −0.368. Convergence still holds under the spatially corrected model, and 
+      its magnitude is essentially unchanged, but the standard errors are now valid, since the model no longer assumes the ZIP-codes are statistically 
+      independent of one another. </p>
+
+      <div class="table-embed">
+          <iframe src="tables/ols_vs_sem.html"
+            title="OLS verses SEM Test"
+            scrolling="no"
+            onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
+          </iframe>
+      </div>
+
+  <p>The likelihood ratio test comparing the SEM to OLS is strongly significant (LR = 34.91, p &lt; 0.001), and AIC falls 
+    from -234.54 under OLS to -267.45 under the SEM — both indicating the spatial error specification is a meaningfully
+    better fit, not just a technical correction.</p>
+
+  <p><strong>Takeaway:</strong> accounting for spatial autocorrelation does not overturn the beta convergence finding. Lower-priced ZIP-codes are growing 
+    faster than expensive ones at essentially the same rate, but it does mean the original OLS model was understating the uncertainty around that 
+    estimate. The convergence result survives the correction; the confidence in the <em>precision</em> of that result did not, until now.</p>
+
+    </section>
     <hr class="section-rule"/>
 
     <!-- ── Sigma: What it is ── -->
@@ -510,41 +569,33 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
       <h3>What It Is and Why It Matters</h3>
       <p>Sigma convergence (&sigma;-convergence) measures whether the <em>cross-sectional dispersion</em>, or the range of home values across 
         ZIP codes is declining over time. Where beta convergence tests the rate relationship between initial price and subsequent growth, 
-        sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:
+        sigma convergence directly tracks whether the distribution of prices is compressing. Formally, sigma convergence is present when:</p>
 
-      \[
+      <pre>  \[
         \sigma_t = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\!\left(\log P_{i,t} - \overline{\log P_t}\right)^2}
-      \]
-
-       is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence.</p>
-
-    </section>
-
-    <hr class="section-rule"/>
-
-    <!-- ── Sigma: Data ── -->
-    <section id="sigma-data">
+      \]</pre>
+    
+      <p>is declining over time. Beta convergence is a necessary but not sufficient condition for sigma convergence.</p>
+  <hr class="section-rule"/>
+      
+  <section id="sigma-data">
       <h3>Data</h3>
-      <p>Annual \(\sigma_t\) is computed for each year 2000–2026 using all ZIPs with non-missing Zillow ZHVI values in that year. 
-        The full time series is plotted below.</p>
-
+      <p>The annual standard deviation of log home price is computed for each year 2000–2026 using all ZIPs with non-missing 
+        Zillow ZHVI values in that year. The full time series is plotted below.</p>
       <div class="figure">
         <img class="figure-real" src="figures/sigma_map1.png" alt="Sigma convergence over time, 2000–2026"/>
         <p class="figure-caption">Figure 5. Cross-sectional standard deviation of log home values across KC MSA ZIP codes, 2000–2026. Shading indicates four identified convergence regimes.</p>
       </div>
+      <p>Again, these sub-periods are economically significant:</p>
+        <ul>
+          <li><strong>2000–2026:</strong> The full model.</li>
+          <li><strong>2000-2006:</strong>Pre-Financial Crisis expansion, where broad appreciation was driven by subprime credit expansion. Negative slope, indicating price compression.</li>
+          <li><strong>2007-2014:</strong>The Financial Crisis and aftermath. Foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
+          <li><strong>2015-2026:</strong>Post-recovery through the Pandemic. Sustained compression as demand shifted from expensive to affordable ZIPs – negative slope, again.</li>
+        </ul>
 
-      <p>The graph reveals four sub-periods were used to explore Sigma Convergence. Again, these sub-periods are economically significant:</p>
-      <ul>
-        <li><strong>2000–2026</strong>: The full model.</li>
-        <li><strong>2000–2006</strong>: Pre-Financial Crisis expansion, where broad appreciation was driven by subprime credit expansion. Negative slope, indicating price compression.</li>
-        <li><strong>2007–2014</strong>: The Financial Crisis and aftermath. Foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
-        <li><strong>2015–2026</strong>: Post-recovery through the Pandemic. Sustained compression as demand shifted from expensive to affordable ZIPs – negative slope, again.</li>
-      </ul>
-    </section>
-
-    <hr class="section-rule"/>
-
-    <!-- ── Sigma: Analysis ── -->
+   </section>
+<hr class="section-rule"/>
     <section id="sigma-analysis">
       <h3>Analysis</h3>
       <p>Linear time trends are estimated within each sub-period to characterize the direction and pace of dispersion change:</p>
@@ -592,7 +643,25 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Conclusions ── -->
     <section id="conclusions">
       <h2>Conclusions</h2>
-      <p>take aways -- economics, policy, real estate, ????</p>
+      <p><strong>Real Estate.</strong> For an investor or advisory context, the practical read is that lower-priced ZIP-codes experienced faster 
+        appreciation, and sigma convergence indicates that this faster growth coincided with a reduction in price dispersion over most of the sample. 
+        The spatial autocorrelation results reinforce that this appreciation isn't ZIP-code-specific; it clusters geographically, meaning the relevant 
+        unit of analysis for identifying "catching up" markets is closer to a corridor or district than an individual ZIP-code.</p>
+      <p>The spatial autocorrelation results are also consistent with the standard practice of pulling comps within an x-mile radius of a subject property, 
+        rather than restricting a primary market area to a single ZIP-code. Appreciation clusters geographically, so a radius-based approach captures the 
+        spillover effects a ZIP-bounded comp set would miss.</p>
+      <p><strong>Economics.</strong> The evidence across both beta and sigma convergence, and now confirmed under the spatially corrected model, 
+        supports a real but conditional convergence process in the Kansas City MSA. Lower-priced ZIP-codes are growing faster than expensive ones 
+        (<em>&beta;</em> = −0.361 under the spatial error model), and the cross-sectional spread in prices is narrowing over most of the sample period. 
+        But the sigma convergence results show this isn't a smooth, mechanical process; it reversed during 2007–2014, when the Financial Crisis hit 
+        lower-tier markets hardest and temporarily widened the gap it had spent the prior decade closing. Convergence in housing markets, like in 
+        Solow's original growth framework, holds on average but is vulnerable to asymmetric economic shocks.</p>
+      <p><strong>Policy.</strong>The convergence finding is consistent with a metro area where home prices in lower-priced ZIP-codes are rising. 
+        But the 2007–2014 reversal is a caution against reading convergence as inevitable: it can be undone by external shocks that hit lower-value 
+        housing stock hardest, such as foreclosure waves or credit tightening. This suggests convergence should be treated as a trend that policy can 
+        support or undercut, not a background process planners can assume will simply continue. The spatial clustering also highlights the importance 
+        of place-based investments, such as transit, schools, or amenities that will plausibly spill into adjacent ZIP-codes rather than targeting single 
+        ZIP-codes in isolation.</p>
     </section>
 
     <hr class="section-rule"/>
@@ -601,10 +670,12 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <section id="limitations">
       <h2>Limitations</h2>
       <ul>
-        <li><strong>Survivorship bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
+        <li><strong>Sample bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
         <li><strong>ZCTA vs. ZIP codes.</strong> Zillow reports at the ZIP code level; Census boundaries use ZCTAs, which do not always align exactly with USPS ZIP codes. Boundary discrepancies are minor but not zero.</li>
         <li><strong>OLS assumptions.</strong> Standard OLS convergence regressions assume independent errors. Spatial autocorrelation testing (see above) evaluates whether this assumption holds; results should be interpreted accordingly.</li>
-        <li><strong>OLS assumptions, cont.</strong>OLS also requires that no there are no ommitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly a unconditional convergence test. No casual inference should be drawn. 
+        <li><strong>OLS assumptions, cont.</strong>OLS also requires that no there are no ommitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly a unconditional convergence test. No casual inference should be drawn.</li>
+        <li><strong>Bias.</strong>The primary model still has missing data. Although 92% of ZIP-codes have data for the 2012-2026 period, the missing data may not be random and correlate to under-priced ZIP-codes.</li>
+        <li><strong>Time Units</strong>I chose January as the representative data point for each year. This was arbitrary as data for each month was available (up to June 2026).</li>
         <li><strong>Single metro.</strong> Findings are specific to the Kansas City MSA and may not generalize to other metro areas with different supply elasticities, demographic compositions, or spatial structures.</li>
       </ul>
     </section>
@@ -614,7 +685,17 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <!-- ── Next Steps ── -->
     <section id="next-steps">
       <h2>Next Steps</h2>
-      <p>figure out something interesting</p>
+      <p>This analysis is strictly an unconditional convergence test. It shows that convergence is happening but not why. A natural next step would be to find 
+        conditional convergence by identifying covariates that explain appreciation directly and running them through the spatial errors framework. These 
+        variables could include school quality, transit access, grocery store access [hyperlink to that project], and new 
+        construction activity. Adding these would improve the model’s explanatory power and begin to untangle which omitted factors are driving the spatial error 
+        clustering.</p>
+      <p>The sigma convergence periods were chosen visually. This is not necessarily wrong, but there is a formal test to identify break points 
+        (the Bai-Perron test). Future work would incorporate that.</p>
+      <p>his analysis relies on a single observation per year (January ZHVI), rather than the full monthly series available from Zillow. Given that beta and 
+        sigma convergence are measured over multi-year windows, within-year seasonal variation in home prices is unlikely to meaningfully affect the estimated 
+        convergence coefficients. Testing this directly with monthly observations, potentially using a panel or time-series specification rather than repeated 
+        cross-sections, is a natural robustness check for future work</p>
     </section>
 
   </div><!-- /.project-content -->
