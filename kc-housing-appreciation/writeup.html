@@ -429,7 +429,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
-          <p class="figure-caption">This are the weights for five ZIP-codes: 64108, 64109m 64110, 64111, and 64112. ZIP-code 64112 does not touch 64108, so their weight is 0.</p>
+          <p class="figure-caption">These are the weights for five ZIP-codes: 64108, 64109, 64110, 64111, and 64112. ZIP-code 64112 does not touch 64108, so their weight is 0.</p>
       </div>
 
 <h4>Moran's I</h4>
@@ -687,12 +687,11 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
     <section id="limitations">
       <h2>Limitations</h2>
       <ul>
-        <li><strong>Sample bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods likely understate the true rate of convergence.</li>
+        <li><strong>Sample bias.</strong> ZIPs excluded from earlier periods due to missing Zillow coverage are disproportionately low-value and low-turnover markets — the same ZIPs most likely to be driving the convergence result. Estimates for earlier periods may understate the true rate of convergence.</li>
         <li><strong>ZCTA vs. ZIP codes.</strong> Zillow reports at the ZIP code level; Census boundaries use ZCTAs, which do not always align exactly with USPS ZIP codes. Boundary discrepancies are minor but not zero.</li>
         <li><strong>OLS assumptions.</strong> Standard OLS convergence regressions assume independent errors. Spatial autocorrelation testing (see above) evaluates whether this assumption holds; results should be interpreted accordingly.</li>
         <li><strong>OLS assumptions, cont.</strong>OLS also requires that there be no omitted variables. There are obviously spatial and non-spatial variables that will impact appreciation rates. This is strictly an unconditional convergence test. No causal inference should be drawn.</li>
         <li><strong>Bias.</strong>The primary model still has missing data. Although 92% of ZIP-codes have data for the 2012-2026 period, the missing data may not be random and correlate to under-priced ZIP-codes.</li>
-        <li><strong>Time Units</strong>I chose January as the representative data point for each year. This was arbitrary as data for each month was available (up to June 2026).</li>
         <li><strong>Single metro.</strong> Findings are specific to the Kansas City MSA and may not generalize to other metro areas with different supply elasticities, demographic compositions, or spatial structures.</li>
       </ul>
     </section>
