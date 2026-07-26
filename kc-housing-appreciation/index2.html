@@ -109,14 +109,64 @@
     <p>That is the core question of this project. And it has important implications for home owners, real estate developers, investors, and policy makers. In
     investigating this question for Kansas City between 2000 and 2026, I uncovered two seperate but connected phanomna: lower-priced ZIP-codes are growing faster
     than higher-priced ones (known as <em>Beta Convergenvce</em>) and the gap is shrinking (known as <em>Sigma Convergence</em>).</p>
+  </section>
 
-    <p>This investigation looks at the natural log of home price – essentially the growth rate. The regression specification is defined as:</p>
+  <section id="key-takeaways">
+    <h2>Key Takeaways</h2>
+    <div class="findings">
+      <div class="finding">
+        <div class="finding-num">1</div>
+        <p>Lower-priced ZIP-codes converge toward higher-priced ones at roughly 3% per year, a rate that has held stable since 2012.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-num">2</div>
+        <p>Price dispersion narrowed overall, but reversed between 2007–2014 as the foreclosure crisis hit lower-tier markets hardest.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-num">3</div>
+        <p>Appreciation clusters geographically (Moran's I = 0.632), so comps should be pulled by radius rather than restricted to a single ZIP-code.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Beta Convergence</h2>
+
+    <p>Evidence for Beta convergence appears when the natural log of price appercaition is inversely correlated with starting price - a suggestion that ZIP-codes with
+      low initial home prices are apperciating quickly.
+
+      <div class="figure">
+          <img class="figure-real" src="figures/Log_appreciation_initial.png"/>
+          <p class="figure-caption">Figure 1. Beta convergence is evident when initial price is negatively correlated with apperciation rate.</p>
+      </div>
+    
+
+    <p> It can also be helpful to map the apperciation rate by ZIP-code to understand the spatial relationships – is one ZIP-code's apperciation rate affected by its location or factors within an adjoining ZIP-code? Spatial relationships are important for this type of 
+      economics because they risk biasing both coefficients and error terms. I used Moran's I to formally test for this and ultamitely addressed spatial effects using a Spatial Error Model.</p>
+
+      <div class="figure">
+          <img class="figure-real" src="figures/log_appreciation_zipcode.png"/>
+          <p class="figure-caption">Figure 2. Appreciation rate is in blue. There appears to be some spatial clustering.</p>
+      </div>
+  
+
+    <p>Formaully, the regression specification for beta convergence is defined as:</p>
 
       \[
         \log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + \varepsilon_i
       \]
 
       <p>where \(P_{i,0}\) is the median home value in ZIP code \(i\) at the start of the study period and \(P_{i,t}\) is the value at the end.</p>
+  </section>
 
-    <p>I looked at the growth trends across four time frames</p>
+  <section>
+    <h2>Sigma Convergence</h2>
+    
+      <div class="figure">
+          <img class="figure-real" src="figures/convergence_graph.png"/>
+          <p class="figure-caption">Figure 3. The low,average, and high-priced ZIP-codes. High and Low are defined as the top and bottom 10 percent of ZIP-codes by 2012 price.</p>
+      </div>
+    
+  </section>
+  
  
