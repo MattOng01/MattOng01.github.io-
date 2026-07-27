@@ -249,7 +249,9 @@
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
+      <p class="figure-caption">Tavle 1. Table 1. Missing ZIP code counts and coverage rate by year, 2001–2026. Coverage exceeds 90 percent starting in 2012.</p>
       </div>
+      
       <p>The period 2001-2026 includes all possible years but has the most missing data. The first year where over 90 percent of ZIP-codes report data is 2012. 
         Data coverage improves again in 2018 and 2020.</p>
       <p>To better understand what ZIP-codes are missing, I mapped each of those periods, where ZIP-codes in red are missing from the sample. Exclusions do not 
@@ -258,19 +260,19 @@
       <div class="coverage-grid">
         <div class="figure">
           <img class="figure-real" src="figures/na2001_map.png" alt="ZIP coverage map, 2001–2026"/>
-          <p class="figure-caption">Figure 1. ZIP code coverage, 2001–2026. Gray ZIPs excluded due to missing Zillow data at period start.<span style="display:block; margin-top:0.15rem;">Missing 69% of ZIP codes in 2001.</span></p>
+          <p class="figure-caption">Figure 1. Figure 1. ZIP-code coverage 2001–2026. Red ZIPs excluded due to missing Zillow data at period start.<span style="display:block; margin-top:0.15rem;">Missing 69% of ZIP codes in 2001.</span></p>
         </div>
         <div class="figure">
           <img class="figure-real" src="figures/na2012_map.png" alt="ZIP coverage map, 2012–2026"/>
-          <p class="figure-caption">Figure 2. ZIP code coverage, 2012–2026.<span style="display:block; margin-top:0.15rem;">Missing eight percent of ZIP-Codes in 2012.</span></p>
+          <p class="figure-caption">Figure 2. ZIP-code coverage, 2012–2026.<span style="display:block; margin-top:0.15rem;">Missing eight percent of ZIP-Codes in 2012.</span></p>
         </div>
         <div class="figure">
           <img class="figure-real" src="figures/na2018_map.png" alt="ZIP coverage map, 2018–2026"/>
-          <p class="figure-caption">Figure 3. ZIP code coverage, 2018–2026.<span style="display:block; margin-top:0.15rem;">Missing five percent of ZIP-Codes in 2018.</span></p>
+          <p class="figure-caption">Figure 3. ZIP-code coverage, 2018–2026.<span style="display:block; margin-top:0.15rem;">Missing five percent of ZIP-Codes in 2018.</span></p>
         </div>
         <div class="figure">
           <img class="figure-real" src="figures/na2020_map.png" alt="ZIP coverage map, 2020–2026"/>
-          <p class="figure-caption">Figure 4. ZIP code coverage, 2020–2026. Largest sample; most complete coverage.<span style="display:block; margin-top:0.15rem;">Missing two percent of ZIP-Codes in 2020.</span></p>
+          <p class="figure-caption">Figure 4. ZIP-code coverage, 2020–2026. Largest sample; most complete coverage.<span style="display:block; margin-top:0.15rem;">Missing two percent of ZIP-Codes in 2020.</span></p>
         </div>
       </div>
 
@@ -309,6 +311,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
+        <p class="figure-caption">Table 2. OLS beta convergence regression results for the 2001–2026, 2012–2026, 2018–2026, and 2020–2026 study periods. Coefficients on initial log home price are negative and statistically significant across all four windows.</p>
       </div>
 
   <p>The four beta convergence regressions above span different time horizons — 25, 14, 8, and 6 years — but each regresses <em>cumulative</em> 
@@ -343,7 +346,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
-           <p class="figure-caption">Beta convergence coefficients and annualized convergence speeds by study period. Raw <em>&beta;</em> coefficients 
+           <p class="figure-caption">Table 3. Beta convergence coefficients and annualized convergence speeds by study period. Raw <em>&beta;</em> coefficients 
              reflect cumulative growth over different time horizons and are therefore not directly comparable. Annualized convergence speeds 
              place all estimates on a common annual basis.</p>
       </div>
@@ -360,7 +363,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
-          <p class="figure-caption">Pairwise tests of equality of annualized convergence speeds. The table reports z-tests comparing the estimated 
+          <p class="figure-caption">Table 4. Pairwise tests of equality of annualized convergence speeds. The table reports z-tests comparing the estimated 
             annual convergence rates across study periods.</p>
       </div>
 
@@ -429,7 +432,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
-          <p class="figure-caption">These are the weights for five ZIP-codes: 64108, 64109, 64110, 64111, and 64112. ZIP-code 64112 does not touch 64108, so their weight is 0.</p>
+          <p class="figure-caption">Table 5. Sample rows from the Queen contiguity spatial weights matrix, ZIP codes 64108–64112. Weights are row-standardized so each ZIP's neighbors sum to one; 64108 and 64112 do not share a border and are weighted zero.</p>
       </div>
 
 <h4>Moran's I</h4>
@@ -460,6 +463,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
+            <p class="figure-caption">Table 6. Moran's I test for spatial autocorrelation in the 2012–2026 beta convergence residuals, using Queen contiguity weights (I = 0.632, p < 0.001).</p>
           </iframe>
       </div>
 
@@ -516,6 +520,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
+            <p class="figure-caption">Table 7. Standard and robust Lagrange Multiplier diagnostics for spatial lag versus spatial error dependence, 2012–2026 model.</p>
           </iframe>
       </div>
 
@@ -560,6 +565,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
+        <p class="figure-caption">Table 8. OLS versus Spatial Error Model (SEM) comparison for the 2012–2026 beta convergence regression: coefficient estimates, λ, log-likelihood, AIC, and likelihood ratio test.</p>
       </div>
 
   <p>The likelihood ratio test comparing the SEM to OLS is strongly significant (LR = 34.91, p &lt; 0.001), and AIC falls 
@@ -625,6 +631,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
+          <p class="figure-caption">Table 9. Linear trend regression results for cross-sectional dispersion (sigma) within each identified sub-period, 2000–2026.</p>
           </iframe>
 
       <div class="figure">
