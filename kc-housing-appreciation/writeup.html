@@ -242,14 +242,14 @@
       
       <div class="table-embed">
           <iframe src="tables/ZIP_coverage_table.html"
-            title="ZIP Code Coverage by Study Period"
+            title="ZIP Code Data Coverage by Year, 2001–2026"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
                   this.style.height = this.contentDocument.body.scrollHeight + 'px';
                   ">
           </iframe>
-      <p class="figure-caption">Tavle 1. Table 1. Missing ZIP code counts and coverage rate by year, 2001–2026. Coverage exceeds 90 percent starting in 2012.</p>
+      <p class="figure-caption">Table 1. Missing ZIP code counts and coverage rate by year, 2001–2026. Coverage exceeds 90 percent starting in 2012.</p>
       </div>
       
       <p>The period 2001-2026 includes all possible years but has the most missing data. The first year where over 90 percent of ZIP-codes report data is 2012. 
@@ -259,18 +259,22 @@
 
       <div class="coverage-grid">
         <div class="figure">
+          <p class="figure-title">ZIP Code Coverage Map, 2001–2026</p>
           <img class="figure-real" src="figures/na2001_map.png" alt="ZIP coverage map, 2001–2026"/>
-          <p class="figure-caption">Figure 1. Figure 1. ZIP-code coverage 2001–2026. Red ZIPs excluded due to missing Zillow data at period start.<span style="display:block; margin-top:0.15rem;">Missing 69% of ZIP codes in 2001.</span></p>
+          <p class="figure-caption">Figure 1. ZIP code coverage, 2001–2026. Red ZIPs excluded due to missing Zillow data at period start.<span style="display:block; margin-top:0.15rem;">Missing 69% of ZIP codes in 2001.</span></p>
         </div>
         <div class="figure">
+           <p class="figure-title">ZIP Code Coverage Map, 2012–2026</p>
           <img class="figure-real" src="figures/na2012_map.png" alt="ZIP coverage map, 2012–2026"/>
           <p class="figure-caption">Figure 2. ZIP-code coverage, 2012–2026.<span style="display:block; margin-top:0.15rem;">Missing eight percent of ZIP-Codes in 2012.</span></p>
         </div>
         <div class="figure">
+           <p class="figure-title">ZIP Code Coverage Map, 2018–2026</p>
           <img class="figure-real" src="figures/na2018_map.png" alt="ZIP coverage map, 2018–2026"/>
           <p class="figure-caption">Figure 3. ZIP-code coverage, 2018–2026.<span style="display:block; margin-top:0.15rem;">Missing five percent of ZIP-Codes in 2018.</span></p>
         </div>
         <div class="figure">
+           <p class="figure-title">ZIP Code Coverage Map, 2020–2026</p>
           <img class="figure-real" src="figures/na2020_map.png" alt="ZIP coverage map, 2020–2026"/>
           <p class="figure-caption">Figure 4. ZIP-code coverage, 2020–2026. Largest sample; most complete coverage.<span style="display:block; margin-top:0.15rem;">Missing two percent of ZIP-Codes in 2020.</span></p>
         </div>
@@ -304,7 +308,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
     <p>The regression results are reported below.</p>
       <div class="table-embed">
         <iframe src="tables/beta_convergence.html"
-          title="Beta Convergence Regression Results"
+          title="Beta Convergence Regression Results, All Study Periods"
           scrolling="no"
           onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -339,7 +343,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
 
         <div class="table-embed">
           <iframe src="tables/standardized_convergence.html"
-            title="Raw <em>&beta;</em> coefficients + annualized convergence speeds"
+            title="Annualized Convergence Speeds by Study Period"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -359,7 +363,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
 
       <div class="table-embed">
           <iframe src="tables/pvalue_standardized_convergence.html"
-            title="Pairwise z-tests of annualized convergence speeds"
+            title="Pairwise Significance Tests, Annualized Convergence Speeds"
             scrolling="no"
             onload="this.style.height = this.contentDocument.body.scrollHeight + 'px'">
           </iframe>
@@ -425,7 +429,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
 
       <div class="table-embed">
           <iframe src="tables/weight_matrix_sample.html"
-            title="Sample Weights Matrix"
+            title="Queen Contiguity Spatial Weights Matrix (Sample)"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -457,7 +461,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
 
       <div class="table-embed">
           <iframe src="tables/moran_I_test.html"
-            title="Moran's I Results"
+            title="Moran's I Test for Spatial Autocorrelation"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -514,7 +518,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
       <pre>lm_tests <- lm.LMtests(beta_model, lw_queen_2012, test = "all", zero.policy = TRUE)</pre>
          <div class="table-embed">
           <iframe src="tables/lm_test.html"
-            title="Lagrange Multiplier Test Results"
+            title="Lagrange Multiplier Diagnostics: Spatial Lag vs. Spatial Error"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -558,7 +562,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
 
       <div class="table-embed">
           <iframe src="tables/ols_vs_sem.html"
-            title="OLS versus SEM Test"
+            title="OLS vs. Spatial Error Model Comparison"
             scrolling="no"
             onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -600,6 +604,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
       <p>The annual standard deviation of log home price is computed for each year 2000–2026 using all ZIPs with non-missing 
         Zillow ZHVI values in that year. The full time series is plotted below.</p>
       <div class="figure">
+        <p class="figure-title">Cross-Sectional Price Dispersion, 2000–2026</p>
         <img class="figure-real" src="figures/sigma_map1.png" alt="Sigma convergence over time, 2000–2026"/>
         <p class="figure-caption">Figure 5. Cross-sectional standard deviation of log home values across KC MSA ZIP codes, 2000–2026. Shading indicates four identified convergence regimes.</p>
       </div>
@@ -625,7 +630,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
 
       <div class="table-embed">
         <iframe src="tables/sigma_convergence.html" 
-          title="Sigma Convergence Regression Results"
+          title="Sigma Convergence Trend Regressions by Sub-Period"
           scrolling="no"
           onload="
                   this.style.width = this.contentDocument.body.scrollWidth + 'px';
@@ -635,6 +640,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
           </iframe>
 
       <div class="figure">
+        <p class="figure-title">Sigma Convergence with Fitted Regime Trends</p>
         <img class="figure-real" src="figures/sigma_map2.png" alt="Sigma convergence with fitted regime trends"/>
         <p class="figure-caption">Figure 6. Cross-sectional dispersion with fitted linear trends overlaid for each sub-period. Positive slope = divergence; negative slope = sigma convergence.</p>
       </div>
