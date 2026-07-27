@@ -535,9 +535,12 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
     (SEM) is estimated as the correction. The SEM keeps the same regression structure as the original beta convergence model, but adds a term that 
     explicitly models spatial autocorrelation in the error:</p>
 
-      <div class="equation">\[
-\log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) = \alpha + \beta\,\log(P_{i,0}) + u_i, \quad u_i = \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
-\]</div>
+\[
+\begin{aligned}
+\log\!\left(\frac{P_{i,t}}{P_{i,0}}\right) &= \alpha + \beta\,\log(P_{i,0}) + u_i, \\
+u_i &= \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
+\end{aligned}
+\]
 
   <p>Here, (<em>&lambda;</em>) captures how strongly the error in one ZIP-code is tied to errors in its neighbors, using the same Queen contiguity weights 
     matrix from the Moran's I and LM steps. If \(\lambda\) is close to zero, spatial structure isn't doing much work and OLS was fine all along. 
