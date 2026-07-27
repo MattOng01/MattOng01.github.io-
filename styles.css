@@ -471,7 +471,20 @@ tr:last-child td { border-bottom: none; }
   text-align: center;
 }
 
+/* ── Small HTML Table Embed ── */
+.table-embed {
+  margin: 2rem auto;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  text-align: center;
+}
 .table-embed iframe {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  border: none;
+} iframe {
   display: block;
   width: fit-content;
   max-width: 100%;
