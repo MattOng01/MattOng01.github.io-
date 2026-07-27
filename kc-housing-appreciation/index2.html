@@ -135,19 +135,21 @@
     <p>Evidence for Beta convergence appears when the natural log of price appercaition is inversely correlated with starting price - a suggestion that ZIP-codes with
       low initial home prices are apperciating quickly.
 
-      <div class="figure">
-          <img class="figure-real" src="figures/Log_appreciation_initial.png"/>
-          <p class="figure-caption">Figure 1. Beta convergence is evident when initial price is negatively correlated with apperciation rate.</p>
-      </div>
+<div class="figure">
+  <p class="figure-title">Appreciation Rate vs. Initial Price by ZIP Code</p>
+  <img class="figure-real" src="figures/Log_appreciation_initial.png" alt="Log appreciation vs initial price scatter plot"/>
+  <p class="figure-caption">Figure 1. Beta convergence is evident when initial price is negatively correlated with appreciation rate.</p>
+</div>
     
 
     <p> It can also be helpful to map the apperciation rate by ZIP-code to understand the spatial relationships – is one ZIP-code's apperciation rate affected by its location or factors within an adjoining ZIP-code? Spatial relationships are important for this type of 
       economics because they risk biasing both coefficients and error terms. I used Moran's I to formally test for this and ultamitely addressed spatial effects using a Spatial Error Model.</p>
 
-      <div class="figure">
-          <img class="figure-real" src="figures/log_appreciation_zipcode.png"/>
-          <p class="figure-caption">Figure 2. Appreciation rate is in blue. There appears to be some spatial clustering.</p>
-      </div>
+<div class="figure">
+  <p class="figure-title">Appreciation Rate by ZIP Code, Kansas City MSA</p>
+  <img class="figure-real" src="figures/log_appreciation_zipcode.png" alt="Map of appreciation rate by ZIP code"/>
+  <p class="figure-caption">Figure 2. Appreciation rate by ZIP code, shaded blue. Spatial clustering is visible, consistent with the Moran's I result.</p>
+</div>
   
 
     <p>Formaully, the regression specification for beta convergence is defined as:</p>
@@ -162,10 +164,11 @@
   <section>
     <h2>Sigma Convergence</h2>
     
-      <div class="figure">
-          <img class="figure-real" src="figures/convergence_graph.png"/>
-          <p class="figure-caption">Figure 3. The low,average, and high-priced ZIP-codes. High and Low are defined as the top and bottom 10 percent of ZIP-codes by 2012 price.</p>
-      </div>
+<div class="figure">
+  <p class="figure-title">Price Trajectories, Low- vs. High-Priced ZIP Codes</p>
+  <img class="figure-real" src="figures/convergence_graph.png" alt="Convergence graph comparing low, average, and high-priced ZIP codes"/>
+  <p class="figure-caption">Figure 3. Home price trends for low-, average-, and high-priced ZIP codes. High and low are defined as the top and bottom 10 percent of ZIP codes by 2012 price.</p>
+</div>
     
   </section>
   
