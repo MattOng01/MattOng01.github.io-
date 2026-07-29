@@ -352,6 +352,19 @@ tr:last-child td { border-bottom: none; }
 
 /* ── Figures ── */
 .figure { margin: 2.4rem 0; }
+/* FIX: Added — used throughout writeup.html (every figure/table label)
+   but had no rule anywhere in the file, so it rendered as unstyled
+   plain-paragraph text. Matches the small-caps eyebrow treatment used
+   for th/.toc-label elsewhere in the file. */
+.figure-title {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
 .figure-real {
   width: 100%;
   height: auto;
@@ -465,13 +478,23 @@ tr:last-child td { border-bottom: none; }
   border-top: 1px solid var(--rule);
 }
 
-/* ── Small HTML Table Embed ── */
-.table-embed {
-  margin: 2rem auto;
-  text-align: center;
-}
+/* ── Small HTML Table Embed ──────────────────────────────────────────────
+   Wraps an auto-sized iframe (see sizeTableFrame() in writeup.html) that
+   loads a standalone R-generated table fragment. The iframe is sized in
+   JS to match its content's natural width; this wrapper is the scroll
+   container for when that content is wider than the page — the normal
+   case for wide regression tables on mobile.
 
-/* ── Small HTML Table Embed ── */
+   FIX: This block was previously declared twice (the first, shorter
+   version was dead — fully overridden by the second). It also ended
+   with `} iframe { ... max-width: 100% ... }`, an unscoped global
+   iframe selector that silently applied to every iframe on the site
+   (map, tableau, and pdf embeds included). It never actually fired in
+   practice because `.table-embed iframe` outranks a bare `iframe` on
+   specificity, but it was dead weight and a trap for later edits —
+   capping a bare `iframe` at max-width:100% would also have defeated
+   the overflow-scroll behavior below if it ever did take effect.
+   Both issues are resolved by keeping a single, scoped block. ────── */
 .table-embed {
   margin: 2rem auto;
   max-width: 100%;
@@ -484,12 +507,13 @@ tr:last-child td { border-bottom: none; }
   width: fit-content;
   margin: 0 auto;
   border: none;
-} iframe {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto;
-  border: none;
+}
+/* Right-edge fade hints that a table extends past the viewport.
+   sizeTableFrame() only adds .is-scrollable when content actually
+   overflows, so tables that already fit get no fade. */
+.table-embed.is-scrollable {
+  -webkit-mask-image: linear-gradient(to right, black 94%, transparent 100%);
+  mask-image: linear-gradient(to right, black 94%, transparent 100%);
 }
 
 /* ── Full-Width Map Embed ─────────────────────────────────────────────────
@@ -513,32 +537,6 @@ tr:last-child td { border-bottom: none; }
   height: 900px;
 }
 
-/* Tablet */
-@media (max-width: 992px) {
-  .map-embed {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .map-embed iframe {
-    height: 700px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .map-embed {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    padding-bottom: 1rem;
-  }
-  .map-embed iframe {
-    height: 70vh;
-    min-height: 500px;
-  }
-}
-
 /* ── Tableau dashboard embed ───────────────────────────────────── */
 .tableau-embed {
   width: 90vw;
@@ -554,26 +552,34 @@ tr:last-child td { border-bottom: none; }
   justify-content: center;
 }
 
-/* Tablet */
+/* FIX: .map-embed and .tableau-embed have different base rules (border,
+   display, margin-top all differ intentionally — the Tableau embed
+   manages its own inner sizing) but were repeating identical tablet/
+   mobile breakpoint values in two separate @media blocks each. Combined
+   into one pair of breakpoints below; nothing about either component's
+   own rendering changes. */
 @media (max-width: 992px) {
-   .tableau-embed {
+  .map-embed,
+  .tableau-embed {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
   }
+  .map-embed iframe,
   .tableau-embed iframe {
     height: 700px;
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
+  .map-embed,
   .tableau-embed {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
     padding-bottom: 1rem;
   }
+  .map-embed iframe,
   .tableau-embed iframe {
     height: 70vh;
     min-height: 500px;
@@ -772,8 +778,7 @@ footer {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .project-header { flex-direction: column; }
   h1 { font-size: 1.8rem; }
-  .tool-badges { justify-content: center; }
-   .pdf-embed iframe { height: 420px; }
+  .pdf-embed iframe { height: 420px; }
 
   /* Repo strip */
   .repo-strip { flex-wrap: wrap; gap: 0.5rem; }
@@ -788,8 +793,11 @@ footer {
   .repo-url { display: none; }
   .repo-arrow { margin-left: 0; }
 
-  /* Images */
-  .figure-real { width: 100%; height: auto; }
+  /* FIX: Removed two no-op rules that duplicated their own base values
+     with no change — `.tool-badges { justify-content: center; }` (base
+     .tool-badges is already justify-content: center) and
+     `.figure-real { width: 100%; height: auto; }` (base .figure-real is
+     already width:100%/height:auto). Both were dead weight. */
 
   /* Table */
   table {
