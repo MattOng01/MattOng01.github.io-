@@ -49,14 +49,17 @@ html {
 
 /* ── Layout ── */
 .container {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-/* Narrower reading width for prose-heavy pages.
-   Use: <div class="container container--prose">
-   Wide elements (tables, grids, maps) stay unconstrained inside it. */
+/* Narrower fixed-width variant — currently unused by any page (kc-food-access
+   and the kc-housing landing page were moved to plain .container). The
+   TOC-sidebar layout (.page-layout, below) is now the long-form template.
+   Left defined rather than deleted in case a map/dashboard subpage not
+   covered in this pass still references it — safe to remove once confirmed
+   unused site-wide. */
 .container--prose {
   max-width: 900px;
 }
@@ -517,15 +520,25 @@ tr:last-child td { border-bottom: none; }
 }
 
 /* ── Full-Width Map Embed ─────────────────────────────────────────────────
-   FIX: Source-order bug corrected. Previously the base .map-embed styles
-   were defined AFTER their @media overrides (base at lines 387-403,
-   media at lines 364-385). In a top-down cascade the base must come first
-   so the responsive rules can override it. Reordered: base → tablet → mobile.
-   ─────────────────────────────────────────────────────────────────────── */
+   FIX: Switched from `width:90vw; margin-left:calc(50% - 45vw)` to the
+   translateX technique below. The old formula only centers correctly if
+   its parent is itself as wide as the viewport — which is why pages
+   previously had to close </main> early and place .map-embed as a bare
+   section directly in <body>. `margin-left:50%; transform:translateX(-50%)`
+   centers relative to the viewport as long as ancestors are horizontally
+   centered (margin:0 auto), which holds true even nested inside a narrow
+   container — so .map-embed can now sit anywhere in the normal document
+   flow. Same 90vw visual result, no HTML restructuring required.
+   Caveat: this assumes centered ancestors. It has NOT been verified for
+   the .page-layout TOC-sidebar grid, where .project-content is offset
+   right of the sidebar rather than centered — no page currently nests a
+   map/tableau embed there, but that combination would need a tweak
+   (e.g. placing the embed as a sibling of .page-layout with its own
+   grid-column: 1 / -1) if it ever comes up. ─────────────────────────── */
 .map-embed {
   width: 90vw;
-  margin-left: calc(50% - 45vw);
-  margin-right: calc(50% - 45vw);
+  margin-left: 50%;
+  transform: translateX(-50%);
   margin-top: 2rem;
   margin-bottom: 2rem;
   border: 2px solid var(--rule);
@@ -540,8 +553,8 @@ tr:last-child td { border-bottom: none; }
 /* ── Tableau dashboard embed ───────────────────────────────────── */
 .tableau-embed {
   width: 90vw;
-  margin-left: calc(50% - 45vw);
-  margin-right: calc(50% - 45vw);
+  margin-left: 50%;
+  transform: translateX(-50%);
   overflow: hidden;
   margin-top: 12px;
 }
@@ -552,18 +565,17 @@ tr:last-child td { border-bottom: none; }
   justify-content: center;
 }
 
-/* FIX: .map-embed and .tableau-embed have different base rules (border,
+/* .map-embed and .tableau-embed have different base rules (border,
    display, margin-top all differ intentionally — the Tableau embed
-   manages its own inner sizing) but were repeating identical tablet/
-   mobile breakpoint values in two separate @media blocks each. Combined
-   into one pair of breakpoints below; nothing about either component's
-   own rendering changes. */
+   manages its own inner sizing) but share identical tablet/mobile
+   breakpoint values, combined into one pair of breakpoints below. */
 @media (max-width: 992px) {
   .map-embed,
   .tableau-embed {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    transform: none;
   }
   .map-embed iframe,
   .tableau-embed iframe {
@@ -577,6 +589,7 @@ tr:last-child td { border-bottom: none; }
     width: 100%;
     margin-left: 0;
     margin-right: 0;
+    transform: none;
     padding-bottom: 1rem;
   }
   .map-embed iframe,
@@ -826,9 +839,9 @@ footer {
   grid-template-columns: 200px 1fr;
   grid-template-areas: "sidebar main";
   gap: 0 2.5rem;
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   align-items: start;
 }
 
@@ -897,11 +910,14 @@ footer {
   background-color: var(--accent-lt);
 }
 
-/* --- Main content area --- */
+/* --- Main content area ---
+   840px = 1150px outer width, minus 2×2rem padding, minus the 200px
+   sidebar and its 2.5rem gap. Grows/shrinks with .page-layout's
+   max-width and padding above — recompute if either changes. */
 .project-content {
   grid-area: main;
   min-width: 0;
-  max-width: 720px;
+  max-width: 840px;
 }
 
 /* ============================================================
