@@ -519,6 +519,11 @@ tr:last-child td { border-bottom: none; }
   mask-image: linear-gradient(to right, black 94%, transparent 100%);
 }
 
+.table-embed.is-scrollable iframe {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 /* ── Full-Width Map Embed ─────────────────────────────────────────────────
    FIX: Switched from `width:90vw; margin-left:calc(50% - 45vw)` to the
    translateX technique below. The old formula only centers correctly if
