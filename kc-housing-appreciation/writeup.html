@@ -47,6 +47,40 @@
       margin: 3rem 0;
     }
   </style>
+
+  <script>
+    // Sizes a .table-embed iframe to match its embedded R-table fragment.
+    //
+    // FIX (mobile table clipping): the old version measured
+    // contentDocument.body.scrollWidth immediately on load, while the
+    // iframe was still sitting at whatever narrow width it started at.
+    // For tables with several columns, that measurement can reflect the
+    // squeezed/wrapped layout rather than the table's true natural
+    // width, so the iframe would lock in too narrow and real columns
+    // got clipped instead of becoming scrollable — worse on mobile,
+    // where the starting width is smallest and tables are widest
+    // relative to the viewport.
+    //
+    // Fix: briefly expand the iframe to a generous width, measure the
+    // content at that natural size, then set the iframe to exactly
+    // that width. The .table-embed wrapper (styles.css) handles
+    // horizontal scrolling for anything still wider than the page.
+    function sizeTableFrame(iframe) {
+      var doc = iframe.contentDocument;
+      if (!doc || !doc.body) return;
+
+      iframe.style.width = '2000px';
+      var w = doc.body.scrollWidth;
+      var h = doc.body.scrollHeight;
+      iframe.style.width = w + 'px';
+      iframe.style.height = h + 'px';
+
+      var wrapper = iframe.closest('.table-embed');
+      if (wrapper) {
+        wrapper.classList.toggle('is-scrollable', w > wrapper.clientWidth);
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -248,10 +282,7 @@
       title="ZIP Code Data Coverage by Year, 2001–2026"
       scrolling="no"
       frameborder="0"
-      onload="
-        this.style.width = this.contentDocument.body.scrollWidth + 'px';
-        this.style.height = this.contentDocument.body.scrollHeight + 'px';
-      ">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 1. Missing ZIP code counts and coverage rate by year, 2001–2026. Coverage exceeds 90 percent starting in 2012.</p>
   </div>
@@ -317,7 +348,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
   <div class="figure">
     <p class="figure-title">Beta Convergence Regression Results, All Study Periods</p>
     <iframe src="tables/beta_convergence.html" title="Beta Convergence Regression Results, All Study Periods" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 2. OLS beta convergence regression results for the 2001–2026, 2012–2026, 2018–2026, and 2020–2026 study periods. Coefficients on initial log home price are negative and statistically significant across all four windows.</p>
   </div>
@@ -351,7 +382,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
   <div class="figure">
     <p class="figure-title">Annualized Convergence Speeds by Study Period</p>
     <iframe src="tables/standardized_convergence.html" title="Annualized Convergence Speeds by Study Period" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 3. Beta convergence coefficients and annualized convergence speeds by study period. Raw β coefficients reflect cumulative growth over different time horizons and are not directly comparable; annualized speeds place all estimates on a common annual basis.</p>
   </div>
@@ -367,7 +398,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
   <div class="figure">
     <p class="figure-title">Pairwise Significance Tests, Annualized Convergence Speeds</p>
     <iframe src="tables/pvalue_standardized_convergence.html" title="Pairwise Significance Tests, Annualized Convergence Speeds" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 4. Pairwise tests of equality of annualized convergence speeds. Reports z-tests comparing estimated annual convergence rates across study periods.</p>
   </div>
@@ -433,7 +464,7 @@ beta2020_2026 &lt;- lm(growth_2020_2026 ~ log_price_2020, data = beta_data)</pre
   <div class="figure">
     <p class="figure-title">Queen Contiguity Spatial Weights Matrix (Sample)</p>
     <iframe src="tables/weight_matrix_sample.html" title="Queen Contiguity Spatial Weights Matrix (Sample)" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 5. Sample rows from the Queen contiguity spatial weights matrix, ZIP codes 64108–64112. Weights are row-standardized so each ZIP's neighbors sum to one; 64108 and 64112 do not share a border and are weighted zero.</p>
   </div>
@@ -463,7 +494,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
   <div class="figure">
     <p class="figure-title">Moran's I Test for Spatial Autocorrelation</p>
     <iframe src="tables/moran_I_test.html" title="Moran's I Test for Spatial Autocorrelation" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 6. Moran's I test for spatial autocorrelation in the 2012–2026 beta convergence residuals, using Queen contiguity weights (I = 0.632, p &lt; 0.001).</p>
   </div>
@@ -518,7 +549,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
   <div class="figure">
     <p class="figure-title">Lagrange Multiplier Diagnostics: Spatial Lag vs. Spatial Error</p>
     <iframe src="tables/lm_test.html" title="Lagrange Multiplier Diagnostics: Spatial Lag vs. Spatial Error" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 7. Standard and robust Lagrange Multiplier diagnostics for spatial lag versus spatial error dependence, 2012–2026 model.</p>
   </div>
@@ -563,7 +594,7 @@ u_i &= \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
   <div class="figure">
     <p class="figure-title">OLS vs. Spatial Error Model Comparison</p>
     <iframe src="tables/ols_vs_sem.html" title="OLS vs. Spatial Error Model Comparison" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 8. OLS versus Spatial Error Model (SEM) comparison for the 2012–2026 beta convergence regression: coefficient estimates, λ, log-likelihood, AIC, and likelihood ratio test.</p>
   </div>
@@ -631,7 +662,7 @@ sigma2015_2026 &lt;- lm(sigma ~ Year, data = filter(sigma_data, Year &gt;= 2015)
   <div class="figure">
     <p class="figure-title">Sigma Convergence Trend Regressions by Sub-Period</p>
     <iframe src="tables/sigma_convergence.html" title="Sigma Convergence Trend Regressions by Sub-Period" scrolling="no" frameborder="0"
-      onload="this.style.width = this.contentDocument.body.scrollWidth + 'px'; this.style.height = this.contentDocument.body.scrollHeight + 'px';">
+      onload="sizeTableFrame(this)">
     </iframe>
     <p class="figure-caption">Table 9. Linear trend regression results for cross-sectional dispersion (sigma) within each identified sub-period, 2000–2026.</p>
   </div>
