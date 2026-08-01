@@ -69,6 +69,19 @@
       var doc = iframe.contentDocument;
       if (!doc || !doc.body) return;
 
+      // FIX (excess scroll whitespace): if the R-exported table (or its
+      // body/wrapper) is styled with width:100%, it simply stretches to
+      // fill whatever probe width we set below — so scrollWidth reports
+      // the probe width, not the table's real content width, and every
+      // table looks like it overflows by a large, blank margin. Forcing
+      // auto/none here makes the table measure (and stay rendered at)
+      // its true intrinsic width, so the iframe — and the scroll range —
+      // ends exactly where the real content ends.
+      var probe = doc.getElementById('__table-embed-probe') || doc.createElement('style');
+      probe.id = '__table-embed-probe';
+      probe.textContent = 'html, body, table { width: auto !important; max-width: none !important; }';
+      doc.head.appendChild(probe);
+
       iframe.style.width = '2000px';
       var w = doc.body.scrollWidth;
       var h = doc.body.scrollHeight;
