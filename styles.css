@@ -563,6 +563,10 @@ tr:last-child td { border-bottom: none; }
   display: none;
 }
 
+.repo-strip--horizontal a {
+    flex: 1 1 180px;
+    justify-content: center;
+}
 
 /* -----------------------------------------*/
 
