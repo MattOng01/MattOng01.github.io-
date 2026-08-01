@@ -17,15 +17,10 @@
   --accent-lt: #e8edf2;
   --serif:     'Playfair Display', Georgia, serif;
   --sans:      'DM Sans', system-ui, sans-serif;
-
-  /* FIX: Added two missing tokens used by TOC and figure-placeholder.
-     Previously these were raw hex values scattered in the file, disconnected
-     from the token system. Centralising them here means a palette change
-     updates everywhere automatically. */
-  --rule-mid:  #e2e5eb;   /* replaces #e2e5eb in .toc-sidebar border  */
-  --bg-hover:  #f0f2f5;   /* replaces #f0f2f5 in .toc-link:hover      */
-  --bg-sand:   #eceae5;   /* replaces #eceae5 in .figure-placeholder   */
-  --border-badge: #c4d0db; /* replaces raw #c4d0db on badge borders    */
+  --rule-mid:  #e2e5eb;   
+  --bg-hover:  #f0f2f5;   
+  --bg-sand:   #eceae5;  
+  --border-badge: #c4d0db;
 }
 
 /* ── Base ── */
@@ -33,19 +28,13 @@ html {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  /* FIX: Reduced base font-size from 19px → 17px.
-     19px is large enough to feel oversized on typical laptop screens (1366px wide).
-     17px keeps the elegant feel while fitting comfortably at normal viewport widths.
-     All rem/em values scale automatically — no other changes needed. */
   font-size: 17px;
   font-weight: 300;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
 
-/* FIX: Removed redundant `body { background: var(--bg); }`.
-   The html rule above already sets the background. The body rule was
-   a no-op duplicate that added noise. */
+
 
 /* ── Layout ── */
 .container {
@@ -54,12 +43,7 @@ html {
   padding: 0 2rem;
 }
 
-/* Narrower fixed-width variant — currently unused by any page (kc-food-access
-   and the kc-housing landing page were moved to plain .container). The
-   TOC-sidebar layout (.page-layout, below) is now the long-form template.
-   Left defined rather than deleted in case a map/dashboard subpage not
-   covered in this pass still references it — safe to remove once confirmed
-   unused site-wide. */
+/* Narrower fixed-width variant */
 .container--prose {
   max-width: 900px;
 }
@@ -123,29 +107,8 @@ h1 {
   margin-top: 0.9rem;
 }
 
-/* ── Badge component (unified) ──────────────────────────────────────────────
-   FIX: Previously there were three near-identical chip/badge classes:
-     .tool-badge  — monospace font, had border, used in project page headers
-     .project-tag — monospace font, NO border, used on index project cards
-     .skill-tag   — var(--sans) font, had border, used in index skills row
+/* ── Badge component (unified) */
 
-   All three shared: accent color, accent-lt background, same size range,
-   same border-radius. The only real differences were font-family and whether
-   a border was present.
-
-   Resolution: one base `.badge` class covers the shared styles.
-   Two modifiers handle the genuine differences:
-     .badge--sans   → DM Sans (was .skill-tag)
-     .badge--subtle → no border (was .project-tag)
-
-   HTML migration:
-     .tool-badge              → class="badge"
-     .project-tag             → class="badge badge--subtle"
-     .skill-tag               → class="badge badge--sans"
-
-   Existing class names are kept as aliases below so old pages don't break
-   before you migrate the HTML.
-   ─────────────────────────────────────────────────────────────────────── */
 .badge,
 .tool-badge,
 .project-tag,
@@ -216,6 +179,8 @@ a { color: var(--accent); text-decoration: none; font-weight: 500; }
 a:hover { text-decoration: underline; }
 code { font-family: monospace; font-size: 0.85rem; color: var(--accent); }
 
+
+
 /* ── Bullet lists ── */
 ul, ol {
   margin: 1rem 0;
@@ -279,9 +244,6 @@ li:last-child { margin-bottom: 0; }
 /* ── Model Spec List ── */
 .model-spec-row { display: flex; flex-direction: column; gap: 0.6rem; margin: 1.2rem 0; }
 
-/* FIX: Merged duplicate .model-spec declarations.
-   Previously the rule was split across two blocks (lines 217 and 226),
-   with `text-align: center` defined separately. Merged into one. */
 .model-spec {
   background: white;
   border: 1px solid var(--rule);
@@ -319,16 +281,11 @@ td {
   vertical-align: top;
 }
 
-/* FIX: Scoped td:first-child monospace styling to .data-table.
-   The original global `td:first-child` rule applied monospace accent styling
-   to every table's first column on every page. This works by coincidence
-   today (all current tables have code-like first columns), but will
-   unexpectedly style any prose-value first column you add in the future.
-   Scope it: add class="data-table" to tables where you want this behaviour.
-   Tables without the class get unstyled first columns. */
 .data-table td:first-child { font-family: monospace; font-size: 0.82rem; color: var(--accent); }
 
 tr:last-child td { border-bottom: none; }
+
+
 
 /* ── Key Findings ── */
 .findings { display: flex; flex-direction: column; gap: 1rem; margin: 1.4rem 0; }
@@ -355,10 +312,7 @@ tr:last-child td { border-bottom: none; }
 
 /* ── Figures ── */
 .figure { margin: 2.4rem 0; }
-/* FIX: Added — used throughout writeup.html (every figure/table label)
-   but had no rule anywhere in the file, so it rendered as unstyled
-   plain-paragraph text. Matches the small-caps eyebrow treatment used
-   for th/.toc-label elsewhere in the file. */
+
 .figure-title {
   font-family: var(--sans);
   font-size: 0.72rem;
@@ -378,7 +332,6 @@ tr:last-child td { border-bottom: none; }
 .figure-placeholder {
   width: 100%;
   aspect-ratio: 11 / 5;
-  /* FIX: Was raw #eceae5 — replaced with --bg-sand token defined in :root */
   background: var(--bg-sand);
   border: 1px solid var(--rule);
   border-radius: 6px;
@@ -398,66 +351,6 @@ tr:last-child td { border-bottom: none; }
   font-style: italic;
   text-align: center;
 }
-
-/* ── Repo Strip ── */
-
-/* Single-link variant (default) — used on most project pages */
-.repo-strip {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 1.2rem;
-  background: white;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  margin-top: 2.4rem;
-  margin-bottom: 2.4rem;
-  font-family: var(--sans);
-  font-size: 0.88rem;
-  font-weight: 300;
-  color: var(--muted);
-  text-decoration: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.repo-strip:hover {
-  border-color: var(--accent);
-  box-shadow: 0 2px 12px rgba(26,58,92,0.08);
-  text-decoration: none;
-}
-.repo-strip svg { flex-shrink: 0; color: var(--accent); }
-.repo-label { font-family: monospace; font-size: 0.82rem; color: var(--accent); font-weight: 400; }
-.repo-arrow { margin-left: auto; color: var(--muted); transition: transform 0.2s ease; }
-.repo-strip:hover .repo-arrow { transform: translateX(4px); }
-
-/* FIX: Added .repo-strip--stacked modifier for multi-link variant.
-   kc-food-access.html was overriding .repo-strip with inline styles
-   (`display:flex; flex-direction:column; gap:8px`) to stack three links.
-   That's now a proper class modifier. In kc-food-access.html:
-     - Change the wrapper div to:  <div class="repo-strip repo-strip--stacked">
-     - Remove the style="" attribute entirely
-   Each child <a> inside it inherits .repo-strip link styling via the
-   descendant rules below. */
-.repo-strip--stacked {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.5rem;
-  /* Stacked container is a div, not an <a>, so no text-decoration issue */
-  text-decoration: none;
-}
-.repo-strip--stacked a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.88rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid var(--rule);
-  transition: color 0.2s ease;
-}
-.repo-strip--stacked a:last-child { border-bottom: none; }
-.repo-strip--stacked a:hover { color: var(--accent); text-decoration: none; }
-.repo-strip--stacked a:hover .repo-arrow { transform: translateX(4px); }
 
 /* ── PDF Embed ── */
 .pdf-embed {
@@ -481,23 +374,7 @@ tr:last-child td { border-bottom: none; }
   border-top: 1px solid var(--rule);
 }
 
-/* ── Small HTML Table Embed ──────────────────────────────────────────────
-   Wraps an auto-sized iframe (see sizeTableFrame() in writeup.html) that
-   loads a standalone R-generated table fragment. The iframe is sized in
-   JS to match its content's natural width; this wrapper is the scroll
-   container for when that content is wider than the page — the normal
-   case for wide regression tables on mobile.
-
-   FIX: This block was previously declared twice (the first, shorter
-   version was dead — fully overridden by the second). It also ended
-   with `} iframe { ... max-width: 100% ... }`, an unscoped global
-   iframe selector that silently applied to every iframe on the site
-   (map, tableau, and pdf embeds included). It never actually fired in
-   practice because `.table-embed iframe` outranks a bare `iframe` on
-   specificity, but it was dead weight and a trap for later edits —
-   capping a bare `iframe` at max-width:100% would also have defeated
-   the overflow-scroll behavior below if it ever did take effect.
-   Both issues are resolved by keeping a single, scoped block. ────── */
+/* ── Small HTML Table Embed ──*/
 .table-embed {
   margin: 2rem auto;
   max-width: 100%;
@@ -511,9 +388,7 @@ tr:last-child td { border-bottom: none; }
   margin: 0 auto;
   border: none;
 }
-/* Right-edge fade hints that a table extends past the viewport.
-   sizeTableFrame() only adds .is-scrollable when content actually
-   overflows, so tables that already fit get no fade. */
+
 .table-embed.is-scrollable {
   -webkit-mask-image: linear-gradient(to right, black 94%, transparent 100%);
   mask-image: linear-gradient(to right, black 94%, transparent 100%);
@@ -522,86 +397,6 @@ tr:last-child td { border-bottom: none; }
 .table-embed.is-scrollable iframe {
   margin-left: 0;
   margin-right: 0;
-}
-
-/* ── Full-Width Map Embed ─────────────────────────────────────────────────
-   FIX: Switched from `width:90vw; margin-left:calc(50% - 45vw)` to the
-   translateX technique below. The old formula only centers correctly if
-   its parent is itself as wide as the viewport — which is why pages
-   previously had to close </main> early and place .map-embed as a bare
-   section directly in <body>. `margin-left:50%; transform:translateX(-50%)`
-   centers relative to the viewport as long as ancestors are horizontally
-   centered (margin:0 auto), which holds true even nested inside a narrow
-   container — so .map-embed can now sit anywhere in the normal document
-   flow. Same 90vw visual result, no HTML restructuring required.
-   Caveat: this assumes centered ancestors. It has NOT been verified for
-   the .page-layout TOC-sidebar grid, where .project-content is offset
-   right of the sidebar rather than centered — no page currently nests a
-   map/tableau embed there, but that combination would need a tweak
-   (e.g. placing the embed as a sibling of .page-layout with its own
-   grid-column: 1 / -1) if it ever comes up. ─────────────────────────── */
-.map-embed {
-  width: 90vw;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  border: 2px solid var(--rule);
-  border-radius: 6px;
-  display: block;
-}
-.map-embed iframe {
-  width: 100%;
-  height: 900px;
-}
-
-/* ── Tableau dashboard embed ───────────────────────────────────── */
-.tableau-embed {
-  width: 90vw;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  overflow: hidden;
-  margin-top: 12px;
-}
-
-.tableau-embed > div {      /* the tableauPlaceholder div           */
-  width: 100% !important;
-  display: flex;
-  justify-content: center;
-}
-
-/* .map-embed and .tableau-embed have different base rules (border,
-   display, margin-top all differ intentionally — the Tableau embed
-   manages its own inner sizing) but share identical tablet/mobile
-   breakpoint values, combined into one pair of breakpoints below. */
-@media (max-width: 992px) {
-  .map-embed,
-  .tableau-embed {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    transform: none;
-  }
-  .map-embed iframe,
-  .tableau-embed iframe {
-    height: 700px;
-  }
-}
-
-@media (max-width: 768px) {
-  .map-embed,
-  .tableau-embed {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    transform: none;
-    padding-bottom: 1rem;
-  }
-  .map-embed iframe,
-  .tableau-embed iframe {
-    height: 70vh;
-    min-height: 500px;
-  }
 }
 
 /* ── Stats Grid ── */
@@ -654,6 +449,192 @@ tr:last-child td { border-bottom: none; }
 .conference-badge svg { color: var(--accent); flex-shrink: 0; }
 .conference-badge strong { color: var(--ink); font-weight: 500; }
 
+
+/* -----------------------------------------*/
+/* ── Repo Strip ── */
+
+/* Single-link variant (default) — used on most project pages */
+.repo-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  margin-top: 2.4rem;
+  margin-bottom: 2.4rem;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--muted);
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.repo-strip:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(26,58,92,0.08);
+  text-decoration: none;
+}
+.repo-strip svg { flex-shrink: 0; color: var(--accent); }
+.repo-label { font-family: monospace; font-size: 0.82rem; color: var(--accent); font-weight: 400; }
+.repo-arrow { margin-left: auto; color: var(--muted); transition: transform 0.2s ease; }
+.repo-strip:hover .repo-arrow { transform: translateX(4px); }
+
+/* .repo-strip--stacked modifier for multi-link variant. */
+.repo-strip--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.repo-strip--stacked a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.2s ease;
+}
+.repo-strip--stacked a:last-child { border-bottom: none; }
+.repo-strip--stacked a:hover { color: var(--accent); text-decoration: none; }
+.repo-strip--stacked a:hover .repo-arrow { transform: translateX(4px); }
+
+/* Horizontal repo button bar */
+.repo-strip--horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2.4rem 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.repo-strip--horizontal a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  padding: 0.7rem 1rem;
+
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+
+  background: white;
+
+  color: var(--muted);
+  text-decoration: none;
+
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 300;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .15s ease;
+}
+
+.repo-strip--horizontal a:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(26,58,92,.08);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.repo-strip--horizontal svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.repo-strip--horizontal .repo-label {
+  color: var(--accent);
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.repo-strip--horizontal .repo-arrow {
+  display: none;
+}
+
+
+/* -----------------------------------------*/
+
+/* ── Full-Width Map Embed ─── */
+.map-embed {
+  width: 90vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border: 2px solid var(--rule);
+  border-radius: 6px;
+  display: block;
+}
+.map-embed iframe {
+  width: 100%;
+  height: 900px;
+}
+
+/* ── Tableau dashboard embed ──*/
+.tableau-embed {
+  width: 90vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.tableau-embed > div {      /* the tableauPlaceholder div           */
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+
+/* .map-embed and .tableau-embed have different base rules (border,
+   display, margin-top all differ intentionally — the Tableau embed
+   manages its own inner sizing) but share identical tablet/mobile
+   breakpoint values, combined into one pair of breakpoints below. */
+@media (max-width: 992px) {
+  .map-embed,
+  .tableau-embed {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    transform: none;
+  }
+  .map-embed iframe,
+  .tableau-embed iframe {
+    height: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .map-embed,
+  .tableau-embed {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    transform: none;
+    padding-bottom: 1rem;
+  }
+  .map-embed iframe,
+  .tableau-embed iframe {
+    height: 70vh;
+    min-height: 500px;
+  }
+}
+
+
+
+
+
 /* ── Index: Bio ── */
 .bio {
   max-width: 640px;
@@ -672,7 +653,6 @@ tr:last-child td { border-bottom: none; }
   max-width: 640px;
   margin: 0 auto 1.8rem;
 }
-/* .skill-tag styling is now part of the unified .badge system above */
 
 /* ── Index: Contact Links ── */
 .contact-links {
@@ -734,7 +714,7 @@ tr:last-child td { border-bottom: none; }
   gap: 0.4rem;
   margin-bottom: 0.9rem;
 }
-/* .project-tag styling is now part of the unified .badge system above */
+
 .project-desc {
   font-size: 0.92rem;
   color: var(--ink);
@@ -811,11 +791,6 @@ footer {
   .repo-url { display: none; }
   .repo-arrow { margin-left: 0; }
 
-  /* FIX: Removed two no-op rules that duplicated their own base values
-     with no change — `.tool-badges { justify-content: center; }` (base
-     .tool-badges is already justify-content: center) and
-     `.figure-real { width: 100%; height: auto; }` (base .figure-real is
-     already width:100%/height:auto). Both were dead weight. */
 
   /* Table */
   table {
@@ -825,7 +800,6 @@ footer {
     white-space: nowrap;
   }
   td, th { white-space: normal; min-width: 80px; }
-  /* FIX: .data-table scoping carried through to mobile overrides */
   .data-table td:first-child { min-width: 90px; }
 }
 
@@ -870,7 +844,6 @@ footer {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  /* FIX: Was raw #8a929e — replaced with --muted token (close enough) */
   color: var(--muted);
   margin: 0 0 0.75rem 0;
 }
@@ -892,7 +865,6 @@ footer {
   line-height: 1.5;
   padding: 0.3rem 0.5rem;
   border-radius: 3px;
-  /* FIX: Was raw #5a6270 — replaced with --muted token */
   color: var(--muted);
   text-decoration: none;
   transition: color 0.15s ease, background-color 0.15s ease;
@@ -902,14 +874,12 @@ footer {
 }
 
 .toc-link:hover {
-  /* FIX: Was raw #1a1f2e → --ink; raw #f0f2f5 → --bg-hover token */
   color: var(--ink);
   background-color: var(--bg-hover);
 }
 
 /* --- Active section highlight (set by JS scroll-spy) --- */
 .toc-link.toc-active {
-  /* FIX: Was raw #2c5f8a → --accent; raw #eaf1f8 → --accent-lt */
   color: var(--accent);
   font-weight: 600;
   background-color: var(--accent-lt);
