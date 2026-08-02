@@ -29,34 +29,37 @@
 function sizeTableFrame(iframe) {
   var doc = iframe.contentDocument;
   if (!doc || !doc.body) return;
+  var table = doc.querySelector('table');
+
+  function measure() {
+    var box = table ? table.getBoundingClientRect() : doc.body.getBoundingClientRect();
+    return { w: Math.ceil(box.width), h: Math.ceil(box.height) };
+  }
 
   iframe.style.width = '2000px';
 
-  // Read both dimensions together, in this one pass, while the iframe
-  // still has generous (2000px) room to lay out unconstrained. A <table>
-  // given at least as much width as it needs settles at exactly its own
-  // natural width and doesn't grow taller with more room — so giving it
-  // *exactly* that width afterward doesn't change its height. There's no
-  // need to re-read height a second time right after narrowing the
-  // iframe down, which is what an earlier version of this function did.
-  //
-  // getBoundingClientRect() is used instead of scrollWidth/scrollHeight
-  // because scrollWidth/scrollHeight round down to a whole pixel, which
-  // can shave a table's true size just enough to clip its bottom edge;
-  // getBoundingClientRect returns the exact (fractional) size. The +2px
-  // is a small safety margin against any remaining sub-pixel rounding.
-  var table = doc.querySelector('table');
-  var box = table ? table.getBoundingClientRect() : doc.body.getBoundingClientRect();
-  var w = Math.ceil(box.width) + 2;
-  var h = Math.ceil(box.height) + 2;
+  // rAF, not an immediate read: gives the browser a real layout/paint
+  // pass to settle on before we trust anything it reports.
+  requestAnimationFrame(function () {
+    var first = measure();
+    iframe.style.width = (first.w + 2) + 'px';
 
-  iframe.style.width = w + 'px';
-  iframe.style.height = h + 'px';
+    requestAnimationFrame(function () {
+      // Re-measure at the now-final (narrower) width. If a cell wraps
+      // onto a second line at this width that didn't wrap with 2000px
+      // of room to spare, the table needs more height than the first
+      // reading showed — take whichever measurement came out taller
+      // instead of trusting the wide-open one blindly.
+      var second = measure();
+      var h = Math.max(first.h, second.h) + 2;
+      iframe.style.height = h + 'px';
 
-  var wrapper = iframe.closest('.table-embed');
-  if (wrapper) {
-    wrapper.classList.toggle('is-scrollable', w > wrapper.clientWidth);
-  }
+      var wrapper = iframe.closest('.table-embed');
+      if (wrapper) {
+        wrapper.classList.toggle('is-scrollable', first.w + 2 > wrapper.clientWidth);
+      }
+    });
+  });
 }
 
 (function () {
