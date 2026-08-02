@@ -58,7 +58,7 @@
 
 <header>
   <div class="container">
-    <p class="eyebrow">Real Estate Economics · Kansas City MSA</p>
+    <p class="eyebrow">Real Estate Economics</p>
     <h1>Kansas City Home Price Appreciation (2000–2026)</h1>
     <p class="meta">
       <span>Matthew Ong</span> &middot;
@@ -90,7 +90,8 @@
         <span class="repo-label">Full Report</span>
     </a>
     <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">
-        <span class="repo-label">Code Repository</span>
+        <span class="repo-label">GitHub Repository</span>
+    </a>
 </div>
 
 <section>
@@ -98,46 +99,67 @@
 <h2>Key Findings</h2>
     <div class="pullquote">Lower-priced ZIP codes appreciated faster than higher-priced ZIP codes.
       </div>
+  
+        <div class="table-embed">
+          <div class="figure">
+            <p class="figure-title">Beta Convergence Scatterplot</p>
+              <iframe src="figures/Log_appreciation_initial.png" title="Beta Convergence Scatterplot" scrolling="no" frameborder="0"
+                onload="sizeTableFrame(this)">
+              </iframe>
+            <p class="figure-caption">Log apperciation from 2012 to 2026 compared to home price in 2012</p>
+          </div>
+        </div>
 
     <div class="pullquote">
-2. Price inequality across ZIP codes has narrowed over time.
-   (Sigma convergence figure)
+Price inequality across ZIP codes has narrowed over time.
       </div>
+
+        <div class="table-embed">
+          <div class="figure">
+            <p class="figure-title">Sigma Convergence: Price Gap</p>
+              <iframe src="figures/gap_accelatation.png" title="Sigma Convergence Graph" scrolling="no" frameborder="0"
+                onload="sizeTableFrame(this)">
+              </iframe>
+            <p class="figure-caption">The gap is narrowing</p>
+          </div>
+        </div>
+      </div>
+  
     <div class="pullquote">
-3. High-priced and low-priced neighborhoods are geographically clustered.
-   (Moran's I map)
+High-priced and low-priced neighborhoods are geographically clustered.
+      </div>
+  
+        <div class="table-embed">
+          <div class="figure">
+            <p class="figure-title">Log Apperecation by ZIP-code</p>
+              <iframe src="figures/log_accelatation_zipcode.png" title="ZIP-code map" scrolling="no" frameborder="0"
+                onload="sizeTableFrame(this)">
+              </iframe>
+            <p class="figure-caption">The gap is narrowing</p>
+          </div>
+        </div>
       </div>
 
       <div class="pullquote">
-4. Even after accounting for spatial clustering, lower-priced ZIP codes still appreciated significantly faster.
+Even after accounting for spatial clustering, lower-priced ZIP codes still appreciated significantly faster.
       </div>
 
-  </section>
-<section>
-<h2>Interactive Map</h2>
-<p>Embed Leaflet map here.
-
-Short explanation of what users can explore.</p>
 
 </section>
-------------------------------------------------------
+
 <section>
 <h2>Why It Matters</h2>
 <div class="findings">
         <div class="finding">
-          <div class="finding-num">1</div>
           <p>Identifies areas experiencing rapid appreciation.</p>
         </div>
         <div class="finding">
-          <div class="finding-num">2</div>
           <p>Helps planners understand changing neighborhood dynamics.</p>
         </div>
         <div class="finding">
-          <div class="finding-num">2</div>
           <p>Demonstrates that appreciation is occurring beyond simple geographic spillovers.</p>
         </div>
         <div class="finding">
-          <div class="finding-num">2</div>
           <p>Suggests that rising housing wealth in historically lower-priced neighborhoods could create opportunities—but also raises questions about affordability and displacement.</p>
         </div>
 
@@ -160,23 +182,23 @@ Short explanation of what users can explore.</p>
       </div>
       <div class="gap-item">
         <span class="tag">Spatial Error Model</span>
-          → Removes the influence of geographic clustering to isolate the underlying relationship.
+          → Accounts for the influence of geographic clustering to isolate the underlying relationship.
       </div>
 </section>
 ------------------------------------------------------
 <section>
 <h2>Future Research</h2>
 <p>
-This analysis uses home prices as a proxy for neighborhood change. Future work could examine whether appreciation is accompanied by improvements in:
-
-• school quality
-• crime
-• incomes
-• neighborhood amenities
-• transit accessibility
-• housing supply
-• displacement and affordability
-</p>
+This analysis uses home prices as a proxy for neighborhood change. Future work could examine whether appreciation is accompanied by improvements in:</p>
+ <ul>
+ <li>school quality</li>
+ <li>crime</li>
+ <li>incomes</li>
+ <li>neighborhood amenities</li>
+ <li>transit accessibility</li>
+ <li>housing supply</li>
+ <li>displacement and affordability</li>
+ </ul>
     </section>
 
   </main>
