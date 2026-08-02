@@ -1,30 +1,8 @@
 /* site.js — shared behavior for Matthew Ong's portfolio writeup pages.
  *
  * Include on any page with:
- *   <script src="../js/site.js" defer></script>
- * (adjust the relative path to wherever this file actually lives)
- *
- * Provides two independent, page-agnostic pieces. Neither requires any
- * other page-specific script — just the markup conventions noted below.
- *
- * ── sizeTableFrame(iframe) ──────────────────────────────────────────────
- * Auto-sizes a .table-embed iframe to match its embedded R-table
- * fragment, and toggles .is-scrollable on the wrapper when the table is
- * wider than the page (styles.css handles the actual scroll/fade
- * behavior off that class). Wire it up per-iframe with:
- *   <iframe src="tables/whatever.html" onload="sizeTableFrame(this)"></iframe>
- * inside a `.table-embed` wrapper. The inline onload attribute (rather
- * than addEventListener from this file) is deliberate — it's registered
- * at parse time, before the iframe starts fetching its src, so it can
- * never miss the load event even if the sub-document loads instantly
- * from cache.
- *
- * ── TOC scroll-spy ──────────────────────────────────────────────────────
- * Highlights the current section's link (adds .toc-active) as the reader
- * scrolls, for any page with `.toc-link` elements whose href targets
- * exist in the document. Runs automatically; does nothing if the page
- * has no `.toc-link` elements.
- */
+ *   <script src="../site.js" defer></script>
+
 
 function sizeTableFrame(iframe) {
   var doc = iframe.contentDocument;
@@ -32,8 +10,23 @@ function sizeTableFrame(iframe) {
   var table = doc.querySelector('table');
 
   function measure() {
-    var box = table ? table.getBoundingClientRect() : doc.body.getBoundingClientRect();
-    return { w: Math.ceil(box.width), h: Math.ceil(box.height) };
+    // Width: measure the <table> itself — <body> stretches to fill
+    // whatever width the iframe currently is, so it can't be trusted
+    // for width (see the width fix earlier in this file's history).
+    var wBox = table ? table.getBoundingClientRect() : doc.body.getBoundingClientRect();
+
+    // Height: measure <body>, not the table. Some table exports (gt/
+    // Quarto output, specifically) wrap the <table> in their own div
+    // with an independent overflow-x:auto. If that div's own horizontal
+    // scrollbar ever kicks in — e.g. the table is a hair wider than the
+    // div's available width — it eats a strip of vertical space at the
+    // bottom that the table's own bounding box has no way to know
+    // about. <body>'s height:auto wraps everything, scrollbar gutter
+    // included, so it won't miss that extra space the way measuring the
+    // table directly does.
+    var hBox = doc.body.getBoundingClientRect();
+
+    return { w: Math.ceil(wBox.width), h: Math.ceil(hBox.height) };
   }
 
   iframe.style.width = '2000px';
