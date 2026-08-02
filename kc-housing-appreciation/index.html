@@ -6,7 +6,6 @@
   <title>Housing Appreciation · Beta &amp; Sigma Convergence · KC MSA · Matthew Ong</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
     .coverage-grid {
@@ -20,14 +19,94 @@
       .coverage-grid { grid-template-columns: 1fr; }
     }
 
-    .equation{margin:1.75rem 0;text-align:center;font-size:1.05rem;}
-
-    .toc-sublist{margin:.35rem 0 .6rem 1rem;padding-left:.8rem;border-left:1px solid var(--rule);} .toc-sublist .toc-link{font-size:.92rem;}
-
     .section-rule {
       border: none;
       border-top: 1px solid var(--rule);
       margin: 3rem 0;
+    }
+
+    /* ── Featured assets (Map / Dashboard) ── */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 1.6rem 0 2.4rem;
+    }
+    @media (max-width: 700px) {
+      .asset-grid { grid-template-columns: 1fr; }
+    }
+    .asset-card {
+      display: block;
+      background: white;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.4rem 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+    .asset-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 18px rgba(26,58,92,0.1);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+    .asset-card .asset-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    .asset-card h3 {
+      margin: 0 0 0.4rem;
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      color: var(--ink);
+    }
+    .asset-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .asset-card .asset-cta {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: var(--accent);
+    }
+
+    /* ── Practical takeaway callout ── */
+    .takeaway {
+      background: var(--accent-lt);
+      border: 1px solid var(--border-badge);
+      border-radius: 8px;
+      padding: 1.3rem 1.6rem;
+      margin: 2rem 0;
+    }
+    .takeaway .takeaway-label {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .takeaway p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .aside {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
     }
   </style>
 </head>
@@ -58,25 +137,47 @@
 </header>
 
 <main class="container">
+
 <section>
-  <p>This project examines whether lower-priced neighborhoods in the Kansas City metropolitan area are catching up to higher-priced neighborhoods. Using Zillow Home Value Index (ZHVI) data for 198 ZIP codes, I test for β-convergence, σ-convergence, and spatial dependence in home price appreciation.</p>
-  <p>Understanding these patterns is valuable for investors, developers, planners, and policymakers seeking to understand neighborhood change and housing market dynamics.</p>
+  <p>Cheaper ZIP codes in the Kansas City metro are catching up to expensive ones — and the pattern holds even after accounting for the fact that home prices cluster geographically, not randomly.</p>
+  <p class="aside">Formally: this project tests for β-convergence, σ-convergence, and spatial dependence across 198 KC-metro ZIP codes using Zillow Home Value Index (ZHVI) data, 2000–2026.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-value">198</span>
+      <span class="stat-label">ZIP Codes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">26 yrs</span>
+      <span class="stat-label">2000 – 2026</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">&minus;0.36</span>
+      <span class="stat-label">&beta; (spatial model)</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">0.80</span>
+      <span class="stat-label">R&sup2;</span>
+    </div>
+  </div>
 </section>
 
-  <div class="repo-strip repo-strip--horizontal">
-    <a href="https://matthewong01.github.io/kc-housing-appreciation/map/index.html" target="_blank" rel="noopener noreferrer">
-        <span class="repo-label">Interactive Map</span>
+<section>
+  <div class="asset-grid">
+    <a class="asset-card" href="https://matthewong01.github.io/kc-housing-appreciation/map/index.html" target="_blank" rel="noopener noreferrer">
+      <span class="asset-eyebrow">Interactive</span>
+      <h3>ZIP-Code Appreciation Map</h3>
+      <p>Explore log home-price appreciation by ZIP code across the KC metro — zoom, pan, and compare neighborhoods directly.</p>
+      <span class="asset-cta">Open the map →</span>
     </a>
-    <a href="https://matthewong01.github.io/kc-housing-appreciation/dashboard" target="_blank" rel="noopener noreferrer">
-        <span class="repo-label">Dashboard</span>
+    <a class="asset-card" href="https://matthewong01.github.io/kc-housing-appreciation/dashboard" target="_blank" rel="noopener noreferrer">
+      <span class="asset-eyebrow">Interactive</span>
+      <h3>Tableau Dashboard</h3>
+      <p>Filter and drill into price trends, dispersion, and appreciation rates by ZIP code and time period.</p>
+      <span class="asset-cta">Open the dashboard →</span>
     </a>
-    <a href="https://matthewong01.github.io/kc-housing-appreciation/writeup.html" target="_blank" rel="noopener noreferrer">
-        <span class="repo-label">Full Report</span>
-    </a>
-    <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">
-        <span class="repo-label">GitHub Repository</span>
-    </a>
-</div>
+  </div>
+</section>
 
 <section>
 
@@ -114,6 +215,10 @@ High-priced and low-priced neighborhoods are geographically clustered.
 Even after accounting for spatial clustering, lower-priced ZIP codes still appreciated significantly faster.
       </div>
 
+  <div class="takeaway">
+    <span class="takeaway-label">Practical takeaway for analysts</span>
+    <p>Because appreciation clusters geographically, comps are more reliable when pulled by radius around a subject property than restricted to a single ZIP code — a ZIP-bounded comp set will miss real spillover effects from adjacent areas.</p>
+  </div>
 
 </section>
 
@@ -121,16 +226,12 @@ Even after accounting for spatial clustering, lower-priced ZIP codes still appre
 <h2>Why It Matters</h2>
 <div class="findings">
         <div class="finding">
-          <p>Identifies areas experiencing rapid appreciation.</p>
+          <div class="finding-num">→</div>
+          <p><strong>For investors and analysts:</strong> identifies ZIP codes experiencing rapid appreciation and clarifies the right comp radius to use, since appreciation spills over between adjacent areas rather than stopping at ZIP boundaries.</p>
         </div>
         <div class="finding">
-          <p>Helps planners understand changing neighborhood dynamics.</p>
-        </div>
-        <div class="finding">
-          <p>Demonstrates that appreciation is occurring beyond simple geographic spillovers.</p>
-        </div>
-        <div class="finding">
-          <p>Suggests that rising housing wealth in historically lower-priced neighborhoods could create opportunities—but also raises questions about affordability and displacement.</p>
+          <div class="finding-num">→</div>
+          <p><strong>For planners and policymakers:</strong> shows that convergence is real, not just a spillover artifact — and that rising housing wealth in historically lower-priced neighborhoods raises real questions about affordability and displacement alongside the opportunity.</p>
         </div>
 </div>
 
@@ -138,7 +239,7 @@ Even after accounting for spatial clustering, lower-priced ZIP codes still appre
 
 <section>
 <h2>Methods</h2>
-  <p>To evaluate home price apperciation, I identified key economic behavior and tested for and addressed spatial autocorrelation.</p>
+  <p>To evaluate home price appreciation, I identified key economic behavior and tested for and addressed spatial autocorrelation. The full derivations, regression tables, and diagnostics are in the <a href="https://matthewong01.github.io/kc-housing-appreciation/writeup.html" target="_blank" rel="noopener noreferrer">full report</a>; the summary below is meant to be readable without a stats background.</p>
     <div class="gap-grid">
       <div class="gap-item">
         <span class="tag">Beta convergence</span>
@@ -172,7 +273,16 @@ This analysis uses home prices as a proxy for neighborhood change. Future work c
  <li>housing supply</li>
  <li>displacement and affordability</li>
  </ul>
-    </section>
+</section>
+
+<div class="repo-strip repo-strip--horizontal">
+    <a href="https://matthewong01.github.io/kc-housing-appreciation/writeup.html" target="_blank" rel="noopener noreferrer">
+        <span class="repo-label">Full Report</span>
+    </a>
+    <a href="https://github.com/MatthewOng01/KC_House_Price_Appreciation" target="_blank" rel="noopener noreferrer">
+        <span class="repo-label">GitHub Repository</span>
+    </a>
+</div>
 
   </main>
 
