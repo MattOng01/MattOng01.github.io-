@@ -32,22 +32,25 @@ function sizeTableFrame(iframe) {
 
   iframe.style.width = '2000px';
 
-  // Measure the <table> itself, not <body>. <body> is an ordinary block
-  // box — width:auto means "fill whatever width you're given," not
-  // "shrink to your content" — so the instant the iframe is forced to
-  // 2000px above, <body> becomes ~2000px wide too, no matter how small
-  // the table inside it is. A <table> (stargazer, gt, and kableExtra
-  // output all confirmed) sizes itself off its own content by default,
-  // so it's the one reliable thing to measure here.
+  // Read both dimensions together, in this one pass, while the iframe
+  // still has generous (2000px) room to lay out unconstrained. A <table>
+  // given at least as much width as it needs settles at exactly its own
+  // natural width and doesn't grow taller with more room — so giving it
+  // *exactly* that width afterward doesn't change its height. There's no
+  // need to re-read height a second time right after narrowing the
+  // iframe down, which is what an earlier version of this function did.
+  //
+  // getBoundingClientRect() is used instead of scrollWidth/scrollHeight
+  // because scrollWidth/scrollHeight round down to a whole pixel, which
+  // can shave a table's true size just enough to clip its bottom edge;
+  // getBoundingClientRect returns the exact (fractional) size. The +2px
+  // is a small safety margin against any remaining sub-pixel rounding.
   var table = doc.querySelector('table');
-  var w = table ? table.scrollWidth : doc.body.scrollWidth;
-  iframe.style.width = w + 'px';
+  var box = table ? table.getBoundingClientRect() : doc.body.getBoundingClientRect();
+  var w = Math.ceil(box.width) + 2;
+  var h = Math.ceil(box.height) + 2;
 
-  // Measure height AFTER the width is finalized, not before. Reading it
-  // while the iframe was still at the 2000px probe width can miss height
-  // added by reflow once the table settles into its final (narrower)
-  // width, which clips the bottom of some tables.
-  var h = table ? table.scrollHeight : doc.body.scrollHeight;
+  iframe.style.width = w + 'px';
   iframe.style.height = h + 'px';
 
   var wrapper = iframe.closest('.table-embed');
