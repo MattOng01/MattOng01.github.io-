@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Housing Appreciation · Beta &amp; Sigma Convergence · KC MSA · Matthew Ong</title>
+  <title>Housing Appreciation · Beta &amp; Sigma Convergence Full Writeup · KC MSA · Matthew Ong</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles.css"/>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -64,7 +64,7 @@
 <header>
   <div class="container">
     <p class="eyebrow">Real Estate Economics</p>
-    <h1>Housing Appreciation</h1>
+    <h1>Housing Appreciation · Full Writeup</h1>
     <h3>Kansas City MSA by ZIP-Code · 2000–2026</h3>
     <p class="meta">
       <span>Matthew Ong</span> &middot;
@@ -151,7 +151,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>American Community Survey</td>
+          <td>American Community Survey (used for interactive map and dashboard only)</td>
           <td>US Census Bureau</td>
           <td>2024 Five-year estimate</td>
           <td><a href="https://www.census.gov/programs-surveys/acs/news/data-releases.html" target="_blank" rel="noopener noreferrer">census.gov</a></td>
@@ -484,7 +484,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
       uncorrelated with initial price).</p>
 
     <p><strong>How the test works</strong></p>
-    <p>I used the standard (non-robust) Lagrange Multiplier tests (LM-lag and LM-error).  Each test for one form of dependence, but they 
+    <p>I used the standard (non-robust) Lagrange Multiplier tests (LM-lag and LM-error).  Each tests for one form of dependence, but they 
       cross-contaminate: a true spatial error process will often trip the LM-lag test too, and vice versa, because the two forms of dependence 
       are correlated with each other in most real spatial data. Running only the standard tests risks picking the wrong model.</p>
 
@@ -497,7 +497,7 @@ I = \frac{N}{\sum_{i}\sum_{j} w_{ij}} \cdot \frac{\sum_{i}\sum_{j} w_{ij}(e_i - 
         <li>If both standard tests are significant, look at the robust versions.</li>
         <li>Whichever robust test remains significant (and the other doesn't) identifies the preferred model.</li>
         <li>If both robust tests are significant, the higher-magnitude test statistic wins.</li>
-        <li>Recent spatial research (DRS Saputro et al.) has a way to correct for lag and error dependence when 
+        <li>Recent spatial research (D.R.S. Saputro et al. 2019) has a way to correct for lag and error dependence when 
           they are both present, and this is more robust than treating only the higher-magnitude test; however, 
           the underlying math is much more complex.</li>
       </ul>
@@ -601,7 +601,7 @@ u_i &= \lambda \sum_{j} w_{ij}u_j + \varepsilon_i
         <ul>
           <li><strong>2000–2026:</strong> The full model.</li>
           <li><strong>2000-2006:</strong>Pre-Financial Crisis expansion, where broad appreciation was driven by subprime credit expansion. Negative slope, indicating price compression.</li>
-          <li><strong>2007-2014:</strong>The Financial Crisis and aftermath. Foreclosure crisis differentially compressed lower-tier markets, widening dispersion – positive slope.</li>
+          <li><strong>2007-2014:</strong>The Financial Crisis and aftermath. Foreclosure crisis differentially depressed lower-tier markets, widening dispersion – positive slope.</li>
           <li><strong>2015-2026:</strong>Post-recovery through the Pandemic. Sustained compression as demand shifted from expensive to affordable ZIPs – negative slope, again.</li>
         </ul>
 
